@@ -1,0 +1,20 @@
+{
+  "name": "nodejsexamprojectbackend",
+  "version": "1.0.0",
+  "description": "Backend for the exam project for the NodeJs 4th semester elective",
+  "main": "app.js",
+  "scripts": {
+    "createdb": "node ./database/createSchemaItems.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Pawel Stepien, Nikolai Lenander",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^3.2.3"
+  },
+  "type": "module"
+}
