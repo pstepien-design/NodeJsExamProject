@@ -1,35 +1,32 @@
 <script>
-import { onMount } from "svelte";
-import { login, signup} from '../service/AuthorizationService'
+  import { onMount } from 'svelte';
+  import { login, signup } from '../service/AuthorizationService';
 
   let email = '';
   let password = '';
 
   export let operation = '';
 
-
   const handleUserRequest = async () => {
     console.log(email, password);
-    if(operation === 'Login'){
+    if (operation === 'Login') {
       login(email, password);
-  }
-    else if( operation === 'Sign up'){
-    signup(email, password);
-  }
-    else {
+    } else if (operation === 'Sign up') {
+      signup(email, password);
+    } else {
       console.log('something went wrong');
     }
-  }
-
+  };
 </script>
+
 <div>
   <p class="credentials__header">{operation}</p>
   <p class="credentials__text">{operation} by typing your email and password</p>
   <form on:submit|preventDefault={handleUserRequest} class="credentials__form">
     <p class="credentials__label">E-mail</p>
-    <input type="email" required='required' bind:value={email} />
+    <input type="email" required="required" bind:value={email} />
     <p class="credenstials__label">Password</p>
-    <input type="password" required='required' bind:value={password} />
+    <input type="password" required="required" bind:value={password} />
     <div>
       <button type="submit"> {operation} </button>
     </div>

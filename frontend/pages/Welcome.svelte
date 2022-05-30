@@ -1,5 +1,5 @@
 <script>
-  import { navigate } from "svelte-navigator";
+  import { navigate } from 'svelte-navigator';
   const goToLogin = () => {
     navigate('/login');
   };
@@ -27,7 +27,7 @@
     text-transform: uppercase;
     font-size: 50px;
   }
-  h2{
+  h2 {
     font-size: 30px;
   }
   .buttons__container {
