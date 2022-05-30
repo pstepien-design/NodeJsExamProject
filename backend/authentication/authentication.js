@@ -51,6 +51,8 @@ dotenv.config({path: './.env'});
       console.log(response.status + " "+ response.statusText);
     }
     else{
+      const data = await response.json();
+      console.log(data)
       isAuthorized = true;
     }
     return isAuthorized;
