@@ -8,6 +8,9 @@ app.use(express.json());
 import router from './routers/router.js';
 app.use(router);
 
+import cockRouter from './routers/cocktailRouter.js'
+app.use(cockRouter)
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
