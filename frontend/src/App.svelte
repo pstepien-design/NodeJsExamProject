@@ -1,27 +1,23 @@
 <script>
   import Login from '../pages/Login.svelte';
   import Signup from '../pages/Signup.svelte';
+  import Footer from '../components/Footer.svelte';
+  import Navbar from '../components/Navbar.svelte';
 </script>
 
 <main>
-  <h1>Node Js exam project</h1>
-  <Signup />
-  <Login />
+  <Navbar />
+  <Footer />
 </main>
 
 <style>
+  :global(body) {
+    padding:0;
+    font-family: Roboto;
+  }
   main {
     text-align: center;
-    padding: 1em;
     max-width: 240px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
   }
 
   @media (min-width: 640px) {
