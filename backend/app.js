@@ -5,8 +5,14 @@ import cors from 'cors';
 app.use(cors());
 app.use(express.json());
 
-import router from './routers/router.js';
-app.use(router);
+import authRouter from './routers/authRouter.js';
+app.use(authRouter);
+
+import cockRouter from './routers/cocktailRouter.js'
+app.use(cockRouter)
+
+import postRouter from './routers/postRouter.js'
+app.use(postRouter)
 
 
 const PORT = process.env.PORT || 3000;
