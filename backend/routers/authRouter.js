@@ -3,7 +3,6 @@ import User from '../entities/User.js';
 import fetch from 'node-fetch';
 import {
   login,
-  authenticateToke,
   signup,
 } from '../authentication/authentication.js';
 import dotenv from 'dotenv';
@@ -69,12 +68,6 @@ authRouter.post('/auth/login', async (req, res) => {
   } else {
     res.send({ data: "User doesn't exist" });
   }
-});
-
-authRouter.post('/auth/authenticateToken', (req, res) => {
-  const token = req.body.userToken;
-  const response = authenticateToke(token);
-  res.send({ isAuthorized: response });
 });
 
 export default authRouter;

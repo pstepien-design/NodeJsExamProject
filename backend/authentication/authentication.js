@@ -1,6 +1,5 @@
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
 dotenv.config({ path: './.env' });
 
 export const signup = async (email, password) => {
