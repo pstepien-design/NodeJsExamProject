@@ -61,16 +61,11 @@ authRouter.post('/auth/login', async (req, res) => {
       if (obj.email == req.body.email) {
         res.send({ accessToken: response.idToken });
       } 
-      // else {
-      //   res.send({
-      //     data: 'Something went wrong in fetching user from the database',
-      //   });
-      // }
     }
   } 
-  // else {
-  //   res.send({ data: "User doesn't exist" });
-  // }
+  else {
+    res.send({ data: "User doesn't exist" });
+  }
 });
 
 export default authRouter;
