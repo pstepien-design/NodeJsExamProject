@@ -22,6 +22,7 @@ cockRouter.get('/cocktails', async (req, res) => {
   } else {
     const data = await response.json();
     let cocktails = [];
+
     for (const key in data) {
       const obj = data[key];
       cocktails.push(new Cocktail(obj.name, obj.description));
@@ -46,10 +47,10 @@ cockRouter.get('/cocktails/:key', async (req, res) => {
   );
 
   if (!response.ok) {
-    res.send({data: "Unable to get cocktail"})
+    res.send({ data: 'Unable to get cocktail' });
   } else {
     const data = await response.json();
-    res.send({data: data})
+    res.send({ data: data });
   }
 });
 
@@ -101,10 +102,10 @@ cockRouter.patch('/cocktails/:key', async (req, res) => {
   );
 
   if (!response.ok) {
-    res.send({data: 'Unable to patch cocktail'});
+    res.send({ data: 'Unable to patch cocktail' });
   } else {
     const data = await response.json();
-    res.send({data: data});
+    res.send({ data: data });
   }
 });
 
@@ -124,12 +125,12 @@ cockRouter.delete('/cocktails/:key', async (req, res) => {
   );
 
   if (!response.ok) {
-    res.send({data: 'Unable to delete cocktail'})
+    res.send({ data: 'Unable to delete cocktail' });
   } else {
     const data = await response.json();
-    console.log(data)
-    res.send({data: "Cocktail was deleted"})
+    console.log(data);
+    res.send({ data: 'Cocktail was deleted' });
   }
-})
+});
 
 export default cockRouter;
