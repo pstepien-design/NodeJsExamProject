@@ -12,14 +12,17 @@ const authRouter = Router();
 authRouter.post('/auth/signup', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  const firstName = req.body.firstName
+  const lastName = req.body.lastName
+
   const response = await signup(email, password);
 
   try {
     if (response) {
       const user = new User(
         email,
-        req.body.firstName,
-        req.body.lastName,
+        firstName,
+        lastName,
         response.localId
       );
       const createUser = await fetch(
