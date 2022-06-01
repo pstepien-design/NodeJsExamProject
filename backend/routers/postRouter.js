@@ -205,6 +205,7 @@ postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
   const postKey = req.params.postKey;
   const commentKey = req.params.commentKey;
   const token = req.body.token;
+  const editedComment = req.body.comment;
   try {
     const response = await fetch(
       `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${postKey}/.json?auth=` +
@@ -220,12 +221,12 @@ postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
     if (!response.ok) {
       const data = await response.json();
       res.send(data);
-      
+
     } else {
       const post = await response.json();
       for (const key in post.comments) {
         if (commentKey == key) {
-          post.comments[key] = 'hello';
+          post.comments[key] = editedComment;
 
           const response2 = await fetch(
             `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${postKey}/.json?auth=` +
