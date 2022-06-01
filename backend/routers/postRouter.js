@@ -224,13 +224,17 @@ postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
     res.send(data);
   } else {
     const post = await response.json();
-    console.log(commentKey)
+    commentKey.replace(/\s/g, '');
+    
     for (const key in post.comments) {
-      // if(commentKey === post.comments[key]) {
+      key.replace(/\s/g, '')
+      console.log(commentKey === key)
+      console.log('commentKey', commentKey)
+      console.log('key', key)
+      if(commentKey == key) {
         post.comments[key] = "newtest"
-      // }
+      }
     }
-    console.log(post.comments)
     res.send('test');
   }
 });
