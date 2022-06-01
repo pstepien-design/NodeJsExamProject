@@ -5,6 +5,7 @@
   import Signup from '../pages/Signup.svelte';
   import Home from '../pages/Home.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
+  
 </script>
 
 <Router>

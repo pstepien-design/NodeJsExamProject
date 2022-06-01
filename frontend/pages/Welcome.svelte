@@ -36,12 +36,20 @@
     justify-content: center;
   }
   button {
-    width: 25vw;
-    height: 15vh;
-    font-size: 25px;
-    font-weight: bold;
-    background-color: #ea5045;
-    margin-left: 20px;
+  width: 10rem;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+  background-color: #ea5045;
+  font-size: 2rem;
+  margin-left: 2rem;
+
   }
   .credentials__container {
     width: 70%;

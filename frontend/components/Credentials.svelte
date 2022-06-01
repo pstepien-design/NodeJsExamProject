@@ -1,6 +1,10 @@
 <script>
   import { onMount } from 'svelte';
   import { login, signup } from '../service/AuthorizationService';
+  import { useNavigate } from 'svelte-navigator';
+  const navigate = useNavigate;
+
+  
 
   let email = '';
   let password = '';
@@ -10,7 +14,8 @@
   const handleUserRequest = async () => {
     console.log(email, password);
     if (operation === 'Login') {
-      login(email, password);
+      const response = await login(email, password);
+      console.log('res', response.contains(accessToken));
     } else if (operation === 'Sign up') {
       signup(email, password);
     } else {
@@ -34,9 +39,10 @@
 </div>
 
 <style>
+
   .credentials__header {
     font-size: 30px;
-    font-weight: bold;
+    font-weight: bold;  
   }
   .credentials__text {
     font-size: 24px;
@@ -47,8 +53,10 @@
   }
 
   button {
+    font-size: 2rem;
+    border-radius: 12px;
     width: 30%;
-    height: 50px;
+    height: 60px;
     font-weight: 20px;
     margin-top: 20px;
     background-color: #ea5045;

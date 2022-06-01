@@ -2,12 +2,20 @@
   import { Route } from 'svelte-navigator';
   import AccessDenied from './AccessDenied.svelte';
   import { onMount } from 'svelte';
+  import {getToken} from '../service/AuthorizationService'
+
+  $: isAuthorized = false;
+  
 
   export let path, component;
 
-  $: isAuthorized = false;
-
-  onMount(async () => {});
+ 
+onMount(() => {
+  const token = getToken();
+    if(token !== null){
+    isAuthorized = true;
+  }
+})
 </script>
 
 {#if isAuthorized === true}
