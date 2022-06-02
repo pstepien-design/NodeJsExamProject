@@ -22,7 +22,7 @@ export const signup = async (email, password) => {
     );
   
     if (!response.ok) {
-      return response.status + ' ' + response.statusText;
+      return await response.json()
 
     } else {
       return await response.json();
@@ -53,7 +53,7 @@ export const login = async (email, password) => {
     );
   
     if (!response.ok) {
-      return response.status + ' ' + response.statusText;
+      return await response.json()
   
     } else {
       return await response.json();
@@ -78,7 +78,7 @@ export const refreshAuthToken = async (refreshToken) => {
     );
 
     if (!response.ok) {
-      return response.status + ' ' + response.statusText;
+      return await response.json()
 
     } else {
       return await response.json();

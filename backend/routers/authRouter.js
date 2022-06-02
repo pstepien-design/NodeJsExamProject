@@ -38,7 +38,7 @@ authRouter.post('/auth/signup', async (req, res) => {
         }
       );
       if (!createUser.ok) {
-        res.status(400).send(response);
+        res.status(response.error.code).send(response);
       } else {
         res.send({ accessToken: response.idToken });
       }
@@ -76,7 +76,7 @@ authRouter.post('/auth/login', async (req, res) => {
       }
     } 
     else {
-      res.status(400).send(response);
+      res.status(response.error.code).send(response);
     }
   } catch (error) {
     res.send(error)
@@ -97,7 +97,7 @@ authRouter.post('/auth/refreshToken', async (req, res) => {
       });
 
     } else {
-      res.send({data: "Unable to fetch new access token"})
+      res.status(response.error.code).send(response);
     }
 
   } catch (error) {
