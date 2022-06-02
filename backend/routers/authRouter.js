@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 import {
   login,
   signup,
+  refreshAuthToken
 } from '../authentication/authentication.js';
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
@@ -70,7 +71,7 @@ authRouter.post('/auth/login', async (req, res) => {
       for (const key in fetchedUsers) {
         const obj = fetchedUsers[key];
         if (obj.email == req.body.email) {
-          res.send({ accessToken: response.idToken });
+          res.send({ accessToken: response.idToken, refreshToken: response.refreshToken });
         } 
       }
     } 
@@ -81,6 +82,27 @@ authRouter.post('/auth/login', async (req, res) => {
     res.send(error)
   }
   
+});
+
+authRouter.post('/auth/refreshToken', async (req, res) => {
+  const refreshToken = req.body.refreshToken;
+
+  try {
+    const response = await refreshAuthToken(refreshToken);
+
+    if (response.access_token !== undefined) {
+      res.send({
+        accessToken: response.access_token,
+        refreshToken: response.refresh_token,
+      });
+
+    } else {
+      res.send({data: "Unable to fetch new access token"})
+    }
+
+  } catch (error) {
+    res.send(error);
+  }
 });
 
 export default authRouter;

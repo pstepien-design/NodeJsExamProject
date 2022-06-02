@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
+const API_KEY = process.env.API_KEY;
 
 export const signup = async (email, password) => {
-  const API_KEY = process.env.API_KEY;
 
   try {
     const response = await fetch(
@@ -25,8 +25,7 @@ export const signup = async (email, password) => {
       return response.status + ' ' + response.statusText;
 
     } else {
-      const data = await response.json();
-      return data;
+      return await response.json();
     }
     
   } catch (error) {
@@ -36,7 +35,6 @@ export const signup = async (email, password) => {
 };
 
 export const login = async (email, password) => {
-  const API_KEY = process.env.API_KEY;
 
   try {
     const response = await fetch(
@@ -58,11 +56,34 @@ export const login = async (email, password) => {
       return response.status + ' ' + response.statusText;
   
     } else {
-      const data = await response.json();
-      return data;
+      return await response.json();
     }
   } catch (error) {
     return error;
   }
  
+};
+
+export const refreshAuthToken = async (refreshToken) => {
+  try {
+    const response = await fetch(
+      `https://securetoken.googleapis.com/v1/token?key=${API_KEY}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+      }
+    );
+
+    if (!response.ok) {
+      return response.status + ' ' + response.statusText;
+
+    } else {
+      return await response.json();
+    }
+  } catch (error) {
+    return error;
+  }
 };
