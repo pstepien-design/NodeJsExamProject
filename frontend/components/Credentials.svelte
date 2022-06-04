@@ -2,12 +2,13 @@
   import { onMount } from 'svelte';
   import { login, signup } from '../service/AuthorizationService';
   import { useNavigate } from 'svelte-navigator';
-  const navigate = useNavigate;
-
-  
+  import { getToken, saveToken } from '../stores/store';
+  const navigate = useNavigate();
 
   let email = '';
   let password = '';
+
+  let token;
 
   export let operation = '';
 
@@ -15,9 +16,10 @@
     console.log(email, password);
     if (operation === 'Login') {
       const response = await login(email, password);
-      console.log('res', response.contains(accessToken));
+      navigate('/home');
     } else if (operation === 'Sign up') {
-      signup(email, password);
+      await signup(email, password);
+      navigate('/home');
     } else {
       console.log('something went wrong');
     }
@@ -39,10 +41,9 @@
 </div>
 
 <style>
-
   .credentials__header {
     font-size: 30px;
-    font-weight: bold;  
+    font-weight: bold;
   }
   .credentials__text {
     font-size: 24px;

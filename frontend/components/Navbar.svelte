@@ -5,15 +5,25 @@
   import Signup from '../pages/Signup.svelte';
   import Home from '../pages/Home.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
-  
+  import { removeToken } from '../stores/store';
+  import { getToken } from '../stores/store';
+
+  const logOut = () => {
+    removeToken();
+  };
+  let isAuthorized = getToken();
 </script>
 
 <Router>
   <nav>
     <ul hidden>
-      <li>
-        <p>TEST</p>
-      </li>
+      {#if isAuthorized}
+        <li>
+          <Link to="/">
+            <p on:click={logOut} class="link">LOG OUT</p>
+          </Link>
+        </li>
+      {/if}
     </ul>
     <Route path="/" component={Welcome} />
     <Route path="/login" component={Login} />
@@ -57,15 +67,10 @@
     height: 100%;
     align-items: center;
   }
-  li:last-child {
-    background-color: #ea5045;
-    margin-left: auto;
-    padding-left: 2vw;
-    padding-right: 2vw;
-    height: 100%;
-    color: black;
-    float: left;
-    margin-right: 0;
+  .link {
+    color: white;
+    vertical-align: middle;
+    font-size: 24px;
   }
   p {
     padding-top: 10px;

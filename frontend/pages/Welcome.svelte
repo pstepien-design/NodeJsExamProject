@@ -1,4 +1,7 @@
 <script>
+  import { onMount } from 'svelte';
+  import { getToken } from '../stores/store';
+
   import { navigate } from 'svelte-navigator';
   const goToLogin = () => {
     navigate('/login');
@@ -6,6 +9,12 @@
   const goToSignUp = () => {
     navigate('/signup');
   };
+
+  onMount(() => {
+    if (getToken()) {
+      navigate('/home');
+    }
+  });
 </script>
 
 <div class="welcome__container">
@@ -36,20 +45,19 @@
     justify-content: center;
   }
   button {
-  width: 10rem;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 16px;
-  background-color: #ea5045;
-  font-size: 2rem;
-  margin-left: 2rem;
-
+    width: 10rem;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+    background-color: #ea5045;
+    font-size: 2rem;
+    margin-left: 2rem;
   }
   .credentials__container {
     width: 70%;

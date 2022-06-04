@@ -1,13 +1,5 @@
-import { serverUrl } from '../stores/store';
+import { serverUrl, getToken, saveToken } from '../stores/store';
 import { get } from 'svelte/store';
-
-export function saveToken(token){
-  sessionStorage.setItem('token', token);
-}
-export function getToken(){
-  return sessionStorage.getItem('token');
-}
-
 
 export async function login(email, password) {
   console.log(get(serverUrl));
@@ -21,11 +13,12 @@ export async function login(email, password) {
       'content-type': 'application/json',
     },
   });
-  const json = await res.json();
-  const accessToken = (json).accessToken
-  console.log(accessToken);
-  saveToken(accessToken)
-  return json
+  if (res.ok) {
+    const json = await res.json();
+    const token = json.accessToken;
+    saveToken(token);
+    return json;
+  }
 }
 
 export async function signup(email, password) {
@@ -41,8 +34,8 @@ export async function signup(email, password) {
     },
   });
   const json = await res.json();
-  const accessToken = (json).accessToken
-  saveToken(accessToken)
   console.log(json);
+  const token = json.accessToken;
+  saveToken(token);
+  return json;
 }
-
