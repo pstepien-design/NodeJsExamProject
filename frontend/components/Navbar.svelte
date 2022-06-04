@@ -5,13 +5,45 @@
   import Signup from '../pages/Signup.svelte';
   import Home from '../pages/Home.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
-  import { removeToken } from '../stores/store';
-  import { getToken } from '../stores/store';
+  import { removeToken, removeRefreshToken, getToken, getRefreshToken } from '../stores/store';
+
 
   const logOut = () => {
-    removeToken();
-  };
-  let isAuthorized = getToken();
+    removeToken();  
+    removeRefreshToken();
+    authChecker();
+    };
+
+ let isAuthorized = false; 
+
+  const authChecker =  async () => {
+    isAuthorized = await checkAuthorization()
+  }
+
+  const checkAuthorization = async (token) => {
+    console.log(getRefreshToken())
+    const authRequest = {
+      refreshToken: getRefreshToken()
+    }
+    const response = await  fetch(
+      'http://localhost:3000/auth/refreshToken',
+      {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(authRequest),
+        }
+      )
+      if (!response.ok) {
+        console.log("oopsie whoopsie")
+        return false;
+      } else {
+        return true;
+      }
+  }
+  
+  authChecker();
 </script>
 
 <Router>

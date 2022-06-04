@@ -21,3 +21,24 @@ export function getToken() {
 export function removeToken(){
   accessToken.set(sessionStorage.removeItem('accessToken'));
 }
+
+export const refreshToken = writable(
+  sessionStorage.getItem('refreshToken') || null
+)
+
+export function saveRefreshToken(token) {
+  sessionStorage.setItem('refreshToken', token);
+  refreshToken.set(sessionStorage.getItem('refreshToken'));
+}
+export function getRefreshToken() {
+  let token = '';
+  refreshToken.set(sessionStorage.getItem('refreshToken'));
+  refreshToken.subscribe((value) => {
+    token = value;
+  });
+  return token;
+}
+
+export function removeRefreshToken(){
+  refreshToken.set(sessionStorage.removeItem('refreshToken'));
+}

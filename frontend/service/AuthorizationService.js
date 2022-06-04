@@ -1,4 +1,4 @@
-import { serverUrl, getToken, saveToken } from '../stores/store';
+import { serverUrl, getToken, saveToken, saveRefreshToken} from '../stores/store';
 import { get } from 'svelte/store';
 
 export async function login(email, password) {
@@ -16,6 +16,8 @@ export async function login(email, password) {
   if (res.ok) {
     const json = await res.json();
     const token = json.accessToken;
+    const refreshToken = json.refreshToken;
+    saveRefreshToken(refreshToken);
     saveToken(token);
     return json;
   }
