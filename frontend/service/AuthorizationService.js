@@ -10,7 +10,6 @@ import { get } from 'svelte/store';
 
 export async function login(email, password) {
   let loginSuccessful = false;
-  console.log(get(serverUrl));
   const res = await fetch(`${get(serverUrl)}/auth/login`, {
     method: 'POST',
     body: JSON.stringify({
@@ -23,7 +22,6 @@ export async function login(email, password) {
   });
   if (res.status === 200) {
     const json = await res.json();
-    console.log(json);
     const token = json.accessToken;
     const refreshToken = json.refreshToken;
     const id = json.id;
@@ -36,7 +34,6 @@ export async function login(email, password) {
 }
 
 export async function signup(email, password, firstName, lastName) {
-  console.log(get(serverUrl));
   const res = await fetch(`${get(serverUrl)}/auth/signup`, {
     method: 'POST',
     body: JSON.stringify({
@@ -50,7 +47,6 @@ export async function signup(email, password, firstName, lastName) {
     },
   });
   const json = await res.json();
-  console.log(json);
   const token = json.accessToken;
   const id = json.id;
   saveToken(token);

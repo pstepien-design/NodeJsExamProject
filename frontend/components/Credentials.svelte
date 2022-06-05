@@ -15,7 +15,6 @@
   export let operation = '';
 
   const handleUserRequest = async () => {
-    // console.log(email, password);
     if (operation === 'Login') {
       const response = await login(email, password);
       if (response) {

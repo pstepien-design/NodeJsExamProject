@@ -12,7 +12,6 @@
     removeRefreshToken,
     getRefreshToken,
     removeUserId,
-    doesUserExist,
     getUser,
   } from '../stores/store';
 
@@ -41,7 +40,6 @@
   });
 
   const checkAuthorization = async (token) => {
-    console.log(getRefreshToken());
     const authRequest = {
       refreshToken: getRefreshToken(),
     };

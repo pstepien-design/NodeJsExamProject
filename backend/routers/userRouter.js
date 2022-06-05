@@ -6,8 +6,7 @@ const userRouter = Router();
 userRouter.post('/users/name', async (req, res) => {
   const token = req.body.token;
   const id = req.body.id;
-  console.log('token', token);
-  console.log('id', id);
+
 
   const response = await fetch(
     'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users.json?auth=' +
