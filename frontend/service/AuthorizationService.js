@@ -58,20 +58,3 @@ export async function signup(email, password, firstName, lastName) {
   return json;
 }
 
-export async function getUser() {
-  const authRequest = {
-    token: getToken(),
-    id: getUserId(),
-  };
-  const response = await fetch('http://localhost:3000/users/name', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(authRequest),
-  });
-  if (response.ok) {
-    const json = await response.json();
-    return json.loggedUser;
-  }
-}

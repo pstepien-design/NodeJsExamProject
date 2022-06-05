@@ -2,15 +2,17 @@
   import { Route } from 'svelte-navigator';
   import AccessDenied from './AccessDenied.svelte';
   import { onMount } from 'svelte';
-  import { doesUserExist } from '../stores/store';
-  import { getUser } from '../service/AuthorizationService';
+  import { getUser } from '../stores/store';
 
   export let path, component;
 
   $: isAuthorized = false;
 
   onMount(async () => {
-    isAuthorized = await doesUserExist();
+    const user = await getUser();
+    if (user !== null) {
+      isAuthorized = true;
+    }
   });
 </script>
 

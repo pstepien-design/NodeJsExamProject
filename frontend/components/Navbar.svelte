@@ -6,16 +6,19 @@
   import { onMount } from 'svelte';
   import Home from '../pages/Home.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
-  import { getUser } from '../service/AuthorizationService';
+  import MdPerson from 'svelte-icons/md/MdPerson.svelte';
   import {
     removeToken,
     removeRefreshToken,
     getRefreshToken,
     removeUserId,
     doesUserExist,
+    getUser,
   } from '../stores/store';
 
   $: isAuthorized = false;
+
+  let loggedUser = '';
 
   const logOut = () => {
     removeToken();
@@ -30,7 +33,11 @@
   };
 
   onMount(async () => {
-    isAuthorized = await doesUserExist();
+    const user = await getUser();
+    if (user !== null) {
+      loggedUser = user;
+      isAuthorized = true;
+    }
   });
 
   const checkAuthorization = async (token) => {
@@ -64,6 +71,12 @@
           <Link to="/">
             <p on:click={logOut} class="link">LOG OUT</p>
           </Link>
+        </li>
+        <li class="profile">
+          <p>Welcome back, {loggedUser.firstName}</p>
+          <div class="icon">
+            <MdPerson />
+          </div>
         </li>
       {/if}
     </ul>
@@ -113,6 +126,17 @@
     color: white;
     vertical-align: middle;
     font-size: 24px;
+  }
+  .profile {
+    position: fixed;
+    right: 0vw;
+    display: flex;
+    align-items: center;
+  }
+  .icon {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    height: 10vh;
   }
   p {
     padding-top: 10px;

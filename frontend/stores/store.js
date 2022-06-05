@@ -60,8 +60,7 @@ export function getUserId() {
 export function removeUserId() {
   userId.set(sessionStorage.removeItem('userId'));
 }
-export const doesUserExist = async () => {
-  let userExists = false;
+export const getUser = async () => {
   const authRequest = {
     token: getToken(),
     id: getUserId(),
@@ -77,8 +76,14 @@ export const doesUserExist = async () => {
     const json = await response.json();
     const user = json.loggedUser;
     if (user !== null) {
-      userExists = true;
+      return user;
+    }
+    else{
+      return null;
     }
   }
-  return userExists;
+  else{
+    return null;
+  }
+
 };

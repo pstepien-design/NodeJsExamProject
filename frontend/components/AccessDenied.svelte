@@ -2,7 +2,7 @@
   import { navigate } from 'svelte-navigator';
   import { onMount } from 'svelte';
   import {
-    doesUserExist,
+    getUser,
     removeToken,
     removeRefreshToken,
     removeUserId,
@@ -11,7 +11,12 @@
   $: isAuthorized = '';
 
   onMount(async () => {
-    isAuthorized = await doesUserExist();
+    const user = await getUser();
+    if (user !== null) {
+      isAuthorized = true;
+    } else {
+      isAuthorized = false;
+    }
     if (isAuthorized === false) {
       removeToken();
       removeRefreshToken();
