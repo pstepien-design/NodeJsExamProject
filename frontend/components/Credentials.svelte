@@ -1,8 +1,6 @@
 <script>
-  import { onMount } from 'svelte';
   import { login, signup } from '../service/AuthorizationService';
   import { useNavigate } from 'svelte-navigator';
-  import { getToken, saveToken } from '../stores/store';
   const navigate = useNavigate();
 
   let email,
