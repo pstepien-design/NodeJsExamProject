@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 import {
   login,
   signup,
-  refreshAuthToken
+  refreshAuthToken,
 } from '../authentication/authentication.js';
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
@@ -13,19 +13,14 @@ const authRouter = Router();
 authRouter.post('/auth/signup', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const firstName = req.body.firstName
-  const lastName = req.body.lastName
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
 
   const response = await signup(email, password);
 
   try {
     if (response) {
-      const user = new User(
-        email,
-        firstName,
-        lastName,
-        response.localId
-      );
+      const user = new User(email, firstName, lastName, response.localId);
       const createUser = await fetch(
         'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users.json?auth=' +
           response.idToken,
@@ -40,14 +35,12 @@ authRouter.post('/auth/signup', async (req, res) => {
       if (!createUser.ok) {
         res.status(response.error.code).send(response);
       } else {
-        res.send({ accessToken: response.idToken });
+        res.send({ accessToken: response.idToken, id: response.localId });
       }
     }
-    
   } catch (error) {
-    res.send(error)
+    res.send(error);
   }
-  
 });
 
 authRouter.post('/auth/login', async (req, res) => {
@@ -71,17 +64,19 @@ authRouter.post('/auth/login', async (req, res) => {
       for (const key in fetchedUsers) {
         const obj = fetchedUsers[key];
         if (obj.email == req.body.email) {
-          res.send({ accessToken: response.idToken, refreshToken: response.refreshToken });
-        } 
+          res.send({
+            accessToken: response.idToken,
+            refreshToken: response.refreshToken,
+            id: obj.id,
+          });
+        }
       }
-    } 
-    else {
+    } else {
       res.status(response.error.code).send(response);
     }
   } catch (error) {
-    res.send(error)
+    res.send(error);
   }
-  
 });
 
 authRouter.post('/auth/refreshToken', async (req, res) => {
@@ -95,11 +90,9 @@ authRouter.post('/auth/refreshToken', async (req, res) => {
         accessToken: response.access_token,
         refreshToken: response.refresh_token,
       });
-
     } else {
       res.status(response.error.code).send(response);
     }
-
   } catch (error) {
     res.send(error);
   }

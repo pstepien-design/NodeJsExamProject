@@ -1,16 +1,14 @@
 <script>
   import { onMount } from 'svelte';
-  import { getToken } from '../stores/store';
+  import { doesUserExist } from '../stores/store';
   import Credentials from '../components/Credentials.svelte';
   import { useNavigate } from 'svelte-navigator';
-  import { afterUpdate } from 'svelte';
 
   const navigate = useNavigate();
-  
- 
 
-  onMount(() => {
-    if (getToken()) {
+  onMount(async () => {
+    const userExists = await doesUserExist();
+    if (userExists) {
       navigate('/home');
     }
   });

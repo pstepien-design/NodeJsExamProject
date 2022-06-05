@@ -5,8 +5,10 @@
   import { getToken, saveToken } from '../stores/store';
   const navigate = useNavigate();
 
-  let email = '';
-  let password = '';
+  let email,
+    password,
+    firstName,
+    lastName = '';
 
   let token;
 
@@ -16,10 +18,14 @@
     // console.log(email, password);
     if (operation === 'Login') {
       const response = await login(email, password);
-      navigate('/home');
+      if (response) {
+        navigate('/home');
+        window.location.reload();
+      }
     } else if (operation === 'Sign up') {
-      await signup(email, password);
+      await signup(email, password, firstName, lastName);
       navigate('/home');
+      window.location.reload();
     } else {
       console.log('something went wrong');
     }
@@ -30,6 +36,12 @@
   <p class="credentials__header">{operation}</p>
   <p class="credentials__text">{operation} by typing your email and password</p>
   <form on:submit|preventDefault={handleUserRequest} class="credentials__form">
+    {#if operation === 'Sign up'}
+      <p class="credentials__label">First name</p>
+      <input type="text" required="required" bind:value={firstName} />
+      <p class="credentials__label">Last name</p>
+      <input type="text" required="required" bind:value={lastName} />
+    {/if}
     <p class="credentials__label">E-mail</p>
     <input type="email" required="required" bind:value={email} />
     <p class="credenstials__label">Password</p>

@@ -3,46 +3,56 @@
   import Welcome from '../pages/Welcome.svelte';
   import Login from '../pages/Login.svelte';
   import Signup from '../pages/Signup.svelte';
+  import { onMount } from 'svelte';
   import Home from '../pages/Home.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
-  import { removeToken, removeRefreshToken, getToken, getRefreshToken } from '../stores/store';
+  import { getUser } from '../service/AuthorizationService';
+  import {
+    removeToken,
+    removeRefreshToken,
+    getRefreshToken,
+    removeUserId,
+    doesUserExist,
+  } from '../stores/store';
 
+  $: isAuthorized = false;
 
   const logOut = () => {
-    removeToken();  
+    removeToken();
     removeRefreshToken();
+    removeUserId();
     authChecker();
-    };
+    isAuthorized = false;
+  };
 
- let isAuthorized = false; 
+  const authChecker = async () => {
+    /* isAuthorized = await checkAuthorization(); */
+  };
 
-  const authChecker =  async () => {
-    isAuthorized = await checkAuthorization()
-  }
+  onMount(async () => {
+    isAuthorized = await doesUserExist();
+  });
 
   const checkAuthorization = async (token) => {
-    console.log(getRefreshToken())
+    console.log(getRefreshToken());
     const authRequest = {
-      refreshToken: getRefreshToken()
+      refreshToken: getRefreshToken(),
+    };
+    const response = await fetch('http://localhost:3000/auth/refreshToken', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(authRequest),
+    });
+    if (!response.ok) {
+      console.log('oopsie whoopsie');
+      return false;
+    } else {
+      return true;
     }
-    const response = await  fetch(
-      'http://localhost:3000/auth/refreshToken',
-      {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(authRequest),
-        }
-      )
-      if (!response.ok) {
-        console.log("oopsie whoopsie")
-        return false;
-      } else {
-        return true;
-      }
-  }
-  
+  };
+
   authChecker();
 </script>
 

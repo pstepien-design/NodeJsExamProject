@@ -4,7 +4,6 @@ dotenv.config({ path: './.env' });
 const API_KEY = process.env.API_KEY;
 
 export const signup = async (email, password) => {
-
   try {
     const response = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
@@ -20,22 +19,18 @@ export const signup = async (email, password) => {
         }),
       }
     );
-  
-    if (!response.ok) {
-      return await response.json()
 
+    if (!response.ok) {
+      return await response.json();
     } else {
       return await response.json();
     }
-    
   } catch (error) {
     return error;
   }
-
 };
 
 export const login = async (email, password) => {
-
   try {
     const response = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
@@ -51,17 +46,11 @@ export const login = async (email, password) => {
         }),
       }
     );
-  
-    if (!response.ok) {
-      return await response.json()
-  
-    } else {
-      return await response.json();
-    }
+
+    return await response.json();
   } catch (error) {
     return error;
   }
- 
 };
 
 export const refreshAuthToken = async (refreshToken) => {
@@ -78,8 +67,7 @@ export const refreshAuthToken = async (refreshToken) => {
     );
 
     if (!response.ok) {
-      return await response.json()
-
+      return await response.json();
     } else {
       return await response.json();
     }

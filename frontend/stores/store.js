@@ -18,13 +18,13 @@ export function getToken() {
   return token;
 }
 
-export function removeToken(){
+export function removeToken() {
   accessToken.set(sessionStorage.removeItem('accessToken'));
 }
 
 export const refreshToken = writable(
   sessionStorage.getItem('refreshToken') || null
-)
+);
 
 export function saveRefreshToken(token) {
   sessionStorage.setItem('refreshToken', token);
@@ -39,6 +39,46 @@ export function getRefreshToken() {
   return token;
 }
 
-export function removeRefreshToken(){
+export function removeRefreshToken() {
   refreshToken.set(sessionStorage.removeItem('refreshToken'));
 }
+
+export const userId = writable(sessionStorage.getItem('userId') || null);
+export function saveUserId(id) {
+  sessionStorage.setItem('userId', id);
+  userId.set(sessionStorage.getItem('userId'));
+}
+export function getUserId() {
+  let id = '';
+  userId.set(sessionStorage.getItem('userId'));
+  userId.subscribe((value) => {
+    id = value;
+  });
+  return id;
+}
+
+export function removeUserId() {
+  userId.set(sessionStorage.removeItem('userId'));
+}
+export const doesUserExist = async () => {
+  let userExists = false;
+  const authRequest = {
+    token: getToken(),
+    id: getUserId(),
+  };
+  const response = await fetch('http://localhost:3000/users/name', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(authRequest),
+  });
+  if (response.ok) {
+    const json = await response.json();
+    const user = json.loggedUser;
+    if (user !== null) {
+      userExists = true;
+    }
+  }
+  return userExists;
+};
