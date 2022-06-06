@@ -54,7 +54,6 @@ postRouter.get('/posts/:key', async (req, res) => {
     res.send({ data: 'Unable to get post' });
   } else {
     const data = await response.json();
-    console.log(data);
     res.send({ data: data });
   }
 });
