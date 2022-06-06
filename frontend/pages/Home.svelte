@@ -4,11 +4,12 @@
   import { get } from 'svelte/store';
   import io from 'socket.io-client';
 
-  const socket = io();
+  const socket = io('http://localhost:3000');
   console.log(socket);
   let lastPersonToChangeAColor;
 
   socket.on('changeTheColor', ({ data }) => {
+    console.log(data)
     document.body.style.backgroundColor = data;
     lastPersonToChangeAColor = username;
   });
