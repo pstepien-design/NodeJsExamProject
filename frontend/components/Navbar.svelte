@@ -4,7 +4,7 @@
   import Login from '../pages/Login.svelte';
   import Signup from '../pages/Signup.svelte';
   import { onMount } from 'svelte';
-  import Home from '../pages/Home.svelte';
+  import Posts from '../pages/Posts.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
   import MdPerson from 'svelte-icons/md/MdPerson.svelte';
   import {
@@ -70,6 +70,11 @@
             <p on:click={logOut} class="link">LOG OUT</p>
           </Link>
         </li>
+        <li>
+          <Link to="/posts">
+            <p class="link">POSTS</p>
+          </Link>
+        </li>
         <li class="profile">
           <p>Welcome back, {loggedUser.firstName}</p>
           <div class="icon">
@@ -81,7 +86,7 @@
     <Route path="/" component={Welcome} />
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />
-    <ProtectedRoute path="/home" component={Home} />
+    <ProtectedRoute path="/posts" component={Posts} />
   </nav>
 </Router>
 
@@ -142,5 +147,6 @@
   nav {
     padding: 0;
     height: 97vh;
+    overflow: hidden;
   }
 </style>

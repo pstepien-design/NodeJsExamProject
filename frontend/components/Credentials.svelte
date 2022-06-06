@@ -16,12 +16,12 @@
     if (operation === 'Login') {
       const response = await login(email, password);
       if (response) {
-        navigate('/home');
+        navigate('/posts');
         window.location.reload();
       }
     } else if (operation === 'Sign up') {
       await signup(email, password, firstName, lastName);
-      navigate('/home');
+      navigate('/posts');
       window.location.reload();
     } else {
       console.log('something went wrong');

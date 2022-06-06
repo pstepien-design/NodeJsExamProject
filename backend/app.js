@@ -17,12 +17,8 @@ const sessionMiddelware = session({
 app.use(sessionMiddelware);
 
 const server = http.createServer(app);
-const options = {
-  cors: true,
-  origins: ['http://127.0.0.1:3000'],
-};
 
-const io = new Server(server, options);
+const io = new Server(server);
 
 const wrap = (middleware) => (socket, next) =>
   middleware(socket.request, {}, next);

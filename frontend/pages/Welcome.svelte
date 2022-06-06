@@ -12,7 +12,7 @@
 
   onMount(() => {
     if (getToken()) {
-      navigate('/home');
+      navigate('/posts');
     }
   });
 </script>
