@@ -9,26 +9,27 @@ app.use(cors());
 
 app.use(express.static(path.resolve('../frontend/public')));
 app.use(express.urlencoded({ extended: true }));
-const sessionMiddelware = session({
+const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
 });
-app.use(sessionMiddelware);
+app.use(sessionMiddleware);
 
 const server = http.createServer(app);
-const options = {
-  cors: true,
-  origins: ['http://127.0.0.1:3000'],
-};
 
-const io = new Server(server, options);
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:8080',
+  }
+});
 
 const wrap = (middleware) => (socket, next) =>
   middleware(socket.request, {}, next);
-io.use(wrap(sessionMiddelware));
+io.use(wrap(sessionMiddleware));
 
 io.on('connection', (socket) => {
+  console.log(socket.id)
   socket.on('colorChanged', (data) => {
     io.emit('changeTheColor', data);
   });
