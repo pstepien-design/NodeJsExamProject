@@ -19,12 +19,7 @@ export const signup = async (email, password) => {
         }),
       }
     );
-
-    if (!response.ok) {
-      return await response.json();
-    } else {
-      return await response.json();
-    }
+    return await response.json();
   } catch (error) {
     return error;
   }
