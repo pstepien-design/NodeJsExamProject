@@ -7,9 +7,10 @@
   const socket = io('http://localhost:3000');
   console.log(socket);
   let lastPersonToChangeAColor;
-
+  let counter = 0;
   socket.on('changeTheColor', ({ data }) => {
     console.log(data)
+    counter++
     document.body.style.backgroundColor = data;
     lastPersonToChangeAColor = username;
   });
@@ -31,6 +32,7 @@
   <h2>
     Last person to change the color: {lastPersonToChangeAColor || 'noone'}"
   </h2>
+  <div>{counter}</div>
   <input type="color" on:change={changeColor} />
 </div>
 
