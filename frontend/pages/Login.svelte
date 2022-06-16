@@ -9,7 +9,7 @@
   onMount(async () => {
     const userExists = await getUser();
     if (userExists) {
-      navigate('/home');
+      navigate('/posts');
     }
   });
 </script>

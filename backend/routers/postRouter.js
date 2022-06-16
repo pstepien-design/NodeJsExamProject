@@ -5,7 +5,7 @@ import { Router } from 'express';
 const postRouter = Router();
 
 // Posts
-postRouter.get('/posts', async (req, res) => {
+postRouter.post('/get/posts', async (req, res) => {
   const token = req.body.token;
 
   const response = await fetch(
@@ -220,7 +220,6 @@ postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
     if (!response.ok) {
       const data = await response.json();
       res.send(data);
-
     } else {
       const post = await response.json();
       for (const key in post.comments) {
@@ -241,7 +240,6 @@ postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
 
           if (!response2.ok) {
             res.send('something went wrong');
-
           } else {
             res.send({ data: post });
           }
