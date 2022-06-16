@@ -68,12 +68,11 @@ export const getUser = async () => {
     token: getToken(),
     id: getUserId(),
   };
-  const response = await fetch('http://localhost:3000/users/name', {
-    method: 'POST',
+  const response = await fetch(`http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(authRequest),
   });
   if (response.ok) {
     const json = await response.json();
