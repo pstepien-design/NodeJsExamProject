@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 
 export const serverUrl = writable('http://localhost:3000');
 
+// accessToken
 export const accessToken = writable(
   sessionStorage.getItem('accessToken') || null
 );
@@ -22,6 +23,7 @@ export function removeToken() {
   accessToken.set(sessionStorage.removeItem('accessToken'));
 }
 
+// refreshToken
 export const refreshToken = writable(
   sessionStorage.getItem('refreshToken') || null
 );
@@ -43,6 +45,7 @@ export function removeRefreshToken() {
   refreshToken.set(sessionStorage.removeItem('refreshToken'));
 }
 
+// User
 export const userId = writable(sessionStorage.getItem('userId') || null);
 export function saveUserId(id) {
   sessionStorage.setItem('userId', id);
@@ -77,13 +80,54 @@ export const getUser = async () => {
     const user = json.loggedUser;
     if (user !== null) {
       return user;
-    }
-    else{
+    } else {
       return null;
     }
-  }
-  else{
+  } else {
     return null;
   }
+};
 
+// theBeer
+export const beerValue = writable(sessionStorage.getItem('beerValue') || null);
+
+export const saveBeerValue= async(value) => {
+  sessionStorage.setItem('bearValue', value);
+  beerValue.set(sessionStorage.getItem('beerValue'));
+
+  const authRequest = {
+    token: getToken(),
+    value: value
+  };
+
+  const response = await fetch('http://localhost:3000/theBeer', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(authRequest),
+  });
+
+  if(response.ok) {
+    const data = response.json();
+
+    return data;
+  }
+
+
+}
+
+export const getBeerValue = async () => {
+  const token = getToken()
+  const response = await fetch(`http://localhost:3000/theBeer/${token}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (response.ok) {
+    const value = await response.json()
+    saveBeerValue(value.valueOfBeer)
+    return value
+  }
 };
