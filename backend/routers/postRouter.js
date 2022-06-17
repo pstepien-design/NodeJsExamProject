@@ -218,8 +218,7 @@ postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
     );
 
     if (!response.ok) {
-      const data = await response.json();
-      res.send(data);
+      console.log(await response.json());
     } else {
       const post = await response.json();
       for (const key in post.comments) {

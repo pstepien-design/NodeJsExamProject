@@ -68,12 +68,15 @@ export const getUser = async () => {
     token: getToken(),
     id: getUserId(),
   };
-  const response = await fetch(`http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  const response = await fetch(
+    `http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
   if (response.ok) {
     const json = await response.json();
     const user = json.loggedUser;
@@ -90,13 +93,13 @@ export const getUser = async () => {
 // theBeer
 export const beerValue = writable(sessionStorage.getItem('beerValue') || null);
 
-export const saveBeerValue= async(value) => {
+export const saveBeerValue = async (value) => {
   sessionStorage.setItem('bearValue', value);
   beerValue.set(sessionStorage.getItem('beerValue'));
 
   const authRequest = {
     token: getToken(),
-    value: value
+    value: value,
   };
 
   const response = await fetch('http://localhost:3000/theBeer', {
@@ -107,17 +110,13 @@ export const saveBeerValue= async(value) => {
     body: JSON.stringify(authRequest),
   });
 
-  if(response.ok) {
-    const data = response.json();
-
-    return data;
+  if (response.ok) {
+    return await response.json();
   }
-
-
-}
+};
 
 export const getBeerValue = async () => {
-  const token = getToken()
+  const token = await getToken();
   const response = await fetch(`http://localhost:3000/theBeer/${token}`, {
     method: 'GET',
     headers: {
@@ -125,8 +124,26 @@ export const getBeerValue = async () => {
     },
   });
   if (response.ok) {
-    const value = await response.json()
-    saveBeerValue(value.valueOfBeer)
-    return value
+    const value = await response.json();
+    saveBeerValue(value.valueOfBeer);
+    return value;
+  }
+};
+
+export const userHasClicked = async (hasClicked) => {
+  const user = await getUser();
+  user.hasClicked = hasClicked;
+  const token = await getToken()
+  const response = await fetch(`http://localhost:3000/users/name/${user.id}/${token}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  })
+
+  if (response.ok) {
+    const data = await response.json();
+    return data.hasClicked
   }
 };

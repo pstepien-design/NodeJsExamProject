@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { serverUrl, getBeerValue, saveBeerValue } from '../stores/store';
+  import { serverUrl, getBeerValue, saveBeerValue, getUser, userHasClicked } from '../stores/store';
   import { get, } from 'svelte/store';
   import io from 'socket.io-client';
   import Post from '../components/Post.svelte';
@@ -8,10 +8,12 @@
 
   const socket = io('http://localhost:3000');
   console.log(socket);
-  
+  let hasClicked;
   let counter = 30;
   socket.on('connect', async () => {
     const value = await getBeerValue()
+    const user = await getUser();
+    hasClicked = user.hasClicked
     console.log(value.valueOfBeer)
     counter = value.valueOfBeer
   })
@@ -20,7 +22,9 @@
     await saveBeerValue(counter)
   });
 
-  function changeColor(event) {
+  function incrementBeer(event) {
+    hasClicked = true;
+    userHasClicked(hasClicked)
     socket.emit('beerIncremented', { data: counter });
   }
 
@@ -47,7 +51,9 @@
   <div class="column_right">
     <h1>BEER</h1>
     <div class="test" style="height: {counter}px; width: {counter}px;"></div>
-    <button on:click={changeColor}>click me</button>
+    {#if hasClicked !== true}
+    <button on:click={incrementBeer}>click me</button>
+    {/if}
   </div>
 </div>
 
