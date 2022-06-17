@@ -5,6 +5,7 @@
   import Signup from '../pages/Signup.svelte';
   import { onMount } from 'svelte';
   import Posts from '../pages/Posts.svelte';
+  import SinglePostPage from '../pages/SinglePostPage.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
   import MdPerson from 'svelte-icons/md/MdPerson.svelte';
   import {
@@ -87,6 +88,7 @@
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />
     <ProtectedRoute path="/posts" component={Posts} />
+    <ProtectedRoute path="/post" component={SinglePostPage} />
   </nav>
 </Router>
 

@@ -1,6 +1,5 @@
 <script>
   import { onMount } from 'svelte';
-
   import Post from '../components/Post.svelte';
   import { getPosts } from '../service/PostService';
   let posts = [];
@@ -20,6 +19,7 @@
         timestamp={post.timestamp}
         likes={post.likes}
         comments={post.comments}
+        areCommentsVisible=false
       />
     {/each}
   </div>

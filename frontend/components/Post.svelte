@@ -1,6 +1,7 @@
 <script>
   import MdThumbUp from 'svelte-icons/md/MdThumbUp.svelte';
-  export let title, text, timestamp, likes, comments;
+  export let title, text, timestamp, likes, comments, areCommentsVisible;
+  
 
   const getNumberOfComments = () => {
     let count = 0;
@@ -33,6 +34,11 @@
     <div class="post__comments">
       <p class="comments">{getNumberOfComments()} comments</p>
     </div>
+    {#if areCommentsVisible === true}
+    <div class='comments'>
+      <p>{comments}</p>
+    </div>
+    {/if}
   </div>
 </div>
 
