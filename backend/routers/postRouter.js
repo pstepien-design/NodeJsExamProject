@@ -35,7 +35,7 @@ postRouter.post('/get/posts', async (req, res) => {
   }
 });
 
-postRouter.get('/posts/:key', async (req, res) => {
+postRouter.post('/posts/:key', async (req, res) => {
   const token = req.body.token;
   const key = req.params.key;
 

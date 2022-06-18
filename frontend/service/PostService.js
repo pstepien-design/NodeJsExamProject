@@ -35,3 +35,22 @@ export async function addComment(comment, postId){
     return json.data;
   }
 }
+
+export async function getComments(postId){
+  const token = getToken();
+  const key = postId
+  const res = await fetch(`${get(serverUrl)}/posts/${key}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      token, key
+    }),
+    headers: {
+      'content-type': 'application/json',
+    },
+  });
+  if (res.ok) {
+    const json = await res.json();
+    return json.data.comments;
+  }
+}
+

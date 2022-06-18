@@ -1,11 +1,11 @@
 <script>
   import MdThumbUp from "svelte-icons/md/MdThumbUp.svelte";
   export let title, text, timestamp, likes, comments, areCommentsVisible, id;
-  import {addComment} from '../service/PostService'
+  import { addComment, getComments } from "../service/PostService";
 
-  let newComment
+  let newComment;
 
-  const commentsValues = Object.values(comments);
+  let commentsValues = Object.values(comments);
   const getNumberOfComments = () => {
     let count = 0;
     console.log("komentarze", comments);
@@ -16,14 +16,13 @@
   };
 
   const addNewComment = async () => {
-    console.log(newComment)
-    console.log(id)
-    const response = await addComment(newComment, id)
-    if(response !== null){
-      window.location.reload();
+    console.log(newComment);
+    console.log(id);
+    const response = await addComment(newComment, id);
+    if (response !== null) {
+      commentsValues = Object.values(await getComments(id));
     }
-
-  }
+  };
 </script>
 
 <div class="post">
@@ -51,13 +50,20 @@
   </div>
   <div class="displayed__comments">
     {#if areCommentsVisible === "true"}
-    <form on:submit|preventDefault={addNewComment}>
+      <form on:submit|preventDefault={addNewComment}>
         <p>Add comment</p>
-        <input type="text" class='comment__input' required="required" bind:value={newComment} />
-        </form>
-      {#each commentsValues as comment}
-        <p>{comment}</p>
-      {/each}
+        <input
+          type="text"
+          class="comment__input"
+          required="required"
+          bind:value={newComment}
+        />
+      </form>
+      {#key commentsValues}
+        {#each commentsValues as comment}
+          <p>{comment}</p>
+        {/each}
+      {/key}
     {/if}
   </div>
 </div>
@@ -71,15 +77,15 @@
     display: block;
     overflow: auto;
   }
-  .post__interactions{
+  .post__interactions {
     margin-bottom: 2px;
-    height: 40px
+    height: 40px;
   }
   .displayed__comments {
     text-align: center;
   }
-  .comment__input{
-    width: 80%
+  .comment__input {
+    width: 80%;
   }
   .comments {
     float: right;
