@@ -16,11 +16,10 @@
   };
 
   const addNewComment = async () => {
-    console.log(newComment);
-    console.log(id);
     const response = await addComment(newComment, id);
     if (response !== null) {
       commentsValues = Object.values(await getComments(id));
+      newComment = ''
     }
   };
 </script>
