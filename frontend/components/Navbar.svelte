@@ -3,6 +3,7 @@
   import Welcome from '../pages/Welcome.svelte';
   import Login from '../pages/Login.svelte';
   import Signup from '../pages/Signup.svelte';
+  import Profile from '../pages/Profile.svelte'
   import { onMount } from 'svelte';
   import Posts from '../pages/Posts.svelte';
   import SinglePostPage from '../pages/SinglePostPage.svelte';
@@ -78,15 +79,18 @@
         </li>
         <li class="profile">
           <p>Welcome back, {loggedUser.firstName}</p>
+          <Link to="profile">
           <div class="icon">
             <MdPerson />
           </div>
+        </Link>
         </li>
       {/if}
     </ul>
     <Route path="/" component={Welcome} />
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />
+    <Route path="/profile" component={Profile} />
     <ProtectedRoute path="/posts" component={Posts} />
     <ProtectedRoute path="/post/:id" component={SinglePostPage} />
   </nav>
@@ -142,6 +146,7 @@
     margin-top: 1vh;
     margin-bottom: 1vh;
     height: 10vh;
+    color: red;
   }
   p {
     padding-top: 10px;

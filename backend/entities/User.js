@@ -1,9 +1,10 @@
 class User {
-    constructor(email, firstName, lastName, id) {
+    constructor(email, firstName, lastName, id, hasClicked) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
+        this.hasClicked = hasClicked;
     }
 }
 
