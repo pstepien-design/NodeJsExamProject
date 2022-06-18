@@ -6,6 +6,7 @@
   import Profile from '../pages/Profile.svelte'
   import { onMount } from 'svelte';
   import Posts from '../pages/Posts.svelte';
+  import Cocktails from '../pages/Cocktails.svelte'; 
   import SinglePostPage from '../pages/SinglePostPage.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
   import MdPerson from 'svelte-icons/md/MdPerson.svelte';
@@ -77,6 +78,11 @@
             <p class="link">POSTS</p>
           </Link>
         </li>
+        <li>
+          <Link to="/cocktails">
+            <p class="link">COCKTAILS</p>
+          </Link>
+        </li>
         <li class="profile">
           <p>Welcome back, {loggedUser.firstName}</p>
           <Link to="profile">
@@ -93,6 +99,7 @@
     <Route path="/profile" component={Profile} />
     <ProtectedRoute path="/posts" component={Posts} />
     <ProtectedRoute path="/post/:id" component={SinglePostPage} />
+    <ProtectedRoute path="/cocktails/" component={Cocktails} />
   </nav>
 </Router>
 
