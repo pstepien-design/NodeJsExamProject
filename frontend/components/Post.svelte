@@ -5,6 +5,7 @@
 
   const getNumberOfComments = () => {
     let count = 0;
+    console.log('komentarze', comments)
     for (let key in comments) {
       ++count;
     }

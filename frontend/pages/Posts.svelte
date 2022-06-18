@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { navigate } from 'svelte-navigator';
   import Post from '../components/Post.svelte';
   import { getPosts } from '../service/PostService';
   let posts = [];
@@ -7,12 +8,18 @@
     const fetchedPosts = await getPosts();
     posts = fetchedPosts;
   });
+
+  const handleClick = (post) => {
+    const id = (posts.indexOf(post))+1;
+    navigate(`/post/${id}`);
+  }
 </script>
 
 <div class="page_container">
   <div class="column_left">
     <h1>POSTS</h1>
     {#each posts as post}
+     <div  on:click={handleClick(post)}>
       <Post
         title={post.title}
         text={post.text}
@@ -21,6 +28,7 @@
         comments={post.comments}
         areCommentsVisible=false
       />
+    </div>
     {/each}
   </div>
   <div class="column_right"><h1>BEER</h1></div>

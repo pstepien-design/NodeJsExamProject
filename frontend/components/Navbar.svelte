@@ -88,7 +88,7 @@
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />
     <ProtectedRoute path="/posts" component={Posts} />
-    <ProtectedRoute path="/post" component={SinglePostPage} />
+    <ProtectedRoute path="/post/:id" component={SinglePostPage} />
   </nav>
 </Router>
 
