@@ -28,7 +28,7 @@ postRouter.post('/get/posts', async (req, res) => {
     for (const key in data) {
       const obj = data[key];
       posts.push(
-        new Post(obj.title, obj.text, obj.timestamp, obj.comments, obj.likes)
+        new Post(key, obj.title, obj.text, obj.timestamp, obj.comments, obj.likes)
       );
     }
     res.send({ data: posts });

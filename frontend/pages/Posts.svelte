@@ -1,12 +1,8 @@
 <script>
   import { onMount } from 'svelte';
-<<<<<<< HEAD
+  import {getBeerValue, saveBeerValue, getUser, userHasClicked } from '../stores/store';
   import { navigate } from 'svelte-navigator';
-=======
-  import { serverUrl, getBeerValue, saveBeerValue, getUser, userHasClicked } from '../stores/store';
-  import { get, } from 'svelte/store';
   import io from 'socket.io-client';
->>>>>>> b0489259dfadf03346f8548fe30139328e45b1c0
   import Post from '../components/Post.svelte';
   import { getPosts } from '../service/PostService';
 
