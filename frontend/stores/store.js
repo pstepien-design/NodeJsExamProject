@@ -90,11 +90,28 @@ export const getUser = async () => {
   }
 };
 
+// Cocktails
+export const getCocktails = async () => {
+  const token = await getToken();
+  const response = await fetch(`http://localhost:3000/cocktails/${token}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (response.ok) {
+    const cocktails = response.json()
+    return cocktails
+  }
+
+}
+
 // theBeer
 export const beerValue = writable(sessionStorage.getItem('beerValue') || null);
 
 export const saveBeerValue = async (value) => {
-  sessionStorage.setItem('bearValue', value);
+  sessionStorage.setItem('beerValue', value);
   beerValue.set(sessionStorage.getItem('beerValue'));
 
   const authRequest = {
@@ -130,6 +147,7 @@ export const getBeerValue = async () => {
   }
 };
 
+// hasClicked
 export const userHasClicked = async (hasClicked) => {
   const user = await getUser();
   user.hasClicked = hasClicked;

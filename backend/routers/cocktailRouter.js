@@ -3,8 +3,8 @@ import fetch from 'node-fetch';
 import { Router } from 'express';
 const cockRouter = Router();
 
-cockRouter.get('/cocktails', async (req, res) => {
-  const token = req.body.token;
+cockRouter.get('/cocktails/:token', async (req, res) => {
+  const token = req.params.token;
 
   const response = await fetch(
     'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/cocktails.json?auth=' +
@@ -25,14 +25,14 @@ cockRouter.get('/cocktails', async (req, res) => {
 
     for (const key in data) {
       const obj = data[key];
-      cocktails.push(new Cocktail(obj.name, obj.description));
+      cocktails.push(new Cocktail(obj.name, obj.description, obj.image));
     }
-    res.send({ data: cocktails });
+    res.send(cocktails);
   }
 });
 
-cockRouter.get('/cocktails/:key', async (req, res) => {
-  const token = req.body.token;
+cockRouter.get('/cocktails/:key/:token', async (req, res) => {
+  const token = req.params.token;
   const key = req.params.key;
 
   const response = await fetch(

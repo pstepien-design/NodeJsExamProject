@@ -14,7 +14,7 @@
     const value = await getBeerValue()
     const user = await getUser();
    /*  hasClicked = user.hasClicked */
-   hasClicked = false;
+    hasClicked = false;
     console.log(value.valueOfBeer)
     counter = value.valueOfBeer
   })
@@ -63,7 +63,7 @@
       <div class="mug">
       <div class='beer' style="height: {counter}px; ">
       </div>
-    </div> ¨
+    </div>
     {#if hasClicked !== true}
     <button class='beer__increment__button' on:click={incrementBeer}>Click to increment beer!</button>
     {/if}
