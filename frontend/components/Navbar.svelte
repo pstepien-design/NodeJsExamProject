@@ -9,6 +9,7 @@
   import Cocktails from '../pages/Cocktails.svelte'; 
   import SinglePostPage from '../pages/SinglePostPage.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
+  import ForgotPassword from '../pages/ForgotPassword.svelte'
   import MdPerson from 'svelte-icons/md/MdPerson.svelte';
   import {
     removeToken,
@@ -97,6 +98,7 @@
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />
     <Route path="/profile" component={Profile} />
+    <Route path="/forgotPassword" component={ForgotPassword} />
     <ProtectedRoute path="/posts" component={Posts} />
     <ProtectedRoute path="/post/:id" component={SinglePostPage} />
     <ProtectedRoute path="/cocktails/" component={Cocktails} />

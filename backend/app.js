@@ -86,6 +86,9 @@ app.use(postRouter);
 import userRouter from './routers/userRouter.js';
 app.use(userRouter);
 
+import emailRouter from './routers/emailRouter.js';
+app.use(emailRouter);
+
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
