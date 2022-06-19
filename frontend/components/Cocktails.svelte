@@ -21,6 +21,7 @@ export let name, description, img;
  }
 
  .cocktail_box {
+  /* margin-inline: 50px; */
   height: 25vw;
   width: 25vw;
  }

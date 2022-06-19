@@ -29,4 +29,8 @@
     width: 100vw;
     height: 100vw;
   }
+
+  .cocktail_box {
+    width: 33%
+  }
 </style>
