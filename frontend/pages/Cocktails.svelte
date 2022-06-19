@@ -1,0 +1,1 @@
+<h1>Cocktails page</h1>

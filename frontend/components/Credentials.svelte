@@ -1,30 +1,44 @@
 <script>
-  import { login, signup } from '../service/AuthorizationService';
-  import { useNavigate } from 'svelte-navigator';
+  import { login, signup } from "../service/AuthorizationService";
+  import { useNavigate } from "svelte-navigator";
+  import { getNotificationsContext } from "svelte-notifications";
+
+  const { addNotification } = getNotificationsContext();
   const navigate = useNavigate();
 
   let email,
     password,
     firstName,
-    lastName = '';
+    lastName = "";
 
   let token;
 
-  export let operation = '';
+  const displayNotifcation = () => {
+    addNotification({
+      text: "Wrong credentials! Please try again",
+      position: "top-center",
+      type: "danger",
+      removeAfter: 3000,
+    });
+  };
+
+  export let operation = "";
 
   const handleUserRequest = async () => {
-    if (operation === 'Login') {
+    if (operation === "Login") {
       const response = await login(email, password);
       if (response) {
-        navigate('/posts');
+        navigate("/posts");
         window.location.reload();
+      } else {
+        displayNotifcation();
       }
-    } else if (operation === 'Sign up') {
+    } else if (operation === "Sign up") {
       await signup(email, password, firstName, lastName);
-      navigate('/posts');
+      navigate("/posts");
       window.location.reload();
     } else {
-      console.log('something went wrong');
+      console.log("something went wrong");
     }
   };
 </script>
@@ -33,7 +47,7 @@
   <p class="credentials__header">{operation}</p>
   <p class="credentials__text">{operation} by typing your email and password</p>
   <form on:submit|preventDefault={handleUserRequest} class="credentials__form">
-    {#if operation === 'Sign up'}
+    {#if operation === "Sign up"}
       <p class="credentials__label">First name</p>
       <input type="text" required="required" bind:value={firstName} />
       <p class="credentials__label">Last name</p>

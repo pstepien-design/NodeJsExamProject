@@ -1,12 +1,15 @@
 <script>
-  import Footer from '../components/Footer.svelte';
-  import Navbar from '../components/Navbar.svelte';
+  import Notifications from 'svelte-notifications'
+  import Footer from "../components/Footer.svelte";
+  import Navbar from "../components/Navbar.svelte";
 </script>
 
-<main>
-  <Navbar />
-  <Footer />
-</main>
+<Notifications>
+  <main>
+    <Navbar />
+    <Footer />
+  </main>
+</Notifications>
 
 <style>
   :global(body) {

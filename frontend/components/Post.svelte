@@ -1,13 +1,26 @@
 <script>
-  import MdThumbUp from 'svelte-icons/md/MdThumbUp.svelte';
-  export let title, text, timestamp, likes, comments;
+  import MdThumbUp from "svelte-icons/md/MdThumbUp.svelte";
+  export let title, text, timestamp, likes, comments, areCommentsVisible, id;
+  import { addComment, getComments } from "../service/PostService";
 
+  let newComment;
+
+  let commentsValues = Object.values(comments);
   const getNumberOfComments = () => {
     let count = 0;
+    console.log("komentarze", comments);
     for (let key in comments) {
       ++count;
     }
     return count;
+  };
+
+  const addNewComment = async () => {
+    const response = await addComment(newComment, id);
+    if (response !== null) {
+      commentsValues = Object.values(await getComments(id));
+      newComment = ''
+    }
   };
 </script>
 
@@ -34,6 +47,24 @@
       <p class="comments">{getNumberOfComments()} comments</p>
     </div>
   </div>
+  <div class="displayed__comments">
+    {#if areCommentsVisible === "true"}
+      <form on:submit|preventDefault={addNewComment}>
+        <p>Add comment</p>
+        <input
+          type="text"
+          class="comment__input"
+          required="required"
+          bind:value={newComment}
+        />
+      </form>
+      {#key commentsValues}
+        {#each commentsValues as comment}
+          <p>{comment}</p>
+        {/each}
+      {/key}
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -44,6 +75,16 @@
     border: 2px solid #c4bfbf57;
     display: block;
     overflow: auto;
+  }
+  .post__interactions {
+    margin-bottom: 2px;
+    height: 40px;
+  }
+  .displayed__comments {
+    text-align: center;
+  }
+  .comment__input {
+    width: 80%;
   }
   .comments {
     float: right;
