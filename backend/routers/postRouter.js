@@ -1,26 +1,27 @@
-import Post from '../entities/Post.js';
-import fetch from 'node-fetch';
-import { Router } from 'express';
+import Post from "../entities/Post.js";
+import fetch from "node-fetch";
+import { Router } from "express";
+import getCurrentTime from "../service/timeService.js";
 
 const postRouter = Router();
 
 // Posts
-postRouter.post('/get/posts', async (req, res) => {
+postRouter.post("/get/posts", async (req, res) => {
   const token = req.body.token;
 
   const response = await fetch(
-    'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts.json?auth=' +
+    "https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts.json?auth=" +
       token,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     }
   );
 
   if (!response.ok) {
-    res.send('Unable to fetch posts');
+    res.send("Unable to fetch posts");
   } else {
     const data = await response.json();
     let posts = [];
@@ -28,14 +29,21 @@ postRouter.post('/get/posts', async (req, res) => {
     for (const key in data) {
       const obj = data[key];
       posts.push(
-        new Post(key, obj.title, obj.text, obj.timestamp, obj.comments, obj.likes)
+        new Post(
+          key,
+          obj.title,
+          obj.text,
+          obj.timestamp,
+          obj.comments,
+          obj.likes
+        )
       );
     }
     res.send({ data: posts });
   }
 });
 
-postRouter.post('/posts/:key', async (req, res) => {
+postRouter.post("/posts/:key", async (req, res) => {
   const token = req.body.token;
   const key = req.params.key;
 
@@ -43,48 +51,50 @@ postRouter.post('/posts/:key', async (req, res) => {
     `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json?auth=` +
       token,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     }
   );
 
   if (!response.ok) {
-    res.send({ data: 'Unable to get post' });
+    res.send({ data: "Unable to get post" });
   } else {
     const data = await response.json();
     res.send({ data: data });
   }
 });
 
-postRouter.post('/posts', async (req, res) => {
+postRouter.post("/posts", async (req, res) => {
   const token = req.body.token;
-  const comments = [''];
-  const likes = [''];
-  const timestamp = Date.now();
-  const post = new Post(
-    req.body.title,
-    req.body.text,
-    new Date(timestamp),
-    comments,
-    likes
+  const comments = [""];
+  const likes = [""];
+  const title = req.body.title;
+  const text = req.body.text;
+  const randomId = Math.floor(
+    Math.random() * Math.floor(Math.random() * Date.now())
   );
+  console.log("title", title);
+  console.log("text", text);
+
+  const timestamp = getCurrentTime();
+  const post = new Post(randomId, title, text, timestamp, comments, likes);
 
   const response = await fetch(
-    'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts.json?auth=' +
+    "https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts.json?auth=" +
       token,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(post),
     }
   );
 
   if (!response.ok) {
-    res.send('Something was wrong with the request');
+    res.send("Something was wrong with the request");
   } else {
     const data = await response.json();
 
@@ -92,12 +102,12 @@ postRouter.post('/posts', async (req, res) => {
     if (data.name !== undefined) {
       res.send({ data: post });
     } else {
-      res.send({ data: 'Unable to create post in the database' });
+      res.send({ data: "Unable to create post in the database" });
     }
   }
 });
 
-postRouter.patch('/posts/:key', async (req, res) => {
+postRouter.patch("/posts/:key", async (req, res) => {
   const key = req.params.key;
   const token = req.body.token;
 
@@ -111,23 +121,23 @@ postRouter.patch('/posts/:key', async (req, res) => {
     `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json?auth=` +
       token,
     {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(editedPost),
     }
   );
 
   if (!response.ok) {
-    res.send({ data: 'Unable to patch post' });
+    res.send({ data: "Unable to patch post" });
   } else {
     const data = await response.json();
     res.send({ data: data });
   }
 });
 
-postRouter.delete('/posts/:key', async (req, res) => {
+postRouter.delete("/posts/:key", async (req, res) => {
   const key = req.params.key;
   const token = req.body.token;
 
@@ -135,23 +145,23 @@ postRouter.delete('/posts/:key', async (req, res) => {
     `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json?auth=` +
       token,
     {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     }
   );
 
   if (!response.ok) {
-    res.send({ data: 'Unable to delete post' });
+    res.send({ data: "Unable to delete post" });
   } else {
     const data = await response.json();
-    res.send({ data: 'Post was deleted' });
+    res.send({ data: "Post was deleted" });
   }
 });
 
 // Comments
-postRouter.get('/posts/:postKey/comments/:commentKey', async (req, res) => {
+postRouter.get("/posts/:postKey/comments/:commentKey", async (req, res) => {
   const postKey = req.params.postKey;
   const commentKey = req.params.commentKey;
   const token = req.body.token;
@@ -160,22 +170,22 @@ postRouter.get('/posts/:postKey/comments/:commentKey', async (req, res) => {
     `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${postKey}/comments/${commentKey}.json?auth=` +
       token,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     }
   );
 
   if (!response.ok) {
-    res.send({ data: 'Unable to get comment' });
+    res.send({ data: "Unable to get comment" });
   } else {
     const data = await response.json();
     res.send({ data: data });
   }
 });
 
-postRouter.post('/posts/:key/comments', async (req, res) => {
+postRouter.post("/posts/:key/comments", async (req, res) => {
   const key = req.params.key;
   const token = req.body.token;
   const comment = req.body.comment;
@@ -184,23 +194,23 @@ postRouter.post('/posts/:key/comments', async (req, res) => {
     `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/comments.json?auth=` +
       token,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(comment),
     }
   );
 
   if (!response.ok) {
-    res.send({ data: 'Unable to add comment' });
+    res.send({ data: "Unable to add comment" });
   } else {
     const data = await response.json();
     res.send({ data: comment });
   }
 });
 
-postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
+postRouter.patch("/posts/:postKey/comments/:commentKey", async (req, res) => {
   const postKey = req.params.postKey;
   const commentKey = req.params.commentKey;
   const token = req.body.token;
@@ -210,9 +220,9 @@ postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
       `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${postKey}/.json?auth=` +
         token,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
@@ -229,16 +239,16 @@ postRouter.patch('/posts/:postKey/comments/:commentKey', async (req, res) => {
             `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${postKey}/.json?auth=` +
               token,
             {
-              method: 'PATCH',
+              method: "PATCH",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: JSON.stringify(post),
             }
           );
 
           if (!response2.ok) {
-            res.send('something went wrong');
+            res.send("something went wrong");
           } else {
             res.send({ data: post });
           }
