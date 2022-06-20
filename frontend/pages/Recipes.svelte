@@ -34,11 +34,11 @@
         <div>Glass type: {recipe.glass}</div>
         <div>Category: {recipe.category}</div>
         {#each recipe.ingredients as ingredient}
-          {#if ingredient.unit !== undefined}
+          {#if ingredient.unit}
             <div>Unit: {ingredient.unit || ''}</div>
             <div>Amount: {ingredient.amount || ''}</div>
             <div>Ingredint: {ingredient.ingredient || ''}</div>
-            {#if ingredient.special !== undefined}
+            {#if ingredient.special}
               <div>Special Ingredient: {ingredient.special || ''}</div>
             {/if}
           {/if}

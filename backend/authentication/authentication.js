@@ -1,5 +1,7 @@
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+import { initializeApp } from "firebase/app";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 dotenv.config({ path: './.env' });
 const API_KEY = process.env.API_KEY;
 
@@ -70,3 +72,28 @@ export const refreshAuthToken = async (refreshToken) => {
     return error;
   }
 };
+
+const firebaseConfig = {
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  databaseURL: process.env.DATABASE_URL,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+};
+
+const firebase = initializeApp(firebaseConfig);
+const auth = getAuth();
+
+export const resetPassword = async (email) => {
+  sendPasswordResetEmail(auth, email)
+  .then(() => {
+    return {response: "Password reset email sent"}
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode, errorMessage)
+  });
+}
