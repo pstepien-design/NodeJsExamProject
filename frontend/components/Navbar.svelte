@@ -4,6 +4,7 @@
   import Login from '../pages/Login.svelte';
   import Signup from '../pages/Signup.svelte';
   import Profile from '../pages/Profile.svelte'
+  import Recipes from '../pages/Recipes.svelte'
   import { onMount } from 'svelte';
   import Posts from '../pages/Posts.svelte';
   import Cocktails from '../pages/Cocktails.svelte'; 
@@ -84,6 +85,11 @@
             <p class="link">COCKTAILS</p>
           </Link>
         </li>
+        <li>
+          <Link to="/recipes">
+            <p class="link">RECIPES</p>
+        </Link>
+        </li>
         <li class="profile">
           <p>Welcome back, {loggedUser.firstName}</p>
           <Link to="profile">
@@ -102,6 +108,7 @@
     <ProtectedRoute path="/posts" component={Posts} />
     <ProtectedRoute path="/post/:id" component={SinglePostPage} />
     <ProtectedRoute path="/cocktails/" component={Cocktails} />
+    <ProtectedRoute path="/recipes/" component={Recipes} />
   </nav>
 </Router>
 

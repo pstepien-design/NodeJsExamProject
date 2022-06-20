@@ -13,7 +13,7 @@
 
   let token;
 
-  const displayNotifcation = () => {
+  const displayNotification = () => {
     addNotification({
       text: "Wrong credentials! Please try again",
       position: "top-center",
@@ -31,7 +31,7 @@
         navigate("/posts");
         window.location.reload();
       } else {
-        displayNotifcation();
+        displayNotification();
       }
     } else if (operation === "Sign up") {
       await signup(email, password, firstName, lastName);
