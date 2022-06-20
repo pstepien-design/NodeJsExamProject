@@ -64,5 +64,6 @@
   .Recipe_box {
     border-style: solid;
     flex: 1 0 21%;
+    margin-bottom: 10%;
   }
 </style>
