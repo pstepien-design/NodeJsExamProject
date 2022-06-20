@@ -23,14 +23,13 @@
 
 <style>
   .cocktail_container {
-    justify-content: center;
-    display: flex;
+    display: table;
     background-color: black;
-    width: 100vw;
-    height: 100vw;
+    overflow: auto;
+    height: 100%;
   }
-
   .cocktail_box {
-    width: 33%
+    width: 33.33%;
+    float: left;
   }
 </style>
