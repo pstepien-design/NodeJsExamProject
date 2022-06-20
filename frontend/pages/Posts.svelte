@@ -71,7 +71,6 @@
       <div class="mug">
         <div class="beer" style="height: {counter}px; " />
       </div>
-      ¨
       {#if hasClicked !== true}
         <button class="beer__increment__button" on:click={incrementBeer}
           >Click to increment beer!</button

@@ -90,6 +90,37 @@ export const getUser = async () => {
   }
 };
 
+export const updateUser = async (userFirstName, userLastName) => {
+  const authRequest = {
+    token: getToken(),
+    id: getUserId(),
+  };
+  const updatedUser = {
+    firstName: userFirstName,
+    lastName: userLastName
+  }
+  
+  const response = await fetch(
+    `http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:
+        JSON.stringify(updatedUser),
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    console.log("updated user" + data)
+    return data;
+  } else {
+    console.log(await response.json())
+  }
+
+}
+
 // Cocktails
 export const getCocktails = async () => {
   const token = await getToken();

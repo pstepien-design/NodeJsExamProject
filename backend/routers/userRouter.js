@@ -40,11 +40,13 @@ userRouter.get('/users/name/:id/:token', async (req, res) => {
   }
 });
 
-// Updating hasClicked
+// Updating user
 userRouter.patch('/users/name/:id/:token', async (req, res) => {
   const hasClicked = req.body.hasClicked;
   const token = req.params.token;
   const id = req.params.id;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
 
   const response = await fetch(
     'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users.json?auth=' +
@@ -64,6 +66,8 @@ userRouter.patch('/users/name/:id/:token', async (req, res) => {
     for (const key in users) {
       if (id == users[key].id) {
         users[key].hasClicked = hasClicked;
+        users[key].firstName = firstName;
+        users[key].lastName = lastName;
 
         const response2 = await fetch(
           `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users/${key}.json?auth=` +
@@ -80,7 +84,7 @@ userRouter.patch('/users/name/:id/:token', async (req, res) => {
         if (!response2.ok) {
           console.log(await response.json());
         } else {
-          res.send(users);
+          res.send(users[key]);
         }
       }
     }
