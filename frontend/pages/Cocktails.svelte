@@ -31,5 +31,6 @@
   }
   .cocktail_box {
     flex: 1 0 21%;
+    margin-bottom: 10%;
   }
 </style>

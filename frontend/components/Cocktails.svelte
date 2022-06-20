@@ -16,12 +16,10 @@ export let name, description, img;
  }
 
  .description {
-  margin-top: 1.2vw;
   color: white;
  }
 
  .cocktail_box {
   margin-inline: 2.5vw;
-  margin-bottom: 2.5vw;
  }
 </style>
