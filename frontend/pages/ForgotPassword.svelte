@@ -1,15 +1,15 @@
 <script>
-  import { sendEmail } from "../service/EmailService";
-  import { getNotificationsContext } from "svelte-notifications";
+  import { sendEmail } from '../service/EmailService';
+  import { getNotificationsContext } from 'svelte-notifications';
 
   const { addNotification } = getNotificationsContext();
   export let email;
 
   const displayNotifcation = () => {
     addNotification({
-      text: "The message to reset the password has been sent. Please check your email",
-      position: "top-center",
-      type: "success",
+      text: 'The message to reset the password has been sent. Please check your email',
+      position: 'top-center',
+      type: 'success',
       removeAfter: 3000,
     });
   };
@@ -17,10 +17,10 @@
   const forgotPassword = async () => {
     console.log(email);
     const response = await sendEmail(email);
-      if(response){
-        displayNotifcation()
-        email = "";
-      }
+    if (response) {
+      displayNotifcation();
+      email = '';
+    }
   };
 </script>
 

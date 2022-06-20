@@ -11,27 +11,27 @@
 
   onMount(async () => {
     user = await getUser();
-    userFirstName = user.firstName
-    userLastName = user.lastName
-    userEmail = user.email
-    userId = user.id
-    
+    userFirstName = user.firstName;
+    userLastName = user.lastName;
+    userEmail = user.email;
+    userId = user.id;
   });
 
   const requestEmailChange = async (event) => {
-
-    console.log("email change requested")
-  }
+    console.log('email change requested');
+  };
 
   const handleOnSubmit = async () => {
-    updateUser(userFirstName, userLastName)
-  }
+    updateUser(userFirstName, userLastName);
+  };
 </script>
 
 <div class="profile_container">
   <div class="user-info_box">
     <h1 class="profile-welcome_title">Welcome to your profile page</h1>
-    <h3 class="profile-welcome_title">Here you can edit your first and last name, or request an email change</h3>
+    <h3 class="profile-welcome_title">
+      Here you can edit your first and last name, or request an email change
+    </h3>
     {#await getUser()}
       <p>...loading user profile</p>
     {:then}
@@ -42,13 +42,19 @@
         <input type="text" id="lastName" bind:value={userLastName} />
         <div class="profile_titles">Email</div>
         <div class="profile_email">{userEmail}</div>
-        <button on:click|preventDefault={requestEmailChange()}>Request email change</button>
+        <button on:click|preventDefault={requestEmailChange()}
+          >Request email change</button
+        >
         <div class="profile_titles">userId</div>
         <SvelteTooltip tip="This is your unique userId">
           <div class="profile_border">{userId}</div>
         </SvelteTooltip>
         <div class="profile_submit">
-          <input class="profile_submit-button" type="submit" value="Save profile">
+          <input
+            class="profile_submit-button"
+            type="submit"
+            value="Save profile"
+          />
         </div>
       </form>
     {:catch error}
@@ -94,11 +100,11 @@
   .profile_submit-button {
     background-color: #3bc340;
     border-color: #3bc340;
-    border-radius: 30px
+    border-radius: 30px;
   }
 
   .profile-welcome_title {
     border: none;
-    font-weight: normal
+    font-weight: normal;
   }
 </style>

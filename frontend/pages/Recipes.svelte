@@ -17,7 +17,7 @@
     });
     return newRecipes;
   };
-  
+
   onMount(async () => {
     cocktails = await getCocktails();
     composedRecipes = await composeRecipes(cocktails);
@@ -29,22 +29,22 @@
     <p>...loading recipes</p>
   {:then}
     {#each composedRecipes as recipe}
-    <div class="Recipe_box">
-      <div>{recipe.name}</div>
-      <div>Glass type: {recipe.glass}</div>
-      <div>Category: {recipe.category}</div>
-      {#each recipe.ingredients as ingredient}
-      {#if ingredient.unit !== undefined}
-      <div>Unit: {ingredient.unit || ""}</div>
-      <div>Amount: {ingredient.amount || ""}</div>
-      <div>Ingredint: {ingredient.ingredient || ""}</div>
-      {#if ingredient.special !== undefined}
-      <div>Special Ingredient: {ingredient.special || ""}</div>
-      {/if}
-      {/if}
-      {/each}
-      <div>Preparation: {recipe.preparation}</div>
-    </div>
+      <div class="Recipe_box">
+        <div>{recipe.name}</div>
+        <div>Glass type: {recipe.glass}</div>
+        <div>Category: {recipe.category}</div>
+        {#each recipe.ingredients as ingredient}
+          {#if ingredient.unit !== undefined}
+            <div>Unit: {ingredient.unit || ''}</div>
+            <div>Amount: {ingredient.amount || ''}</div>
+            <div>Ingredint: {ingredient.ingredient || ''}</div>
+            {#if ingredient.special !== undefined}
+              <div>Special Ingredient: {ingredient.special || ''}</div>
+            {/if}
+          {/if}
+        {/each}
+        <div>Preparation: {recipe.preparation}</div>
+      </div>
     {/each}
   {:catch error}
     <p style="color: red">{error.message}</p>

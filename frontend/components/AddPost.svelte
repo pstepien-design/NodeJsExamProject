@@ -1,8 +1,8 @@
 <script>
-  import { getContext } from "svelte";
-  import { addPost } from "../service/PostService.js";
+  import { getContext } from 'svelte';
+  import { addPost } from '../service/PostService.js';
 
-  const { close } = getContext("simple-modal");
+  const { close } = getContext('simple-modal');
   export let title, text;
 
   const submitPost = () => {

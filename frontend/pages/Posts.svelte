@@ -1,24 +1,23 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount } from 'svelte';
   import {
     getBeerValue,
     saveBeerValue,
     getUser,
     userHasClicked,
-  } from "../stores/store";
-  import { navigate } from "svelte-navigator";
-  import io from "socket.io-client";
-  import Post from "../components/Post.svelte";
-  import { getPosts } from "../service/PostService";
-  import ModalContent from "../components/ModalContent.svelte";
-  import Modal from "svelte-simple-modal";
+  } from '../stores/store';
+  import { navigate } from 'svelte-navigator';
+  import io from 'socket.io-client';
+  import Post from '../components/Post.svelte';
+  import { getPosts } from '../service/PostService';
+  import ModalContent from '../components/ModalContent.svelte';
+  import Modal from 'svelte-simple-modal';
 
-
-  const socket = io("http://localhost:3000");
+  const socket = io('http://localhost:3000');
   console.log(socket);
   let hasClicked;
   let counter = 30;
-  socket.on("connect", async () => {
+  socket.on('connect', async () => {
     const value = await getBeerValue();
     const user = await getUser();
     /*  hasClicked = user.hasClicked */
@@ -26,7 +25,7 @@
     console.log(value.valueOfBeer);
     counter = value.valueOfBeer;
   });
-  socket.on("incrementBeer", async ({ data }) => {
+  socket.on('incrementBeer', async ({ data }) => {
     counter = counter * 1.1;
     await saveBeerValue(counter);
   });
@@ -34,7 +33,7 @@
   function incrementBeer(event) {
     hasClicked = true;
     userHasClicked(hasClicked);
-    socket.emit("beerIncremented", { data: counter });
+    socket.emit('beerIncremented', { data: counter });
   }
 
   let posts = [];

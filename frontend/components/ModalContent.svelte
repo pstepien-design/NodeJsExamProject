@@ -1,16 +1,15 @@
 <script>
-import { getContext } from "svelte";
-import AddPost from "../components/AddPost.svelte";
+  import { getContext } from 'svelte';
+  import AddPost from '../components/AddPost.svelte';
 
-
-const { open } = getContext('simple-modal')
-const showModal = () => open(AddPost)
-
+  const { open } = getContext('simple-modal');
+  const showModal = () => open(AddPost);
 </script>
+
 <p><button on:click={showModal}>Add new post!</button></p>
 
 <style>
-    button {
+  button {
     font-size: 2rem;
     border-radius: 12px;
     width: 30%;

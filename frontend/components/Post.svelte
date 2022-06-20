@@ -1,14 +1,14 @@
 <script>
-  import MdThumbUp from "svelte-icons/md/MdThumbUp.svelte";
+  import MdThumbUp from 'svelte-icons/md/MdThumbUp.svelte';
   export let title, text, timestamp, likes, comments, areCommentsVisible, id;
-  import { addComment, getComments } from "../service/PostService";
+  import { addComment, getComments } from '../service/PostService';
 
   let newComment;
 
   let commentsValues = Object.values(comments);
   const getNumberOfComments = () => {
     let count = 0;
-    console.log("komentarze", comments);
+    console.log('komentarze', comments);
     for (let key in comments) {
       ++count;
     }
@@ -19,7 +19,7 @@
     const response = await addComment(newComment, id);
     if (response !== null) {
       commentsValues = Object.values(await getComments(id));
-      newComment = ''
+      newComment = '';
     }
   };
 </script>
@@ -48,7 +48,7 @@
     </div>
   </div>
   <div class="displayed__comments">
-    {#if areCommentsVisible === "true"}
+    {#if areCommentsVisible === 'true'}
       <form on:submit|preventDefault={addNewComment}>
         <p>Add comment</p>
         <input

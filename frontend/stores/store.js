@@ -118,7 +118,6 @@ export const updateUser = async (userFirstName, userLastName) => {
   } else {
     console.log(await response.json())
   }
-
 }
 
 // Cocktails

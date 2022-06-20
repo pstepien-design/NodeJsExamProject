@@ -75,8 +75,6 @@ postRouter.post("/posts", async (req, res) => {
   const randomId = Math.floor(
     Math.random() * Math.floor(Math.random() * Date.now())
   );
-  console.log("title", title);
-  console.log("text", text);
 
   const timestamp = getCurrentTime();
   const post = new Post(randomId, title, text, timestamp, comments, likes);
