@@ -55,6 +55,7 @@
     {#each posts as post}
       <div on:click={handleClick(post)}>
         <Post
+          postedBy={post.postedBy}
           title={post.title}
           text={post.text}
           timestamp={post.timestamp}

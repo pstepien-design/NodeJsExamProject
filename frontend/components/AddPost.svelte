@@ -1,12 +1,20 @@
 <script>
   import { getContext } from 'svelte';
   import { addPost } from '../service/PostService.js';
+  import { getUser } from '../stores/store.js'
+  import { onMount } from 'svelte';
 
   const { close } = getContext('simple-modal');
   export let title, text;
 
+  let user;
+  onMount(async () => {
+    user = await getUser();
+  });
+
   const submitPost = () => {
-    addPost(title, text);
+    const postedBy = user.firstName
+    addPost(title, text, postedBy);
     close();
     window.location.reload();
   };

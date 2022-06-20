@@ -3,11 +3,8 @@ import { getToken, serverUrl } from '../stores/store';
 
 export async function getPosts() {
   const token = getToken();
-  const res = await fetch(`${get(serverUrl)}/get/posts`, {
-    method: 'POST',
-    body: JSON.stringify({
-      token,
-    }),
+  const res = await fetch(`${get(serverUrl)}/get/posts/${token}`, {
+    method: 'GET',
     headers: {
       'content-type': 'application/json',
     },
@@ -18,12 +15,12 @@ export async function getPosts() {
   }
 }
 
-export async function addPost(title, text) {
+export async function addPost(title, text, postedBy) {
   const token = getToken();
   const res = await fetch(`${get(serverUrl)}/posts`, {
     method: 'POST',
     body: JSON.stringify({
-      title, text, token
+      title, text, token, postedBy
     }),
     headers: {
       'content-type': 'application/json',
