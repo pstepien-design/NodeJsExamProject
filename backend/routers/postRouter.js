@@ -6,8 +6,8 @@ import getCurrentTime from "../service/timeService.js";
 const postRouter = Router();
 
 // Posts
-postRouter.post("/get/posts", async (req, res) => {
-  const token = req.body.token;
+postRouter.get("/get/posts/:token", async (req, res) => {
+  const token = req.params.token;
 
   const response = await fetch(
     "https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts.json?auth=" +
@@ -35,34 +35,12 @@ postRouter.post("/get/posts", async (req, res) => {
           obj.text,
           obj.timestamp,
           obj.comments,
-          obj.likes
+          obj.likes,
+          obj.postedBy
         )
       );
     }
     res.send({ data: posts });
-  }
-});
-
-postRouter.post("/posts/:key", async (req, res) => {
-  const token = req.body.token;
-  const key = req.params.key;
-
-  const response = await fetch(
-    `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/.json?auth=` +
-      token,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  if (!response.ok) {
-    res.send({ data: "Unable to get post" });
-  } else {
-    const data = await response.json();
-    res.send({ data: data });
   }
 });
 
@@ -72,12 +50,13 @@ postRouter.post("/posts", async (req, res) => {
   const likes = [""];
   const title = req.body.title;
   const text = req.body.text;
+  const postedBy = req.body.postedBy;
   const randomId = Math.floor(
     Math.random() * Math.floor(Math.random() * Date.now())
   );
 
   const timestamp = getCurrentTime();
-  const post = new Post(randomId, title, text, timestamp, comments, likes);
+  const post = new Post(randomId, title, text, timestamp, comments, likes, postedBy);
 
   const response = await fetch(
     "https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts.json?auth=" +

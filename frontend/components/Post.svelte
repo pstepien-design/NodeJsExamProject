@@ -1,6 +1,6 @@
 <script>
   import MdThumbUp from 'svelte-icons/md/MdThumbUp.svelte';
-  export let title, text, timestamp, likes, comments, areCommentsVisible, id;
+  export let title, text, timestamp, likes, comments, areCommentsVisible, id, postedBy;
   import { addComment, getComments } from '../service/PostService';
 
   let newComment;
@@ -8,7 +8,7 @@
   let commentsValues = Object.values(comments);
   const getNumberOfComments = () => {
     let count = 0;
-    console.log('komentarze', comments);
+    // console.log('komentarze', comments);
     for (let key in comments) {
       ++count;
     }
@@ -30,6 +30,7 @@
       <p class="title">{title}</p>
     </div>
     <div class="post__time">
+      <p>User: {postedBy}</p>
       <p class="timestamp">{timestamp}</p>
     </div>
   </div>
