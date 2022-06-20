@@ -27,11 +27,11 @@
 </script>
 
 <div class="profile_container">
+  <h1 class="profile-welcome_title">Welcome to your profile page</h1>
+  <h3 class="profile-welcome_title">
+    Here you can edit your first and last name, or request an email change
+  </h3>
   <div class="user-info_box">
-    <h1 class="profile-welcome_title">Welcome to your profile page</h1>
-    <h3 class="profile-welcome_title">
-      Here you can edit your first and last name, or request an email change
-    </h3>
     {#await getUser()}
       <p>...loading user profile</p>
     {:then}
@@ -65,18 +65,13 @@
 
 <style>
   .profile_container {
-    color: white;
-    background-color: black;
+    color: black;
     overflow: auto;
-    height: 100vw;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
+    height: 100%;
+    width: 100%;
   }
   .user-info_box {
     margin-top: 5vw;
-    height: 33vw;
-    width: 33vw;
     /* border-style: solid; */
     /* border-color: red; */
   }
@@ -89,7 +84,7 @@
     justify-content: center;
     border-style: solid;
     border-radius: 1px;
-    color: #72c320;
+    color: #ea5045;
   }
   .profile_submit {
     margin-top: 1.5vw;
@@ -98,13 +93,20 @@
     margin-bottom: 0.7vw;
   }
   .profile_submit-button {
-    background-color: #3bc340;
-    border-color: #3bc340;
-    border-radius: 30px;
+    font-size: 2rem;
+    border-radius: 12px;
+    width: 30%;
+    height: 60px;
+    font-weight: 20px;
+    margin-top: 20px;
+    background-color: #ea5045;
+  }
+  input {
+    width: 30%;
+    height: 50px;
   }
 
   .profile-welcome_title {
     border: none;
-    font-weight: normal;
   }
 </style>
