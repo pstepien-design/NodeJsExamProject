@@ -91,4 +91,13 @@ userRouter.patch('/users/name/:id/:token', async (req, res) => {
   }
 });
 
+// Request password reset
+// userRouter.post('/users/name/:token', async (req, res) => {
+//   const token = req.params.token;
+//   const email = req.body.email
+
+//   resetPassword(email)
+
+// })
+
 export default userRouter;
