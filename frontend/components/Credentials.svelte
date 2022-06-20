@@ -52,14 +52,15 @@
       <input type="text" required="required" bind:value={firstName} />
       <p class="credentials__label">Last name</p>
       <input type="text" required="required" bind:value={lastName} />
-    {/if}
-    <p class="credentials__label">E-mail</p>
-    <input type="email" required="required" bind:value={email} />
-    <p class="credenstials__label">Password</p>
-    <input type="password" required="required" bind:value={password} />
-    <div>
-      <button type="submit"> {operation} </button>
-    </div>
+      {/if}
+      <p class="credentials__label">E-mail</p>
+      <input type="email" required="required" bind:value={email} />
+      <p class="credenstials__label">Password</p>
+      <input type="password" required="required" bind:value={password} />
+      <div>
+        <button type="submit"> {operation} </button>
+      </div>
+      <a href='/forgotPassword'>Forgot password</a>
   </form>
 </div>
 
