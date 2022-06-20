@@ -54,14 +54,11 @@ app.use(postRouter);
 import userRouter from './routers/userRouter.js';
 app.use(userRouter);
 
-<<<<<<< HEAD
 // Resets hasClicked everyday at midnight European/Copenhagen
 resetHasClicked()
-=======
 import emailRouter from './routers/emailRouter.js';
 app.use(emailRouter);
 
->>>>>>> 896e6b2ed6dcc9d3ce441da170409b3559233552
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
