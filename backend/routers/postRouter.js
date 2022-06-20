@@ -138,10 +138,10 @@ postRouter.delete("/posts/:key", async (req, res) => {
 });
 
 // Comments
-postRouter.get("/posts/:postKey/comments/:commentKey", async (req, res) => {
+postRouter.get("/posts/:postKey/comments/:commentKey/:token", async (req, res) => {
   const postKey = req.params.postKey;
   const commentKey = req.params.commentKey;
-  const token = req.body.token;
+  const token = req.params.token;
 
   const response = await fetch(
     `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${postKey}/comments/${commentKey}.json?auth=` +
@@ -162,6 +162,31 @@ postRouter.get("/posts/:postKey/comments/:commentKey", async (req, res) => {
   }
 });
 
+// get all Comments
+postRouter.get("/posts/:key/comments/:token", async (req, res) => {
+  const key = req.params.key;
+  const token = req.params.token;
+
+  const response = await fetch(
+    `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/comments.json?auth=` +
+      token,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    res.send({ data: "Unable to get comments" });
+  } else {
+    const data = await response.json();
+    console.log(data);
+    res.send({ data: data });
+  }
+});
+
 postRouter.post("/posts/:key/comments", async (req, res) => {
   const key = req.params.key;
   const token = req.body.token;
@@ -169,7 +194,7 @@ postRouter.post("/posts/:key/comments", async (req, res) => {
 
   const response = await fetch(
     `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/posts/${key}/comments.json?auth=` +
-      token,
+      token, 
     {
       method: "POST",
       headers: {
@@ -183,7 +208,7 @@ postRouter.post("/posts/:key/comments", async (req, res) => {
     res.send({ data: "Unable to add comment" });
   } else {
     const data = await response.json();
-    res.send({ data: comment });
+    res.send({ data: data.name });
   }
 });
 

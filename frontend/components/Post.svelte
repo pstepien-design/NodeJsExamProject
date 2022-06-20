@@ -1,27 +1,43 @@
 <script>
+import { onMount } from 'svelte';
+
   import MdThumbUp from 'svelte-icons/md/MdThumbUp.svelte';
-  export let title, text, timestamp, likes, comments, areCommentsVisible, id, postedBy;
-  import { addComment, getComments } from '../service/PostService';
+  export let title, text, timestamp, likes, comments, areCommentsVisible, postedBy;
+  import { addComment, getComments, getPosts } from '../service/PostService';
 
   let newComment;
+  let id = window.location.pathname.replace('/post/', '');
+  let post;
+  let count = -1;
+ 
 
   let commentsValues = Object.values(comments);
+  console.log('commentsValues', commentsValues);
   const getNumberOfComments = () => {
-    let count = 0;
     // console.log('komentarze', comments);
     for (let key in comments) {
       ++count;
     }
-    return count;
   };
 
   const addNewComment = async () => {
-    const response = await addComment(newComment, id);
+    let postKey = post.id;
+    const response = await addComment(newComment, postKey);
+    console.log('response',response)
     if (response !== null) {
-      commentsValues = Object.values(await getComments(id));
+      const com = await getComments(postKey)
+      console.log('com', com)
+      commentsValues = Object.values(await getComments(postKey));
       newComment = '';
+      ++count;
     }
   };
+
+  onMount(async () => {
+    const fetchedPosts = await getPosts();
+    post = fetchedPosts[id - 1];
+    getNumberOfComments();
+;  });
 </script>
 
 <div class="post">
@@ -45,7 +61,7 @@
       </div>
     </div>
     <div class="post__comments">
-      <p class="comments">{getNumberOfComments()} comments</p>
+      <p class="comments">{count} comments</p>
     </div>
   </div>
   <div class="displayed__comments">
@@ -75,7 +91,7 @@
     margin: 20px;
     border: 2px solid #c4bfbf57;
     display: block;
-    overflow: auto;
+    overflow-y: auto;
   }
   .post__interactions {
     margin-bottom: 2px;
