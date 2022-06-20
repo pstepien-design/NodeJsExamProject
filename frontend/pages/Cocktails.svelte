@@ -29,7 +29,7 @@
     height: 100%;
   }
   .cocktail_box {
-    width: 33.33%;
+    width: 33%;
     float: left;
   }
 </style>

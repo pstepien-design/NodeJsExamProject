@@ -21,16 +21,6 @@
   socket.on("connect", async () => {
     const value = await getBeerValue();
     const user = await getUser();
-<<<<<<< HEAD
-   /*  hasClicked = user.hasClicked */
-    hasClicked = false;
-    console.log(value.valueOfBeer)
-    counter = value.valueOfBeer
-  })
-  socket.on('incrementBeer', async({ data }) => {
-    counter = counter * 1.1
-    await saveBeerValue(counter)
-=======
     /*  hasClicked = user.hasClicked */
     hasClicked = false;
     console.log(value.valueOfBeer);
@@ -39,7 +29,6 @@
   socket.on("incrementBeer", async ({ data }) => {
     counter = counter * 1.1;
     await saveBeerValue(counter);
->>>>>>> 896e6b2ed6dcc9d3ce441da170409b3559233552
   });
 
   function incrementBeer(event) {
@@ -82,19 +71,12 @@
       <div class="mug">
         <div class="beer" style="height: {counter}px; " />
       </div>
-<<<<<<< HEAD
-    </div>
-    {#if hasClicked !== true}
-    <button class='beer__increment__button' on:click={incrementBeer}>Click to increment beer!</button>
-    {/if}
-=======
       ¨
       {#if hasClicked !== true}
         <button class="beer__increment__button" on:click={incrementBeer}
           >Click to increment beer!</button
         >
       {/if}
->>>>>>> 896e6b2ed6dcc9d3ce441da170409b3559233552
     </div>
   </div>
 </div>
