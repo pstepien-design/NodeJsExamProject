@@ -190,7 +190,6 @@ postRouter.get("/posts/:key/comments/:token", async (req, res) => {
     res.send({ data: "Unable to get comments" });
   } else {
     const data = await response.json();
-    console.log(data);
     res.send({ data: data });
   }
 });
