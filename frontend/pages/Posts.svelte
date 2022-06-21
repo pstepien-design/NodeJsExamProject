@@ -9,7 +9,7 @@
   import { navigate } from 'svelte-navigator';
   import io from 'socket.io-client';
   import Post from '../components/Post.svelte';
-  import { getPosts } from '../service/PostService';
+  import { getPosts, getLikes } from '../service/PostService';
   import ModalContent from '../components/ModalContent.svelte';
   import Modal from 'svelte-simple-modal';
 

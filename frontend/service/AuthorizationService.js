@@ -3,8 +3,6 @@ import {
   saveToken,
   saveRefreshToken,
   saveUserId,
-  getUserId,
-  getToken,
 } from '../stores/store';
 import { get } from 'svelte/store';
 
