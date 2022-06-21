@@ -127,7 +127,6 @@ cockRouter.delete('/cocktails/:key', async (req, res) => {
   if (!response.ok) {
     res.send({ data: 'Unable to delete cocktail' });
   } else {
-    const data = await response.json();
     res.send({ data: 'Cocktail was deleted' });
   }
 });

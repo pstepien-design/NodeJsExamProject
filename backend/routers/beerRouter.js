@@ -19,13 +19,13 @@ beerRouter.get('/theBeer/:token', async (req, res) => {
     );
     if (!response.ok) {
       const data = await response.json();
-      res.send({ error: data.error})
+      res.send({ error: data.error });
     } else {
-      const valueOfBeer = await response.json()
-      res.send({valueOfBeer: valueOfBeer.value})
+      const valueOfBeer = await response.json();
+      res.send({ valueOfBeer: valueOfBeer.value });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 });
 
@@ -50,10 +50,10 @@ beerRouter.patch('/theBeer', async (req, res) => {
 
     if (!response.ok) {
       const data = await response.json();
-      res.send({ error: data.error})
+      res.send({ error: data.error });
     } else {
-      const valueOfBeer = await response.json()
-      res.send({valueOfBeer: valueOfBeer.value})
+      const valueOfBeer = await response.json();
+      res.send({ valueOfBeer: valueOfBeer.value });
     }
   } catch (error) {
     console.log(error);

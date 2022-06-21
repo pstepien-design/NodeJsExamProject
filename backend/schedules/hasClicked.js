@@ -43,7 +43,10 @@ export const resetHasClicked = async () => {
             );
 
             if (!response2.ok) {
-              console.log(await response.json() + `update failed for user ${users[key.email]}`);
+              console.log(
+                (await response.json()) +
+                  `update failed for user ${users[key.email]}`
+              );
             }
           }
         }

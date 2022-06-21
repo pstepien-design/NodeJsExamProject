@@ -20,8 +20,14 @@ authRouter.post('/auth/signup', async (req, res) => {
 
   try {
     if (response) {
-      const hasClicked = false
-      const user = new User(email, firstName, lastName, response.localId, hasClicked);
+      const hasClicked = false;
+      const user = new User(
+        email,
+        firstName,
+        lastName,
+        response.localId,
+        hasClicked
+      );
       const createUser = await fetch(
         'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users.json?auth=' +
           response.idToken,
