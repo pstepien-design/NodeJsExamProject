@@ -9,7 +9,7 @@
   import { navigate } from 'svelte-navigator';
   import io from 'socket.io-client';
   import Post from '../components/Post.svelte';
-  import { getPosts } from '../service/PostService';
+  import { getPosts, getLikes } from '../service/PostService';
   import ModalContent from '../components/ModalContent.svelte';
   import Modal from 'svelte-simple-modal';
 
@@ -35,11 +35,25 @@
     userHasClicked(hasClicked);
     socket.emit('beerIncremented', { data: counter });
   }
+  let likes = [];
+  const getNumberOfLikes = async (postId) => {
+    let count = 0;
+    for (let value in posts) {
+      if (posts[value == postId]) {
+        for (let key in likes) {
+          ++count;
+        }
+      }
+    }
 
+    return count;
+  };
   let posts = [];
   onMount(async () => {
     const fetchedPosts = await getPosts();
+    const fetchedLikes = await getLikes();
     posts = fetchedPosts;
+    likes = fetchedLikes;
   });
 
   const handleClick = (post) => {
@@ -59,7 +73,7 @@
           title={post.title}
           text={post.text}
           timestamp={post.timestamp}
-          likes={post.likes}
+          likes={getNumberOfLikes(post.id)}
           comments={post.comments}
           areCommentsVisible="false"
         />

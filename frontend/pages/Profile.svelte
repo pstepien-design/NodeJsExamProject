@@ -17,10 +17,6 @@
     userId = user.id;
   });
 
-  // const requestEmailChange = async (event) => {
-  //   console.log('email change requested');
-  // };
-
   const handleOnSubmit = async () => {
     updateUser(userFirstName, userLastName);
   };
@@ -42,9 +38,6 @@
         <input type="text" id="lastName" bind:value={userLastName} />
         <div class="profile_titles">Email</div>
         <div class="profile_email">{userEmail}</div>
-        <!-- <button on:click|preventDefault={requestEmailChange()}
-          >Request email change</button
-        > -->
         <div class="profile_titles">userId</div>
         <SvelteTooltip tip="This is your unique userId">
           <div class="profile_border">{userId}</div>

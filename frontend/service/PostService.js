@@ -68,3 +68,19 @@ export async function getComments(postId){
   }
 }
 
+export async function getLikes(){
+  const token = getToken();
+  const key = '-N3ufNoiyshjFm9h0xj0';
+
+  const res = await fetch(`${get(serverUrl)}/posts/${key}/likes/${token}`, {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+    },
+  });
+  if (res.ok) {
+    const json = await res.json();
+    return json
+  }
+}
+

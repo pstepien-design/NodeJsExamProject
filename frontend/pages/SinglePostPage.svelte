@@ -24,6 +24,7 @@
 <div>
   {#if displayPost}
     <Post
+      postedBy={post.postedBy}
       id={post.id}
       title={post.title}
       text={post.text}
