@@ -1,8 +1,8 @@
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
+import fetch from "node-fetch";
+import dotenv from "dotenv";
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-dotenv.config({ path: './.env' });
+dotenv.config({ path: "./.env" });
 const API_KEY = process.env.API_KEY;
 
 export const signup = async (email, password) => {
@@ -10,9 +10,9 @@ export const signup = async (email, password) => {
     const response = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,
@@ -32,9 +32,9 @@ export const login = async (email, password) => {
     const response = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,
@@ -55,9 +55,9 @@ export const refreshAuthToken = async (refreshToken) => {
     const response = await fetch(
       `https://securetoken.googleapis.com/v1/token?key=${API_KEY}`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
       }
@@ -87,11 +87,9 @@ const firebase = initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export const resetPassword = async (email) => {
+  let isSent;
   await sendPasswordResetEmail(auth, email)
-  .then(() => {
-    return true
-  })
-  .catch((error) => {
-    return error
-  });
-}
+    .then(() => isSent = true)
+    .catch((error) => isSent = error);
+    return isSent;
+};
