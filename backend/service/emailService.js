@@ -14,15 +14,13 @@ const transporter = nodemailer.createTransport({
 const options = {
   from: process.env.EMAIL_USER,
   to: '',
-  subject: 'Reset the password',
+  subject: 'Beer incrementing!',
   html: '',
 };
 
-const sendEmail = async (email) => {
-  const link = getLink();
-  let html = fs.readFileSync('./email/email.html').toString();
+const sendIncrementEmail = async (email) => {
+  options.html = fs.readFileSync('./email/email.html').toString();
   options.to = email;
-  options.html = html.replace('<a>link</a>', `<a>${link}</a>`);
   return new Promise((resolve) => {
     transporter.sendMail(options, function (err) {
       if (err) {
@@ -34,4 +32,4 @@ const sendEmail = async (email) => {
   });
 };
 
-export default sendEmail;
+export default sendIncrementEmail;

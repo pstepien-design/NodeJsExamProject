@@ -12,17 +12,32 @@
   import { getPosts } from '../service/PostService';
   import ModalContent from '../components/ModalContent.svelte';
   import Modal from 'svelte-simple-modal';
+  import {sendBeerEmail} from '../service/EmailService'
+  import { getNotificationsContext } from 'svelte-notifications';
+
+const { addNotification } = getNotificationsContext();
+
+const displayNotification = () => {
+    addNotification({
+      text: 'Thank you for incrementing the beer, we sent you an email with the confirmation',
+      position: 'top-center',
+      type: 'success',
+      removeAfter: 3000,
+    });
+  };
+  
 
   const socket = io('http://localhost:3000');
 
   let hasClicked;
   let counter = 30;
+  let user;
 
   socket.on('connect', async () => {
     const value = await getBeerValue();
-    const user = await getUser();
+    user = await getUser();
 
-    hasClicked = user.hasClicked;
+    hasClicked =  user.hasClicked;
     counter = value.valueOfBeer;
   });
 
@@ -31,10 +46,14 @@
     await saveBeerValue(counter);
   });
 
-  function incrementBeer(event) {
+  async function incrementBeer(event) {
     hasClicked = true;
     userHasClicked(hasClicked);
     socket.emit('beerIncremented', { data: counter });
+    const response = await sendBeerEmail(user.email);
+    if(response){
+      displayNotification();
+    }
   }
 
   let posts = [];
