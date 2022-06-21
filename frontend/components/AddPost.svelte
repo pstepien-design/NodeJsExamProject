@@ -25,8 +25,16 @@
   <p class="credentials__label">Title</p>
   <input type="text" required="required" bind:value={title} />
   <p class="credentials__label">Text</p>
-  <input type="text" required="required" bind:value={text} />
+  <!-- <input type="text" required="required" bind:value={text} /> -->
+  <textarea type="text" required="required" bind:value={text}></textarea>
   <div>
-    <button type="submit">Add post</button>
+    <button class="modal_button" type="submit">Add post</button>
   </div>
 </form>
+
+<style>
+  .modal_button {
+    background-color: #ea5045;
+    border-color: #ea5045;
+  }
+</style>

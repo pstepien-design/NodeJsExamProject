@@ -86,12 +86,14 @@
 
 <style>
   .post {
-    background-color: #c4bfbf57;
+    background-color: #233249;
     padding: 5px;
     margin: 20px;
     border: 2px solid #c4bfbf57;
     display: block;
     overflow-y: auto;
+    color: white;
+    box-shadow: 0px -1px 4px 6px #233249;
   }
   .post__interactions {
     margin-bottom: 2px;

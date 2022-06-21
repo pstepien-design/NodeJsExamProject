@@ -161,7 +161,7 @@
     margin-top: 1vh;
     margin-bottom: 1vh;
     height: 10vh;
-    color: rgb(0, 255, 55);
+    color: #ea5045;
   }
   p {
     padding-top: 10px;

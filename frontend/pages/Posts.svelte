@@ -69,9 +69,13 @@ const displayNotification = () => {
 </script>
 
 <div class="page_container">
-  <Modal><ModalContent /></Modal>
+  <Modal 
+  styleBg={{ backgroundColor: 'rgb(0 0 0 / 15%) 0px 10px 10px 10px' }}
+  styleWindow={{ boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.15)', backgroundColor: '#233249', color: 'white' }}
+
+  ><ModalContent /></Modal>
   <div class="column_left">
-    <h1>POSTS</h1>
+    <h1 class="text_shadow">POSTS</h1>
     {#each posts as post}
       <div on:click={handleClick(post)}>
         <Post
@@ -107,6 +111,7 @@ const displayNotification = () => {
   .page_container {
     height: 100%;
     overflow: auto;
+    /* background-color: black; */
   }
   .column_left {
     width: 70%;
@@ -153,5 +158,9 @@ const displayNotification = () => {
     width: 190px;
     background-color: #ffc457;
     margin-top: 20px;
+  }
+
+  .text_shadow{
+    text-shadow: 1px 1px;
   }
 </style>
