@@ -16,6 +16,7 @@
     padding: 0;
     font-family: Roboto;
   }
+
   main {
     text-align: center;
     max-width: 240px;

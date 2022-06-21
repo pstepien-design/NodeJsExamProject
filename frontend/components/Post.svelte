@@ -1,6 +1,6 @@
 <script>
-  import { onMount } from 'svelte';
-  import MdThumbUp from 'svelte-icons/md/MdThumbUp.svelte';
+  import { onMount } from "svelte";
+  import MdThumbUp from "svelte-icons/md/MdThumbUp.svelte";
   export let title,
     text,
     timestamp,
@@ -8,10 +8,10 @@
     comments,
     areCommentsVisible,
     postedBy;
-  import { addComment, getComments, getPosts } from '../service/PostService';
+  import { addComment, getComments, getPosts } from "../service/PostService";
 
   let newComment;
-  let id = window.location.pathname.replace('/post/', '');
+  let id = window.location.pathname.replace("/post/", "");
   let post;
   let count = -1;
 
@@ -28,7 +28,7 @@
     if (response !== null) {
       const com = await getComments(postKey);
       commentsValues = Object.values(await getComments(postKey));
-      newComment = '';
+      newComment = "";
       ++count;
     }
   };
@@ -41,19 +41,9 @@
 </script>
 
 <div class="post">
-  <div class="post__info">
-    <div class="post__title">
-      <p class="title">{title}</p>
-    </div>
-    <div class="post__time">
-      <p>User: {postedBy}</p>
-      <p class="timestamp">{timestamp}</p>
-    </div>
-  </div>
-  <div class="post__text">
-    <p>{text}</p>
-  </div>
-  <div class="post__interactions">
+  <h2 class="title">{title}</h2>
+  <p class="timestamp">{timestamp} by {postedBy}</p>
+  <p class="text">{text}</p>
     <div class="post__likes">
       <p class="likes">{likes}</p>
       <div class="icon">
@@ -63,12 +53,11 @@
     <div class="post__comments">
       <p class="comments">{count} comments</p>
     </div>
-  </div>
   <div class="displayed__comments">
-    {#if areCommentsVisible === 'true'}
+    {#if areCommentsVisible === "true"}
       <form on:submit|preventDefault={addNewComment}>
-        <p>Add comment</p>
         <input
+        placeholder="Type your comment here"
           type="text"
           class="comment__input"
           required="required"
@@ -86,37 +75,47 @@
 
 <style>
   .post {
-    background-color: #c4bfbf57;
-    padding: 5px;
+    background-color: #d9d9d9;
     margin: 20px;
-    border: 2px solid #c4bfbf57;
-    display: block;
+    border-radius: 10px;
     overflow-y: auto;
+    display: block;
+    box-shadow: 5px 5px 5px #949494;
+    color: #233249;
+    padding: 15px;
   }
-  .post__interactions {
-    margin-bottom: 2px;
-    height: 40px;
+  .title {
+    margin-top: 10px;
+    margin-left: 10px;
+    text-align: start;
   }
-  .displayed__comments {
-    text-align: center;
+  .timestamp {
+    margin-top: 0px;
+    margin-left: 10px;
+    font-size: 15px;
+    text-align: start;
   }
-  .comment__input {
-    width: 80%;
+  .text {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 20px;
+    text-align: start;
   }
   .comments {
-    float: right;
+    text-align: end;
+    margin-right: 10px;
+    margin-top: 10px;
   }
   .likes {
-    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    text-align: start;
+    font-size: 15px;
   }
   .icon {
-    width: 15px;
-    margin: 16px;
-  }
-  .post__info {
-    background-color: #edebeb57;
-    height: 40px;
-    border: 2px solid #1f1e1e57;
+    width: 25px;
+    margin-left: 10px;
+    margin-top: 4px;
   }
   .post__likes {
     float: left;
@@ -127,23 +126,10 @@
     float: right;
     width: 80%;
   }
-  .post__title {
-    float: left;
-    width: 70%;
+  .displayed__comments {
+    text-align: center;
   }
-  .post__time {
-    float: right;
-    width: 30%;
-  }
-  .title {
-    float: left;
-    margin-left: 10px;
-    font-size: 15px;
-    font-weight: bold;
-  }
-  .timestamp {
-    font-size: 15px;
-    float: right;
-    margin-right: 10px;
+  .comment__input {
+    width: 80%;
   }
 </style>
