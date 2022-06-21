@@ -87,13 +87,11 @@ const firebase = initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export const resetPassword = async (email) => {
-  sendPasswordResetEmail(auth, email)
+  await sendPasswordResetEmail(auth, email)
   .then(() => {
-    return {response: "Password reset email sent"}
+    return true
   })
   .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode, errorMessage)
+    return error
   });
 }

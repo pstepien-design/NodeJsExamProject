@@ -13,6 +13,7 @@
     const fetchedPosts = await getPosts();
     numbetrOfPosts = fetchedPosts.length;
     post = fetchedPosts[id - 1];
+    console.log(post);
     comments = post.comments;
     console.log(post);
     if (id <= numbetrOfPosts && comments !== {}) {
@@ -23,6 +24,7 @@
 
 <div>
   {#if displayPost}
+  <div>
     <Post
       postedBy={post.postedBy}
       id={post.id}
@@ -33,7 +35,14 @@
       {comments}
       areCommentsVisible="true"
     />
+  </div>
   {:else}
     <h1>No post found, try again</h1>
   {/if}
 </div>
+<style>
+  div{
+    overflow-y: auto;
+    height: 100%;
+  }
+</style>

@@ -35,6 +35,7 @@ export async function addPost(title, text, postedBy) {
 export async function addComment(comment, postId){
   const token = getToken();
   const key = postId
+  console.log(key);
   const res = await fetch(`${get(serverUrl)}/posts/${postId}/comments`, {
     method: 'POST',
     body: JSON.stringify({
@@ -51,20 +52,18 @@ export async function addComment(comment, postId){
 }
 
 export async function getComments(postId){
-  const token = getToken();
   const key = postId
-  const res = await fetch(`${get(serverUrl)}/posts/${key}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      token, key
-    }),
+  const token = getToken();
+  const res = await fetch(`${get(serverUrl)}/posts/${key}/comments/${token}`, {
+    method: 'GET',
     headers: {
       'content-type': 'application/json',
     },
   });
   if (res.ok) {
     const json = await res.json();
-    return json.data.comments;
+    console.log(json)
+    return json.data;
   }
 }
 

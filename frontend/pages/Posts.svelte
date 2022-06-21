@@ -35,25 +35,11 @@
     userHasClicked(hasClicked);
     socket.emit('beerIncremented', { data: counter });
   }
-  let likes = [];
-  const getNumberOfLikes = async (postId) => {
-    let count = 0;
-    for (let value in posts) {
-      if (posts[value == postId]) {
-        for (let key in likes) {
-          ++count;
-        }
-      }
-    }
 
-    return count;
-  };
   let posts = [];
   onMount(async () => {
     const fetchedPosts = await getPosts();
-    const fetchedLikes = await getLikes();
     posts = fetchedPosts;
-    likes = fetchedLikes;
   });
 
   const handleClick = (post) => {
@@ -73,7 +59,7 @@
           title={post.title}
           text={post.text}
           timestamp={post.timestamp}
-          likes={getNumberOfLikes(post.id)}
+          likes={post.likes}
           comments={post.comments}
           areCommentsVisible="false"
         />

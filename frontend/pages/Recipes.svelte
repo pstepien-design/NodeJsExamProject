@@ -8,7 +8,7 @@
 
   const composeRecipes = async (cocktails) => {
     let newRecipes = [];
-    cocktails.forEach((cocktail) => {
+    await cocktails.forEach((cocktail) => {
       recipes.filter((element) => {
         if (element.name == cocktail.name) {
           newRecipes.push(element);
@@ -24,26 +24,26 @@
   });
 </script>
 
-<div class="Recipe_container">
+<div class="recipes_container">
   {#await getCocktails()}
     <p>...loading recipes</p>
   {:then}
     {#each composedRecipes as recipe}
-      <div class="Recipe_box">
-        <div>{recipe.name}</div>
-        <div>Glass type: {recipe.glass}</div>
-        <div>Category: {recipe.category}</div>
+      <div class="recipe_box">
+        <h1>{recipe.name}</h1>
+        <p><strong>Glass type: </strong> {recipe.glass}</p>
+        <p><strong>Category: </strong> {recipe.category}</p>
+        <h3>Ingredients</h3>
         {#each recipe.ingredients as ingredient}
           {#if ingredient.unit}
-            <div>Unit: {ingredient.unit || ''}</div>
-            <div>Amount: {ingredient.amount || ''}</div>
-            <div>Ingredint: {ingredient.ingredient || ''}</div>
+            <p>{ingredient.amount || ''}  {ingredient.unit || ''} {ingredient.ingredient || ''}</p>
             {#if ingredient.special}
-              <div>Special Ingredient: {ingredient.special || ''}</div>
+              <div><strong>Special Ingredient: </strong> {ingredient.special || ''}</div>
             {/if}
           {/if}
         {/each}
-        <div>Preparation: {recipe.preparation}</div>
+        <h3>Preparation</h3>
+        <p> {recipe.preparation}</p>
       </div>
     {/each}
   {:catch error}
@@ -52,18 +52,25 @@
 </div>
 
 <style>
-  .Recipe_container {
-    color: white;
-    background-color: black;
+  .recipes_container {
+    color: black;
+    background-color: white;
     overflow-y: auto;
     display: flex;
     flex-wrap: wrap;
-    height: 100%;
+    height: 85vh;
+    margin-bottom: 15px;
   }
 
-  .Recipe_box {
-    border-style: solid;
-    flex: 1 0 21%;
-    margin-bottom: 10%;
+  .recipe_box {
+    flex: 1 0 28%;
+    margin: 10px;
+    height: auto;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #D3D3D3;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #ababab;
   }
 </style>
