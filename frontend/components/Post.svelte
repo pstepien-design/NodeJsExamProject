@@ -75,24 +75,15 @@
 
 <style>
   .post {
-<<<<<<< HEAD
     background-color: #d9d9d9;
-=======
-    background-color: #233249;
     padding: 5px;
->>>>>>> 41a7ebd41ea1408136c3d97969e02f6c37d80d48
     margin: 20px;
     border-radius: 10px;
     overflow-y: auto;
-<<<<<<< HEAD
     display: block;
-    box-shadow: 5px 5px 5px #949494;
+    box-shadow: 0px 5px 5px #949494;
     color: #233249;
     padding: 15px;
-=======
-    color: white;
-    box-shadow: 0px -1px 4px 6px #233249;
->>>>>>> 41a7ebd41ea1408136c3d97969e02f6c37d80d48
   }
   .title {
     margin-top: 10px;

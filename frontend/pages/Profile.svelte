@@ -25,7 +25,7 @@
 <div class="profile_container">
   <h1 class="profile-welcome_title">Welcome to your profile page</h1>
   <h3 class="profile-welcome_title">
-    Here you can edit your first and last name, or request an email change
+    Here you can edit your first and last name
   </h3>
   <div class="user-info_box">
     {#await getUser()}
