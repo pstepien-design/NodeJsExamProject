@@ -1,11 +1,12 @@
 <script>
   import { onMount } from 'svelte';
   import { getToken } from '../stores/store';
-
   import { navigate } from 'svelte-navigator';
+
   const goToLogin = () => {
     navigate('/login');
   };
+
   const goToSignUp = () => {
     navigate('/signup');
   };

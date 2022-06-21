@@ -56,7 +56,6 @@
       body: JSON.stringify(authRequest),
     });
     if (!response.ok) {
-      console.log('oopsie whoopsie');
       return false;
     } else {
       return true;

@@ -9,22 +9,23 @@
   import { navigate } from 'svelte-navigator';
   import io from 'socket.io-client';
   import Post from '../components/Post.svelte';
-  import { getPosts} from '../service/PostService';
+  import { getPosts } from '../service/PostService';
   import ModalContent from '../components/ModalContent.svelte';
   import Modal from 'svelte-simple-modal';
 
   const socket = io('http://localhost:3000');
-  console.log(socket);
+
   let hasClicked;
   let counter = 30;
+
   socket.on('connect', async () => {
     const value = await getBeerValue();
     const user = await getUser();
-    /*  hasClicked = user.hasClicked */
-    hasClicked = false;
-    console.log(value.valueOfBeer);
+
+    hasClicked = user.hasClicked;
     counter = value.valueOfBeer;
   });
+
   socket.on('incrementBeer', async ({ data }) => {
     counter = counter * 1.1;
     await saveBeerValue(counter);

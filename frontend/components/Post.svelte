@@ -1,20 +1,22 @@
 <script>
-import { onMount } from 'svelte';
-
+  import { onMount } from 'svelte';
   import MdThumbUp from 'svelte-icons/md/MdThumbUp.svelte';
-  export let title, text, timestamp, likes, comments, areCommentsVisible, postedBy;
+  export let title,
+    text,
+    timestamp,
+    likes,
+    comments,
+    areCommentsVisible,
+    postedBy;
   import { addComment, getComments, getPosts } from '../service/PostService';
 
   let newComment;
   let id = window.location.pathname.replace('/post/', '');
   let post;
   let count = -1;
- 
 
   let commentsValues = Object.values(comments);
-  console.log('commentsValues', commentsValues);
   const getNumberOfComments = () => {
-    // console.log('komentarze', comments);
     for (let key in comments) {
       ++count;
     }
@@ -23,10 +25,8 @@ import { onMount } from 'svelte';
   const addNewComment = async () => {
     let postKey = post.id;
     const response = await addComment(newComment, postKey);
-    console.log('response',response)
     if (response !== null) {
-      const com = await getComments(postKey)
-      console.log('com', com)
+      const com = await getComments(postKey);
       commentsValues = Object.values(await getComments(postKey));
       newComment = '';
       ++count;
@@ -37,7 +37,7 @@ import { onMount } from 'svelte';
     const fetchedPosts = await getPosts();
     post = fetchedPosts[id - 1];
     getNumberOfComments();
-;  });
+  });
 </script>
 
 <div class="post">

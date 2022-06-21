@@ -6,16 +6,20 @@ export const serverUrl = writable('http://localhost:3000');
 export const accessToken = writable(
   sessionStorage.getItem('accessToken') || null
 );
+
 export function saveToken(token) {
   sessionStorage.setItem('accessToken', token);
   accessToken.set(sessionStorage.getItem('accessToken'));
 }
+
 export function getToken() {
   let token = '';
+
   accessToken.set(sessionStorage.getItem('accessToken'));
   accessToken.subscribe((value) => {
     token = value;
   });
+
   return token;
 }
 
@@ -32,12 +36,15 @@ export function saveRefreshToken(token) {
   sessionStorage.setItem('refreshToken', token);
   refreshToken.set(sessionStorage.getItem('refreshToken'));
 }
+
 export function getRefreshToken() {
   let token = '';
+
   refreshToken.set(sessionStorage.getItem('refreshToken'));
   refreshToken.subscribe((value) => {
     token = value;
   });
+
   return token;
 }
 
@@ -47,27 +54,33 @@ export function removeRefreshToken() {
 
 // User
 export const userId = writable(sessionStorage.getItem('userId') || null);
+
 export function saveUserId(id) {
   sessionStorage.setItem('userId', id);
   userId.set(sessionStorage.getItem('userId'));
 }
+
 export function getUserId() {
   let id = '';
+
   userId.set(sessionStorage.getItem('userId'));
   userId.subscribe((value) => {
     id = value;
   });
+
   return id;
 }
 
 export function removeUserId() {
   userId.set(sessionStorage.removeItem('userId'));
 }
+
 export const getUser = async () => {
   const authRequest = {
     token: getToken(),
     id: getUserId(),
   };
+
   const response = await fetch(
     `http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`,
     {
@@ -77,6 +90,7 @@ export const getUser = async () => {
       },
     }
   );
+
   if (response.ok) {
     const json = await response.json();
     const user = json.loggedUser;
@@ -95,11 +109,12 @@ export const updateUser = async (userFirstName, userLastName) => {
     token: getToken(),
     id: getUserId(),
   };
+
   const updatedUser = {
     firstName: userFirstName,
-    lastName: userLastName
-  }
-  
+    lastName: userLastName,
+  };
+
   const response = await fetch(
     `http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`,
     {
@@ -107,22 +122,23 @@ export const updateUser = async (userFirstName, userLastName) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body:
-        JSON.stringify(updatedUser),
+      body: JSON.stringify(updatedUser),
     }
   );
+
   if (response.ok) {
     const data = await response.json();
-    console.log("updated user" + data)
+
     return data;
   } else {
-    console.log(await response.json())
+    return "error";
   }
-}
+};
 
 // Cocktails
 export const getCocktails = async () => {
   const token = await getToken();
+
   const response = await fetch(`http://localhost:3000/cocktails/${token}`, {
     method: 'GET',
     headers: {
@@ -131,11 +147,11 @@ export const getCocktails = async () => {
   });
 
   if (response.ok) {
-    const cocktails = response.json()
-    return cocktails
-  }
+    const cocktails = response.json();
 
-}
+    return cocktails;
+  }
+};
 
 // theBeer
 export const beerValue = writable(sessionStorage.getItem('beerValue') || null);
@@ -158,7 +174,7 @@ export const saveBeerValue = async (value) => {
   });
 
   if (response.ok) {
-    return await response.json();
+    return response.json();
   }
 };
 
@@ -181,17 +197,21 @@ export const getBeerValue = async () => {
 export const userHasClicked = async (hasClicked) => {
   const user = await getUser();
   user.hasClicked = hasClicked;
-  const token = await getToken()
-  const response = await fetch(`http://localhost:3000/users/name/${user.id}/${token}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  })
+  const token = await getToken();
+  const response = await fetch(
+    `http://localhost:3000/users/name/${user.id}/${token}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    }
+  );
 
   if (response.ok) {
     const data = await response.json();
-    return data.hasClicked
+    
+    return data.hasClicked;
   }
 };

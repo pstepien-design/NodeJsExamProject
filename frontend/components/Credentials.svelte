@@ -38,7 +38,7 @@
       navigate('/posts');
       window.location.reload();
     } else {
-      console.log('something went wrong');
+      return "error";
     }
   };
 </script>

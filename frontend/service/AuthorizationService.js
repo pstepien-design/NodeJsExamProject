@@ -8,6 +8,7 @@ import { get } from 'svelte/store';
 
 export async function login(email, password) {
   let loginSuccessful = false;
+
   const res = await fetch(`${get(serverUrl)}/auth/login`, {
     method: 'POST',
     body: JSON.stringify({
@@ -18,6 +19,7 @@ export async function login(email, password) {
       'content-type': 'application/json',
     },
   });
+
   if (res.status === 200) {
     const json = await res.json();
     const token = json.accessToken;
@@ -28,6 +30,7 @@ export async function login(email, password) {
     saveUserId(id);
     loginSuccessful = true;
   }
+
   return loginSuccessful;
 }
 
@@ -44,11 +47,13 @@ export async function signup(email, password, firstName, lastName) {
       'content-type': 'application/json',
     },
   });
+
   const json = await res.json();
   const token = json.accessToken;
   const id = json.id;
+
   saveToken(token);
   saveUserId(id);
+
   return json;
 }
-

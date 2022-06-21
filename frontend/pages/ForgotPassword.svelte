@@ -15,7 +15,6 @@
   };
 
   const forgotPassword = async () => {
-    console.log(email);
     const response = await sendEmail(email);
     if (response) {
       displayNotifcation();

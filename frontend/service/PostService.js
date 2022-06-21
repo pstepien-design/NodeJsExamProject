@@ -3,20 +3,24 @@ import { getToken, serverUrl } from '../stores/store';
 
 export async function getPosts() {
   const token = getToken();
+
   const res = await fetch(`${get(serverUrl)}/get/posts/${token}`, {
     method: 'GET',
     headers: {
       'content-type': 'application/json',
     },
   });
+
   if (res.ok) {
     const json = await res.json();
+
     return json.data;
   }
 }
 
 export async function addPost(title, text, postedBy) {
   const token = getToken();
+
   const res = await fetch(`${get(serverUrl)}/posts`, {
     method: 'POST',
     body: JSON.stringify({
@@ -26,8 +30,10 @@ export async function addPost(title, text, postedBy) {
       'content-type': 'application/json',
     },
   });
+
   if (res.ok) {
     const json = await res.json();
+
     return json.data;
   }
 }
@@ -35,7 +41,7 @@ export async function addPost(title, text, postedBy) {
 export async function addComment(comment, postId){
   const token = getToken();
   const key = postId
-  console.log(key);
+
   const res = await fetch(`${get(serverUrl)}/posts/${postId}/comments`, {
     method: 'POST',
     body: JSON.stringify({
@@ -45,8 +51,10 @@ export async function addComment(comment, postId){
       'content-type': 'application/json',
     },
   });
+
   if (res.ok) {
     const json = await res.json();
+
     return json.data;
   }
 }
@@ -54,15 +62,17 @@ export async function addComment(comment, postId){
 export async function getComments(postId){
   const key = postId
   const token = getToken();
+
   const res = await fetch(`${get(serverUrl)}/posts/${key}/comments/${token}`, {
     method: 'GET',
     headers: {
       'content-type': 'application/json',
     },
   });
+
   if (res.ok) {
     const json = await res.json();
-    console.log(json)
+
     return json.data;
   }
 }
