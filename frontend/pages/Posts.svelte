@@ -36,7 +36,6 @@ const displayNotification = () => {
   socket.on('connect', async () => {
     const value = await getBeerValue();
     user = await getUser();
-
     hasClicked =  user.hasClicked;
     counter = value.valueOfBeer;
   });
@@ -58,6 +57,7 @@ const displayNotification = () => {
 
   let posts = [];
   onMount(async () => {
+    user = await getUser();
     const fetchedPosts = await getPosts();
     posts = fetchedPosts;
   });

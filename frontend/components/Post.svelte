@@ -76,12 +76,12 @@
 <style>
   .post {
     background-color: #d9d9d9;
-    padding: 5px;
     margin: 20px;
     border-radius: 10px;
-    overflow-y: auto;
     display: block;
     box-shadow: 0px 5px 5px #949494;
+    margin: 20px;
+    overflow-y: auto;
     color: #233249;
     padding: 15px;
   }
