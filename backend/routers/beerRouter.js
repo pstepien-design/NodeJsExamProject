@@ -25,7 +25,7 @@ beerRouter.get('/theBeer/:token', async (req, res) => {
       res.send({ valueOfBeer: valueOfBeer.value });
     }
   } catch (error) {
-    console.log(error);
+    return error;
   }
 });
 
@@ -56,7 +56,7 @@ beerRouter.patch('/theBeer', async (req, res) => {
       res.send({ valueOfBeer: valueOfBeer.value });
     }
   } catch (error) {
-    console.log(error);
+    return error;
   }
 });
 
