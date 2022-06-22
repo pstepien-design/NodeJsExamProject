@@ -32,10 +32,6 @@
     isAuthorized = false;
   };
 
-  const authChecker = async () => {
-    /* isAuthorized = await checkAuthorization(); */
-  };
-
   onMount(async () => {
     const user = await getUser();
     if (user !== null) {
@@ -44,25 +40,6 @@
     }
   });
 
-  const checkAuthorization = async (token) => {
-    const authRequest = {
-      refreshToken: getRefreshToken(),
-    };
-    const response = await fetch('http://localhost:3000/auth/refreshToken', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(authRequest),
-    });
-    if (!response.ok) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  authChecker();
 </script>
 
 <Router>

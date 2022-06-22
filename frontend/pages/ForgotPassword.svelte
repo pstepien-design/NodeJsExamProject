@@ -7,7 +7,7 @@
 
   const displayNotifcation = () => {
     addNotification({
-      text: 'The message to reset the password has been sent. Please check your email',
+      text: 'If the email exists within our system, an email has been sent. Please check your email',
       position: 'top-center',
       type: 'success',
       removeAfter: 3000,
