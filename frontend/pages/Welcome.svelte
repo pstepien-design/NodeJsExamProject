@@ -20,7 +20,7 @@
 
 <div class="welcome__container">
   <div class="credentials__container">
-    <h1>Welcome to this website</h1>
+    <h1>Welcome to a website about alcohol</h1>
     <h2>Login or sign up to continue</h2>
     <div class="buttons__container">
       <button on:click={goToLogin}>Login</button>

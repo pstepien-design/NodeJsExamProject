@@ -79,12 +79,12 @@
     <Route path="/" component={Welcome} />
     <Route path="/login" component={Login} />
     <Route path="/signup" component={Signup} />
-    <Route path="/profile" component={Profile} />
     <Route path="/forgotPassword" component={ForgotPassword} />
     <ProtectedRoute path="/posts" component={Posts} />
     <ProtectedRoute path="/post/:id" component={SinglePostPage} />
     <ProtectedRoute path="/cocktails/" component={Cocktails} />
     <ProtectedRoute path="/recipes/" component={Recipes} />
+    <ProtectedRoute path="/profile" component={Profile} />
   </nav>
 </Router>
 
