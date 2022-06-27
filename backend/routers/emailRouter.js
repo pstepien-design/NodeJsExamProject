@@ -6,14 +6,12 @@ const emailRouter = Router();
 emailRouter.get(`/sendEmail/:email`, async (req, res) => {
   const email = req.params.email;
   const response = await resetPassword(email);
-  console.log(response);
   res.send({ wasSent: response });
 });
 
 emailRouter.get(`/sendEmail/incrementBeer/:email` , async (req, res) => {
   const email = req.params.email;
   const response = await sendIncrementEmail(email)
-  console.log(response);
   res.send({ wasSent: response });
 })
 

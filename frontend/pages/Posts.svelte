@@ -60,7 +60,6 @@ const displayNotification = () => {
     user = await getUser();
     const fetchedPosts = await getPosts();
     posts = fetchedPosts;
-    console.log(user);
   });
 
   const handleClick = (post) => {
