@@ -13,22 +13,22 @@ cockRouter.get('/cocktails', async (req, res) => {
   }
 });
 
-cockRouter.get('/cocktails/:key', async (req, res) => {
-  const key = req.params.key;
+// cockRouter.get('/cocktails/:key', async (req, res) => {
+//   const key = req.params.key;
 
-  try {
-    const cocktail = await Cocktail.findById(key);
-    if (!cocktail) {
-      res.send({ data: "Cocktail not found" });
-      return;
-    }
+//   try {
+//     const cocktail = await Cocktail.findOne(key);
+//     if (!cocktail) {
+//       res.send({ data: "Cocktail not found" });
+//       return;
+//     }
 
-    res.send({ data: cocktail });
-  } catch (error) {
-    console.error("Unable to get cocktail", error);
-    res.sendStatus(500);
-  }
-});
+//     res.send({ data: cocktail });
+//   } catch (error) {
+//     console.error("Unable to get cocktail", error);
+//     res.sendStatus(500);
+//   }
+// });
 
 cockRouter.post('/cocktails', async (req, res) => {
   const { name, description } = req.body;
@@ -47,12 +47,12 @@ cockRouter.post('/cocktails', async (req, res) => {
   }
 });
 
-cockRouter.patch('/cocktails/:key', async (req, res) => {
-  const key = req.params.key;
+cockRouter.patch('/cocktails/:id', async (req, res) => {
+  const id = req.params.id;
   const { name, description } = req.body;
 
   try {
-    const cocktail = await Cocktail.findById(key);
+    const cocktail = await Cocktail.findById(id);
     if (!cocktail) {
       res.send({ data: "Cocktail not found" });
       return;
@@ -69,11 +69,11 @@ cockRouter.patch('/cocktails/:key', async (req, res) => {
   }
 });
 
-cockRouter.delete('/cocktails/:key', async (req, res) => {
-  const key = req.params.key;
+cockRouter.delete('/cocktails/:id', async (req, res) => {
+  const id = req.params.id;
 
   try {
-    const cocktail = await Cocktail.findByIdAndDelete(key);
+    const cocktail = await Cocktail.findByIdAndDelete(id);
     if (!cocktail) {
       res.send({ data: "Cocktail not found" });
       return;

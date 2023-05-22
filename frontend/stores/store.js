@@ -82,7 +82,7 @@ export const getUser = async () => {
   };
 
   const response = await fetch(
-    `http://localhost:3000/users/name/test`,
+    `http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`,
     {
       method: "GET",
       headers: {

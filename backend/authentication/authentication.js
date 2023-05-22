@@ -44,8 +44,9 @@ export const login = async (email, password) => {
       }
     );
 
-    return await response.json();
+    return response.json();
   } catch (error) {
+    console.log(error)
     return error;
   }
 };

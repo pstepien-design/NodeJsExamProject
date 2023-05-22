@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import User from '../entities/User.js';
-import fetch from 'node-fetch';
+import User from "../db/schema/user.schema.js";
 import {
   login,
   signup,
   refreshAuthToken,
 } from '../authentication/authentication.js';
 import dotenv from 'dotenv';
+
 dotenv.config({ path: './.env' });
 const authRouter = Router();
 
@@ -45,22 +45,18 @@ authRouter.post('/auth/login', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const response = await login(email, password);
-
+  
   try {
-    if (response.email !== undefined) {
-      const fetchedUser = await UserSchema.findOne({ email });
-      if (fetchedUser) {
+      const user = await User.findOne({ email: email });
+      if (user) {
         res.send({
           accessToken: response.idToken,
           refreshToken: response.refreshToken,
-          id: fetchedUser.id,
+          id: user.id,
         });
       } else {
         res.status(401).send({ error: 'User not found' });
       }
-    } else {
-      res.status(401).send(response);
-    }
   } catch (error) {
     res.send(error);
   }
