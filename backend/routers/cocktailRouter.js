@@ -1,133 +1,88 @@
-import Cocktail from '../entities/Cocktail.js';
-import fetch from 'node-fetch';
-import { Router } from 'express';
+import { Router } from "express";
+import Cocktail from "../db/schema/cocktail.schema.js";
+
 const cockRouter = Router();
 
-cockRouter.get('/cocktails/:token', async (req, res) => {
-  const token = req.params.token;
-
-  const response = await fetch(
-    'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/cocktails.json?auth=' +
-      token,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-
-  if (!response.ok) {
-    res.send('Unable to fetch cocktails');
-  } else {
-    const data = await response.json();
-    let cocktails = [];
-
-    for (const key in data) {
-      const obj = data[key];
-      cocktails.push(new Cocktail(obj.name, obj.description, obj.image));
-    }
+cockRouter.get('/cocktails', async (req, res) => {
+  try {
+    const cocktails = await Cocktail.find();
     res.send(cocktails);
+  } catch (error) {
+    console.error("Unable to fetch cocktails", error);
+    res.sendStatus(500);
   }
 });
 
-cockRouter.get('/cocktails/:key/:token', async (req, res) => {
-  const token = req.params.token;
+cockRouter.get('/cocktails/:key', async (req, res) => {
   const key = req.params.key;
 
-  const response = await fetch(
-    `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/cocktails/${key}/.json?auth=` +
-      token,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  try {
+    const cocktail = await Cocktail.findById(key);
+    if (!cocktail) {
+      res.send({ data: "Cocktail not found" });
+      return;
     }
-  );
 
-  if (!response.ok) {
-    res.send({ data: 'Unable to get cocktail' });
-  } else {
-    const data = await response.json();
-    res.send({ data: data });
+    res.send({ data: cocktail });
+  } catch (error) {
+    console.error("Unable to get cocktail", error);
+    res.sendStatus(500);
   }
 });
 
 cockRouter.post('/cocktails', async (req, res) => {
-  const cocktail = new Cocktail(req.body.name, req.body.desc);
-  const token = req.body.token;
+  const { name, description } = req.body;
 
-  const response = await fetch(
-    'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/cocktails.json?auth=' +
-      token,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cocktail),
-    }
-  );
+  const cocktail = new Cocktail({
+    name,
+    description,
+  });
 
-  if (!response.ok) {
-    res.send('Something was wrong with the request');
-  } else {
-    const data = await response.json();
-
-    // Creating an object in the database should return a unique name (id)
-    if (data.name !== undefined) {
-      res.send({ data: cocktail });
-    } else {
-      res.send({ data: 'Unable to create cocktail in the database' });
-    }
+  try {
+    await cocktail.save();
+    res.send({ data: cocktail });
+  } catch (error) {
+    console.error("Something was wrong with the request", error);
+    res.sendStatus(500);
   }
 });
 
 cockRouter.patch('/cocktails/:key', async (req, res) => {
-  const cocktail = new Cocktail(req.body.name, req.body.desc);
   const key = req.params.key;
-  const token = req.body.token;
+  const { name, description } = req.body;
 
-  const response = await fetch(
-    `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/cocktails/${key}/.json?auth=` +
-      token,
-    {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cocktail),
+  try {
+    const cocktail = await Cocktail.findById(key);
+    if (!cocktail) {
+      res.send({ data: "Cocktail not found" });
+      return;
     }
-  );
 
-  if (!response.ok) {
-    res.send({ data: 'Unable to patch cocktail' });
-  } else {
-    const data = await response.json();
-    res.send({ data: data });
+    cocktail.name = name;
+    cocktail.description = description;
+    await cocktail.save();
+
+    res.send({ data: cocktail });
+  } catch (error) {
+    console.error("Unable to patch cocktail", error);
+    res.sendStatus(500);
   }
 });
 
 cockRouter.delete('/cocktails/:key', async (req, res) => {
   const key = req.params.key;
-  const token = req.body.token;
 
-  const response = await fetch(
-    `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/cocktails/${key}/.json?auth=` +
-      token,
-    {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  try {
+    const cocktail = await Cocktail.findByIdAndDelete(key);
+    if (!cocktail) {
+      res.send({ data: "Cocktail not found" });
+      return;
     }
-  );
 
-  if (!response.ok) {
-    res.send({ data: 'Unable to delete cocktail' });
-  } else {
-    res.send({ data: 'Cocktail was deleted' });
+    res.send({ data: "Cocktail was deleted" });
+  } catch (error) {
+    console.error("Unable to delete cocktail", error);
+    res.sendStatus(500);
   }
 });
 

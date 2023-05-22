@@ -1,93 +1,51 @@
-import fetch from 'node-fetch';
-import User from '../entities/User.js';
-import { Router } from 'express';
+import { Router } from "express";
+import User from "../db/schema/user.schema.js";
+
 const userRouter = Router();
 
-userRouter.get('/users/name/:id/:token', async (req, res) => {
-  const token = req.params.token;
+userRouter.get('/users/name/:id', async (req, res) => {
   const id = req.params.id;
 
-  const response = await fetch(
-    'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users.json?auth=' +
-      token,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  try {
+    const user = await User.findOne({ id: id });
+    if (!user) {
+      res.send({ loggedUser: null });
+      return;
     }
-  );
 
-  if (!response.ok) {
-    res.send({ loggedUser: null });
-  } else {
-    const data = await response.json();
-    let user = null;
-
-    for (const key in data) {
-      const obj = data[key];
-      if (obj.id === id) {
-        user = new User(
-          obj.email,
-          obj.firstName,
-          obj.lastName,
-          obj.id,
-          obj.hasClicked
-        );
-      }
-    }
     res.send({ loggedUser: user });
+  } catch (error) {
+    console.error("Unable to fetch user", error);
+    res.sendStatus(500);
   }
 });
 
-// Updating user
-userRouter.patch('/users/name/:id/:token', async (req, res) => {
+userRouter.patch('/users/name/:id/', async (req, res) => {
   const hasClicked = req.body.hasClicked;
-  const token = req.params.token;
   const id = req.params.id;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
 
-  const response = await fetch(
-    'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users.json?auth=' +
-      token,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  try {
+    const user = await User.findOne({ id: id });
+    if (!user) {
+      res.send({ data: "User not found" });
+      return;
     }
-  );
 
-  if (!response.ok) {
-    console.log(await response.json());
-  } else {
-    const users = await response.json();
-    for (const key in users) {
-      if (id == users[key].id) {
-        users[key].hasClicked = hasClicked;
-        users[key].firstName = firstName;
-        users[key].lastName = lastName;
-
-        const response2 = await fetch(
-          `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users/${key}.json?auth=` +
-            token,
-          {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(users[key]),
-          }
-        );
-
-        if (!response2.ok) {
-          console.log(await response.json());
-        } else {
-          res.send(users[key]);
-        }
-      }
+    const updatedUser = {
+      ...user,
+      hasClicked: hasClicked,
+      firstNam: firstName, 
+      lastName: lastName,
     }
+
+    await user.save(updatedUser);
+
+    res.send(user);
+  } catch (error) {
+    console.error("Unable to update user", error);
+    res.sendStatus(500);
   }
 });
 
