@@ -21,28 +21,19 @@ authRouter.post('/auth/signup', async (req, res) => {
   try {
     if (response) {
       const hasClicked = false;
-      const user = new User(
+      const user = new User({
         email,
         firstName,
         lastName,
-        response.localId,
-        hasClicked
-      );
-      const createUser = await fetch(
-        'https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users.json?auth=' +
-          response.idToken,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(user),
-        }
-      );
-      if (!createUser.ok) {
-        res.status(response.error.code).send(response);
-      } else {
+        id: response.localId,
+        hasClicked,
+      });
+
+      try {
+        await user.save();
         res.send({ accessToken: response.idToken, id: response.localId });
+      } catch (error) {
+        res.status(500).send({ error: 'Unable to create user' });
       }
     }
   } catch (error) {
@@ -57,26 +48,15 @@ authRouter.post('/auth/login', async (req, res) => {
 
   try {
     if (response.email !== undefined) {
-      const fetchUsers = await fetch(
-        `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/users.json?auth=` +
-          response.idToken,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const fetchedUsers = await fetchUsers.json();
-      for (const key in fetchedUsers) {
-        const obj = fetchedUsers[key];
-        if (obj.email == req.body.email) {
-          res.send({
-            accessToken: response.idToken,
-            refreshToken: response.refreshToken,
-            id: obj.id,
-          });
-        }
+      const fetchedUser = await UserSchema.findOne({ email });
+      if (fetchedUser) {
+        res.send({
+          accessToken: response.idToken,
+          refreshToken: response.refreshToken,
+          id: fetchedUser.id,
+        });
+      } else {
+        res.status(401).send({ error: 'User not found' });
       }
     } else {
       res.status(401).send(response);
