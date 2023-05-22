@@ -2,6 +2,7 @@ import fetch from "node-fetch";
 import dotenv from "dotenv";
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+
 dotenv.config({ path: "./.env" });
 const API_KEY = process.env.API_KEY;
 
@@ -46,7 +47,6 @@ export const login = async (email, password) => {
 
     return response.json();
   } catch (error) {
-    console.log(error)
     return error;
   }
 };
@@ -61,6 +61,31 @@ export const refreshAuthToken = async (refreshToken) => {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+      }
+    );
+
+    if (!response.ok) {
+      return await response.json();
+    } else {
+      return await response.json();
+    }
+  } catch (error) {
+    return error;
+  }
+};
+
+export const verifyToken = async (token) => {
+  try {
+    const response = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          idToken: token,
+        }),
       }
     );
 
@@ -90,7 +115,7 @@ const auth = getAuth();
 export const resetPassword = async (email) => {
   let isSent;
   await sendPasswordResetEmail(auth, email)
-    .then(() => isSent = true)
-    .catch((error) => isSent = error);
-    return isSent;
+    .then(() => (isSent = true))
+    .catch((error) => (isSent = error));
+  return isSent;
 };

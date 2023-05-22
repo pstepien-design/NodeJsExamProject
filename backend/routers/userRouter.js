@@ -3,7 +3,7 @@ import User from "../db/schema/user.schema.js";
 
 const userRouter = Router();
 
-userRouter.get('/users/name/:id', async (req, res) => {
+userRouter.get("/users/name/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -20,7 +20,7 @@ userRouter.get('/users/name/:id', async (req, res) => {
   }
 });
 
-userRouter.patch('/users/name/:id/', async (req, res) => {
+userRouter.patch("/users/name/:id/", async (req, res) => {
   const hasClicked = req.body.hasClicked;
   const id = req.params.id;
   const firstName = req.body.firstName;
@@ -33,14 +33,12 @@ userRouter.patch('/users/name/:id/', async (req, res) => {
       return;
     }
 
-    const updatedUser = {
-      ...user,
-      hasClicked: hasClicked,
-      firstNam: firstName, 
-      lastName: lastName,
-    }
+    user.hasClicked = hasClicked || false;
+    user.firstName = firstName;
+    user.lastName = lastName;
 
-    await user.save(updatedUser);
+    console.log("userToUpdate", user);
+    await user.save();
 
     res.send(user);
   } catch (error) {

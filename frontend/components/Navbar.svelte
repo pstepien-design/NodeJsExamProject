@@ -13,7 +13,7 @@
   import ForgotPassword from '../pages/ForgotPassword.svelte';
   import MdPerson from 'svelte-icons/md/MdPerson.svelte';
   import {
-    removeToken,
+    removeAccessToken,
     removeRefreshToken,
     getRefreshToken,
     removeUserId,
@@ -25,7 +25,7 @@
   let loggedUser = '';
 
   const logOut = () => {
-    removeToken();
+    removeAccessToken();
     removeRefreshToken();
     removeUserId();
     authChecker();

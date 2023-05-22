@@ -1,17 +1,28 @@
 <script>
-  import { Route } from 'svelte-navigator';
+  import { Route, navigate } from 'svelte-navigator';
   import AccessDenied from './AccessDenied.svelte';
   import { onMount } from 'svelte';
-  import { getUser } from '../stores/store';
+  import { verifyToken } from '../service/AuthorizationService';
+  import { getAccessToken, removeUserId, removeRefreshToken, removeAccessToken } from '../stores/store';
 
   export let path, component;
 
   $: isAuthorized = false;
 
+
   onMount(async () => {
-    const user = await getUser();
-    if (user !== null) {
-      isAuthorized = true;
+    const token = getAccessToken();
+    if (token) {
+      const response = await verifyToken(token);
+      if(response && response.status === 200){
+        isAuthorized = true;
+      }
+      else{
+        removeUserId();
+        removeAccessToken();
+        removeRefreshToken();
+        navigate('/');
+      }
     }
   });
 </script>

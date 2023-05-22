@@ -1,13 +1,13 @@
-import { get } from 'svelte/store';
-import { getToken, serverUrl } from '../stores/store';
+import { get } from "svelte/store";
+import { getAccessToken, serverUrl } from "../stores/store";
 
 export async function getPosts() {
-  const token = getToken();
+  const token = getAccessToken();
 
   const res = await fetch(`${get(serverUrl)}/get/posts/${token}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
     },
   });
 
@@ -19,15 +19,18 @@ export async function getPosts() {
 }
 
 export async function addPost(title, text, postedBy) {
-  const token = getToken();
+  const token = getAccessToken();
 
   const res = await fetch(`${get(serverUrl)}/posts`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({
-      title, text, token, postedBy
+      title,
+      text,
+      token,
+      postedBy,
     }),
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
     },
   });
 
@@ -38,17 +41,19 @@ export async function addPost(title, text, postedBy) {
   }
 }
 
-export async function addComment(comment, postId){
-  const token = getToken();
-  const key = postId
+export async function addComment(comment, postId) {
+  const token = getAccessToken();
+  const key = postId;
 
   const res = await fetch(`${get(serverUrl)}/posts/${postId}/comments`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({
-      token, comment, key
+      token,
+      comment,
+      key,
     }),
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
     },
   });
 
@@ -59,14 +64,14 @@ export async function addComment(comment, postId){
   }
 }
 
-export async function getComments(postId){
-  const key = postId
-  const token = getToken();
+export async function getComments(postId) {
+  const key = postId;
+  const token = getAccessToken();
 
   const res = await fetch(`${get(serverUrl)}/posts/${key}/comments/${token}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
     },
   });
 
@@ -76,5 +81,3 @@ export async function getComments(postId){
     return json.data;
   }
 }
-
-

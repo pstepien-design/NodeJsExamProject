@@ -18,7 +18,7 @@
   });
 
   const handleOnSubmit = async () => {
-    updateUser(userFirstName, userLastName);
+    await updateUser(userFirstName, userLastName);
   };
 </script>
 

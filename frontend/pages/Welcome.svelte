@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { getToken } from '../stores/store';
+  import { getAccessToken } from '../stores/store';
   import { navigate } from 'svelte-navigator';
 
   const goToLogin = () => {
@@ -12,7 +12,7 @@
   };
 
   onMount(() => {
-    if (getToken()) {
+    if (getAccessToken()) {
       navigate('/posts');
     }
   });

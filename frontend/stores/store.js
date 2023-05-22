@@ -12,7 +12,7 @@ export function saveToken(token) {
   accessToken.set(sessionStorage.getItem("accessToken"));
 }
 
-export function getToken() {
+export function getAccessToken() {
   let token = "";
 
   accessToken.set(sessionStorage.getItem("accessToken"));
@@ -23,7 +23,7 @@ export function getToken() {
   return token;
 }
 
-export function removeToken() {
+export function removeAccessToken() {
   accessToken.set(sessionStorage.removeItem("accessToken"));
 }
 
@@ -76,55 +76,42 @@ export function removeUserId() {
 }
 
 export const getUser = async () => {
-  const authRequest = {
-    token: getToken(),
-    id: getUserId(),
-  };
+  const id = getUserId();
 
-  const response = await fetch(
-    `http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`,
-    {
+  if (id) {
+    const response = await fetch(`http://localhost:3000/users/name/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-    }
-  );
+    });
 
-  if (response.ok) {
-    const json = await response.json();
-    const user = json.loggedUser;
-    if (user !== null) {
-      return user;
-    } else {
-      return null;
+    if (response.ok) {
+      const json = await response.json();
+      const user = json.loggedUser;
+      if (user !== null) {
+        return user;
+      }
     }
-  } else {
-    return null;
   }
+  return null;
 };
 
 export const updateUser = async (userFirstName, userLastName) => {
-  const authRequest = {
-    token: getToken(),
-    id: getUserId(),
-  };
+  const id = getUserId();
 
   const updatedUser = {
     firstName: userFirstName,
     lastName: userLastName,
   };
 
-  const response = await fetch(
-    `http://localhost:3000/users/name/${authRequest.id}/${authRequest.token}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedUser),
-    }
-  );
+  const response = await fetch(`http://localhost:3000/users/name/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedUser),
+  });
 
   if (response.ok) {
     const data = await response.json();
@@ -137,7 +124,7 @@ export const updateUser = async (userFirstName, userLastName) => {
 
 // Cocktails
 export const getCocktails = async () => {
-  const token = await getToken();
+  const token = await getAccessToken();
 
   const response = await fetch(`http://localhost:3000/cocktails/${token}`, {
     method: "GET",
@@ -195,7 +182,7 @@ export const getBeerValue = async () => {
 export const userHasClicked = async (hasClicked) => {
   const user = await getUser();
   user.hasClicked = hasClicked;
-  const token = await getToken();
+  const token = await getAccessToken();
   const response = await fetch(
     `http://localhost:3000/users/name/${user.id}/${token}`,
     {
