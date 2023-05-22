@@ -1,62 +1,42 @@
-import fetch from 'node-fetch';
-import { Router } from 'express';
-const beerRouter = Router();
-const key = process.env.BEER_KEY;
+import express from "express";
+import Beer from "../db/schema/beer.schema.js";
 
-beerRouter.get('/theBeer/:token', async (req, res) => {
-  const token = req.params.token;
+const beerRouter = express.Router();
 
+beerRouter.get("/theBeer/:token", async (req, res) => {
   try {
-    const response = await fetch(
-      `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/theBeer/${key}.json?auth=` +
-        token,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    if (!response.ok) {
-      const data = await response.json();
-      res.send({ error: data.error });
-    } else {
-      const valueOfBeer = await response.json();
-      res.send({ valueOfBeer: valueOfBeer.value });
+    const beer = await Beer.findOne();
+    if (!beer) {
+      res.send({ error: "Beer not found" });
+      return;
     }
+
+    res.send({ valueOfBeer: beer.value });
   } catch (error) {
-    console.log(error);
+    console.error("Unable to get the beer", error);
+    res.sendStatus(500);
   }
 });
 
-beerRouter.patch('/theBeer', async (req, res) => {
-  const token = req.body.token;
+beerRouter.patch("/theBeer", async (req, res) => {
   const value = req.body.value;
-  const beer = {
-    value: value,
-  };
-  try {
-    const response = await fetch(
-      `https://nodejs-examproject-default-rtdb.europe-west1.firebasedatabase.app/theBeer/${key}.json?auth=` +
-        token,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(beer),
-      }
-    );
 
-    if (!response.ok) {
-      const data = await response.json();
-      res.send({ error: data.error });
+  console.log("value", value);
+
+  try {
+    const beer = await Beer.findOne();
+    if (!beer) {
+      const newBeer = new Beer({ value });
+      await newBeer.save();
+      res.send({ valueOfBeer: newBeer.value });
     } else {
-      const valueOfBeer = await response.json();
-      res.send({ valueOfBeer: valueOfBeer.value });
+      beer.value = value;
+      await beer.save();
+      res.send({ valueOfBeer: beer.value });
     }
   } catch (error) {
-    console.log(error);
+    console.error("Unable to update the beer", error);
+    res.sendStatus(500);
   }
 });
 

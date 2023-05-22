@@ -77,8 +77,4 @@ postRouter.delete("/posts/:key", async (req, res) => {
   }
 });
 
-// Comments routes
-
-// Modify the comments routes in a similar way
-
 export default postRouter;
