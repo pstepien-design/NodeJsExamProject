@@ -6,17 +6,16 @@
     userHasClicked,
   } from '../stores/store';
   import { navigate } from 'svelte-navigator';
-  import io from 'socket.io-client';
   import Post from '../components/Post.svelte';
   import { getPosts } from '../service/PostService';
   import ModalContent from '../components/ModalContent.svelte';
   import Modal from 'svelte-simple-modal';
-  import {sendBeerEmail} from '../service/EmailService'
+  import { sendBeerEmail } from '../service/EmailService';
   import { getNotificationsContext } from 'svelte-notifications';
 
-const { addNotification } = getNotificationsContext();
+  const { addNotification } = getNotificationsContext();
 
-const displayNotification = () => {
+  const displayNotification = () => {
     addNotification({
       text: 'Thank you for incrementing the beer, we sent you an email with the confirmation',
       position: 'top-center',
@@ -24,34 +23,31 @@ const displayNotification = () => {
       removeAfter: 3000,
     });
   };
-  
-
-  const socket = io('http://localhost:3000');
 
   let hasClicked;
   let counter = 30;
   let user;
 
-  socket.on('connect', async () => {
-    const value = await getBeerValue();
+  // socket.on('connect', async () => {
+  //   const value = await getBeerValue();
 
-    hasClicked =  user.hasClicked;
-    counter = value.valueOfBeer;
-  });
+  //   hasClicked = user.hasClicked;
+  //   counter = value.valueOfBeer;
+  // });
 
-  socket.on('incrementBeer', async ({ data }) => {
-    counter = counter * 1.1;
-    await saveBeerValue(counter);
-  });
+  // socket.on('incrementBeer', async ({ data }) => {
+  //   counter = counter * 1.1;
+  //   await saveBeerValue(counter);
+  // });
 
   async function incrementBeer(event) {
-    hasClicked = true;
-    userHasClicked(hasClicked);
-    socket.emit('beerIncremented', { data: counter });
-    const response = await sendBeerEmail(user.email);
-    if(response){
-      displayNotification();
-    }
+    // hasClicked = true;
+    // userHasClicked(hasClicked);
+    // socket.emit('beerIncremented', { data: counter });
+    // const response = await sendBeerEmail(user.email);
+    // if (response) {
+    //   displayNotification();
+    // }
   }
 
   let posts = [];
@@ -65,50 +61,52 @@ const displayNotification = () => {
     user = await getUser();
     const fetchedPosts = await getPosts();
     posts = fetchedPosts;
-  }
+  };
 </script>
 
 <div class="page_container">
   {#await loadPostsPage()}
-  <p>Loading ...</p>
-{:then}
-  <Modal 
-  styleBg={{ backgroundColor: 'rgb(0 0 0 / 15%) 0px 10px 10px 10px' }}
-  styleWindow={{ boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.15)', backgroundColor: '#233249', color: 'white' }}
-
-  ><ModalContent /></Modal>
-  <div class="column_left">
-    <h1 class="text_shadow">POSTS</h1>
-    {#each posts as post}
-      <div on:click={handleClick(post)}>
-        <Post
-          postedBy={post.postedBy}
-          title={post.title}
-          text={post.text}
-          timestamp={post.timestamp}
-          likes={post.likes}
-          comments={post.comments}
-          areCommentsVisible="false"
-        />
-      </div>
-    {/each}
-  </div>
-  <div class="column_right">
-    <div class="mug-container">
-      <div class="mug">
-        <div class="beer" style="height: {counter}px; " />
-      </div>
-      {#if hasClicked !== true}
-        <button class="beer__increment__button" on:click={incrementBeer}
-          >Click to increment beer!</button
-        >
-      {/if}
+    <p>Loading ...</p>
+  {:then}
+    <Modal
+      styleBg={{ backgroundColor: 'rgb(0 0 0 / 15%) 0px 10px 10px 10px' }}
+      styleWindow={{
+        boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.15)',
+        backgroundColor: '#233249',
+        color: 'white',
+      }}><ModalContent /></Modal
+    >
+    <div class="column_left">
+      <h1 class="text_shadow">POSTS</h1>
+      {#each posts as post}
+        <div on:click={handleClick(post)}>
+          <Post
+            postedBy={post.postedBy}
+            title={post.title}
+            text={post.text}
+            timestamp={post.timestamp}
+            likes={post.likes}
+            comments={post.comments}
+            areCommentsVisible="false"
+          />
+        </div>
+      {/each}
     </div>
-  </div>
+    <div class="column_right">
+      <div class="mug-container">
+        <div class="mug">
+          <div class="beer" style="height: {counter}px; " />
+        </div>
+        {#if hasClicked !== true}
+          <button class="beer__increment__button" on:click={incrementBeer}
+            >Click to increment beer!</button
+          >
+        {/if}
+      </div>
+    </div>
   {:catch error}
-  <p style="color: red">Error! Try again</p>
+    <p style="color: red">Error! Try again</p>
   {/await}
-
 </div>
 
 <style>
@@ -167,7 +165,7 @@ const displayNotification = () => {
     margin-top: 20px;
   }
 
-  .text_shadow{
+  .text_shadow {
     text-shadow: 1px 1px;
   }
 </style>
