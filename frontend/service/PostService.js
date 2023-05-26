@@ -4,7 +4,7 @@ import { getAccessToken, serverUrl } from "../stores/store";
 export async function getPosts() {
   const token = getAccessToken();
 
-  const res = await fetch(`${get(serverUrl)}/get/posts/${token}`, {
+  const res = await fetch(`${get(serverUrl)}/get/posts`, {
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -48,11 +48,9 @@ export async function addComment(comment, postId) {
   const key = postId;
 
   const res = await fetch(`${get(serverUrl)}/posts/${postId}/comments`, {
-    method: "POST",
+    method: "PATCH",
     body: JSON.stringify({
-      token,
-      comment,
-      key,
+      comment: comment,
     }),
     headers: {
       "content-type": "application/json",
@@ -71,7 +69,7 @@ export async function getComments(postId) {
   const key = postId;
   const token = getAccessToken();
 
-  const res = await fetch(`${get(serverUrl)}/posts/${key}/comments/${token}`, {
+  const res = await fetch(`${get(serverUrl)}/posts/${key}`, {
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -81,7 +79,8 @@ export async function getComments(postId) {
 
   if (res.ok) {
     const json = await res.json();
+    console.log(json);
 
-    return json.data;
+    return json.data.comments;
   }
 }

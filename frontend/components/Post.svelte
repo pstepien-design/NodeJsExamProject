@@ -13,21 +13,22 @@
   let newComment;
   let id = window.location.pathname.replace("/post/", "");
   let post;
-  let count = -1;
+  let count = 0;
 
   let commentsValues = Object.values(comments);
   const getNumberOfComments = () => {
-    for (let key in comments) {
+    for (let comment of comments) {
       ++count;
     }
   };
 
   const addNewComment = async () => {
-    let postKey = post.id;
+    let postKey = post._id;
     const response = await addComment(newComment, postKey);
     if (response !== null) {
       const com = await getComments(postKey);
-      commentsValues = Object.values(await getComments(postKey));
+      commentsValues = await getComments(postKey);
+      console.log(commentsValues);
       newComment = "";
       ++count;
     }
@@ -37,6 +38,7 @@
     const fetchedPosts = await getPosts();
     post = fetchedPosts[id - 1];
     getNumberOfComments();
+
   });
 </script>
 
@@ -45,7 +47,7 @@
   <p class="timestamp">{timestamp} by {postedBy}</p>
   <p class="text">{text}</p>
     <div class="post__likes">
-      <p class="likes">{likes}</p>
+      <p class="likes">{likes.length}</p>
       <div class="icon">
         <MdThumbUp />
       </div>
