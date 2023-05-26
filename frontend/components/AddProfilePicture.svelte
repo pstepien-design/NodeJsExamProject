@@ -1,31 +1,27 @@
 <script>
   import { getContext } from 'svelte';
-  import { getAccessToken, getUser } from '../stores/store.js';
-  import { onMount } from 'svelte';
+  import { getAccessToken } from '../stores/store.js';
 
   const { close } = getContext('simple-modal');
 
-  let fileinput;
+  let image;
 	
 	const onFileSelected = (e) => {
-  let image = e.target.files[0];
-  console.log('image', image);
+  image = e.target.files[0];
   };
 
 
-  onMount(async () => {
-    user = await getUser();
-  });
-
   const submitImage = async () => {
+    const imageToUpload = new FormData();
+    imageToUpload.append('profilePicture', image);
+
     const token = getAccessToken();
     const response = await fetch('http://localhost:3000/users/upload-pb', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      enctype: "multipart/form-data"
+      body: imageToUpload,
     });
     if (!response.ok) {
      throw new Error('Something went wrong');
@@ -40,7 +36,7 @@
 <h1>Add profile picture !</h1>
 <form on:submit|preventDefault={submitImage} class="form">
   <div class="container">
-    <input name="profilePicture" type="file" accept=".jpg, .jpeg, .png" on:change={(e)=>onFileSelected(e)} bind:this={fileinput} >
+    <input name="profilePicture" type="file" accept=".jpg, .jpeg, .png" on:change={(e)=>onFileSelected(e)}>
     <button class="modal_button" type="submit">Add profile picture</button>
   </div>
 </form>
