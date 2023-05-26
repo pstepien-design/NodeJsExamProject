@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const beerSchema = new mongoose.Schema({
   value: Number,
 });
 
-const Beer = mongoose.model("Beer", beerSchema);
+const Beer = mongoose.model('Beer', beerSchema);
 
 export default Beer;

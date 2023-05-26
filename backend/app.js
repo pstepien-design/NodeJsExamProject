@@ -37,6 +37,8 @@ app.use(express.static(path.resolve('../frontend/public')));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+import postRouter from './routers/postRouter.js';
+app.use(postRouter);
 
 import authRouter from './routers/authRouter.js';
 app.use(authRouter);
@@ -46,9 +48,6 @@ app.use(beerRouter);
 
 import cockRouter from './routers/cocktailRouter.js';
 app.use(cockRouter);
-
-import postRouter from './routers/postRouter.js';
-app.use(postRouter);
 
 import userRouter from './routers/userRouter.js';
 app.use(userRouter);
