@@ -1,14 +1,19 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const postSchema = new mongoose.Schema({
-  title: String,
-  text: String,
-  timestamp: Date,
-  comments: [String],
-  likes: [String],
-  postedBy: String,
-});
+const postSchema = new mongoose.Schema(
+  {
+    title: String,
+    text: String,
+    timestamp: Date,
+    comments: [String],
+    likes: [String],
+    postedBy: String,
+  },
+  {
+    versionKey: false,
+  }
+);
 
-const Post = mongoose.model("Post", postSchema);
+const Post = mongoose.model('Post', postSchema);
 
 export default Post;
