@@ -27,7 +27,6 @@ export async function addPost(title, text, postedBy) {
     body: JSON.stringify({
       title,
       text,
-      token,
       postedBy,
     }),
     headers: {
