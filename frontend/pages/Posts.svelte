@@ -10,7 +10,6 @@
   import { getPosts } from '../service/PostService';
   import ModalContent from '../components/ModalContent.svelte';
   import Modal from 'svelte-simple-modal';
-  import { sendBeerEmail } from '../service/EmailService';
   import { getNotificationsContext } from 'svelte-notifications';
 
   const { addNotification } = getNotificationsContext();
@@ -76,7 +75,7 @@
         boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.15)',
         backgroundColor: '#233249',
         color: 'white',
-      }}><ModalContent /></Modal
+      }}><ModalContent text={"Add new post"} action={"ADD_POST"}/></Modal
     >
     <div class="column_left">
       <h1 class="text_shadow">POSTS</h1>

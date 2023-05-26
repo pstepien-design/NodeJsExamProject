@@ -1,6 +1,8 @@
 <script>
   import { getUser, updateUser } from '../stores/store';
   import SvelteTooltip from 'svelte-tooltip';
+  import ModalContent from '../components/ModalContent.svelte';
+  import Modal from 'svelte-simple-modal';
 
   let user;
   let userFirstName;
@@ -30,6 +32,14 @@
     {#await loadProfilePage()}
       <p>...loading user profile</p>
     {:then}
+    <Modal
+      styleBg={{ backgroundColor: 'rgb(0 0 0 / 15%) 0px 10px 10px 10px' }}
+      styleWindow={{
+        boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.15)',
+        backgroundColor: '#233249',
+        color: 'white',
+      }}><ModalContent text="Add profile picture" action="PROFILE_PICTURE"/></Modal
+    >
       <form on:submit={handleOnSubmit}>
         <div class="profile_titles">First Name</div>
         <input type="text" id="firstName" bind:value={userFirstName} />
