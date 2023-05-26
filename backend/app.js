@@ -4,13 +4,35 @@ import path from "path";
 import { Server } from "socket.io";
 import cors from "cors";
 import session from "express-session";
-import { verifyTokenMiddleware } from "./authentication/verify-token-middleware.js";
+import helmet from "helmet";
 
 import { resetHasClicked } from "./schedules/hasClicked.js";
 import { connectToDB } from "./db/connection/connect-to-db.js";
 
 const app = express();
 
+// Setting content security policy to restrict execution of scripts
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+    },
+  })
+);
+
+const checkOriginAndRefererHeaders = (req, res, next) => {
+  if (req.method === "POST") {
+    const origin = req.headers.origin;
+    const referer = req.headers.referer;
+
+    if (origin && referer !== "http://localhost:8080/") {
+      return res.status(403).json({ error: "Invalid Origin header" });
+    }
+  }
+  next();
+};
+
+app.use(checkOriginAndRefererHeaders);
 app.use(cors());
 
 app.use(express.static(path.resolve("../frontend/public")));

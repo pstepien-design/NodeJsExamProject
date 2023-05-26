@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import {
     getBeerValue,
     saveBeerValue,
@@ -56,19 +55,23 @@ const displayNotification = () => {
   }
 
   let posts = [];
-  onMount(async () => {
-    user = await getUser();
-    const fetchedPosts = await getPosts();
-    posts = fetchedPosts;
-  });
 
   const handleClick = (post) => {
     const id = posts.indexOf(post) + 1;
     navigate(`/post/${id}`);
   };
+
+  const loadPostsPage = async () => {
+    user = await getUser();
+    const fetchedPosts = await getPosts();
+    posts = fetchedPosts;
+  }
 </script>
 
 <div class="page_container">
+  {#await loadPostsPage()}
+  <p>Loading ...</p>
+{:then}
   <Modal 
   styleBg={{ backgroundColor: 'rgb(0 0 0 / 15%) 0px 10px 10px 10px' }}
   styleWindow={{ boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.15)', backgroundColor: '#233249', color: 'white' }}
@@ -102,6 +105,10 @@ const displayNotification = () => {
       {/if}
     </div>
   </div>
+  {:catch error}
+  <p style="color: red">Error! Try again</p>
+  {/await}
+
 </div>
 
 <style>

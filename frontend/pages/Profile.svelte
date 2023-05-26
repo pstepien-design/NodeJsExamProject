@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import { getUser, updateUser } from '../stores/store';
   import SvelteTooltip from 'svelte-tooltip';
 
@@ -9,13 +8,13 @@
   let userEmail;
   let userId;
 
-  onMount(async () => {
+  const loadProfilePage = async () => {
     user = await getUser();
     userFirstName = user.firstName;
     userLastName = user.lastName;
     userEmail = user.email;
     userId = user.id;
-  });
+  };
 
   const handleOnSubmit = async () => {
     await updateUser(userFirstName, userLastName);
@@ -28,7 +27,7 @@
     Here you can edit your first and last name, or request an email change
   </h3>
   <div class="user-info_box">
-    {#await getUser()}
+    {#await loadProfilePage()}
       <p>...loading user profile</p>
     {:then}
       <form on:submit={handleOnSubmit}>
@@ -51,7 +50,7 @@
         </div>
       </form>
     {:catch error}
-      <p style="color: red">{error.message}</p>
+      <p style="color: red">Error! Try again</p>
     {/await}
   </div>
 </div>

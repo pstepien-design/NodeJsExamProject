@@ -133,7 +133,7 @@ export const updateUser = async (userFirstName, userLastName) => {
 export const getCocktails = async () => {
   const token = getAccessToken();
 
-  const response = await fetch(`http://localhost:3000/cocktails/${token}`, {
+  const response = await fetch(`http://localhost:3000/cocktails`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

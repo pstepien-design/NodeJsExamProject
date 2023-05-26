@@ -9,6 +9,13 @@
 
   $: isAuthorized = false;
 
+  const logout = () => {
+    removeUserId();
+        removeAccessToken();
+        removeRefreshToken();
+        navigate('/');
+  }
+
 
   onMount(async () => {
     const token = getAccessToken();
@@ -18,11 +25,11 @@
         isAuthorized = true;
       }
       else{
-        removeUserId();
-        removeAccessToken();
-        removeRefreshToken();
-        navigate('/');
+       logout();
       }
+    }
+    else{
+      logout();
     }
   });
 </script>

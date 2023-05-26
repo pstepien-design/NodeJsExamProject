@@ -41,7 +41,6 @@ userRouter.patch("/users/name/:id/", async (req, res) => {
     user.firstName = firstName;
     user.lastName = lastName;
 
-    console.log("userToUpdate", user);
     await user.save();
 
     res.send(user);
