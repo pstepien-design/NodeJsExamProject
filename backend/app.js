@@ -40,13 +40,16 @@ const checkOriginAndRefererHeaders = (req, res, next) => {
   next();
 };
 
-app.use(checkOriginAndRefererHeaders);
+// app.use(checkOriginAndRefererHeaders);
 app.use(cors());
 
 app.use(express.static(path.resolve('../frontend/public')));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+import userRouter from './routers/userRouter.js';
+app.use(userRouter);
+
 import postRouter from './routers/postRouter.js';
 app.use(postRouter);
 
@@ -58,9 +61,6 @@ app.use(beerRouter);
 
 import cockRouter from './routers/cocktailRouter.js';
 app.use(cockRouter);
-
-import userRouter from './routers/userRouter.js';
-app.use(userRouter);
 
 import emailRouter from './routers/emailRouter.js';
 app.use(emailRouter);
