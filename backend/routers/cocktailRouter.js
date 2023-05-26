@@ -1,9 +1,12 @@
 import { Router } from "express";
 import Cocktail from "../db/schema/cocktail.schema.js";
+import { verifyTokenMiddleware } from "../authentication/verify-token-middleware.js";
 
 const cockRouter = Router();
 
-cockRouter.get('/cocktails', async (req, res) => {
+cockRouter.use(verifyTokenMiddleware);
+
+cockRouter.get("/cocktails", async (req, res) => {
   try {
     const cocktails = await Cocktail.find();
     res.send(cocktails);
@@ -30,7 +33,7 @@ cockRouter.get('/cocktails', async (req, res) => {
 //   }
 // });
 
-cockRouter.post('/cocktails', async (req, res) => {
+cockRouter.post("/cocktails", async (req, res) => {
   const { name, description } = req.body;
 
   const cocktail = new Cocktail({
@@ -47,7 +50,7 @@ cockRouter.post('/cocktails', async (req, res) => {
   }
 });
 
-cockRouter.patch('/cocktails/:id', async (req, res) => {
+cockRouter.patch("/cocktails/:id", async (req, res) => {
   const id = req.params.id;
   const { name, description } = req.body;
 
@@ -69,7 +72,7 @@ cockRouter.patch('/cocktails/:id', async (req, res) => {
   }
 });
 
-cockRouter.delete('/cocktails/:id', async (req, res) => {
+cockRouter.delete("/cocktails/:id", async (req, res) => {
   const id = req.params.id;
 
   try {

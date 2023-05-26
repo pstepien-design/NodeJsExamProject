@@ -1,15 +1,19 @@
 <script>
   import Cocktails from '../components/Cocktails.svelte';
   import { getCocktails } from '../stores/store.js';
-  import { onMount } from 'svelte';
+
   let cocktails = [];
-  onMount(async () => {
+
+  const loadCocktailsPage = async () => {
     const fetchedCocktails = await getCocktails();
     cocktails = fetchedCocktails;
-  });
+  }
 </script>
 
 <div class="cocktail_container">
+  {#await loadCocktailsPage()}
+    <p>Loading ...</p>
+  {:then}
   {#each cocktails as cocktail}
     <div class="cocktail_box">
       <Cocktails
@@ -19,6 +23,9 @@
       />
     </div>
   {/each}
+  {:catch error}
+  <p style="color: red">Error! Try again</p>
+{/await}
 </div>
 
 <style>

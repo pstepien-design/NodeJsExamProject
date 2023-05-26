@@ -1,7 +1,6 @@
 <script>
   import recipes from '../public/recipes/recipes.js';
   import { getCocktails } from '../stores/store.js';
-  import { onMount } from 'svelte';
 
   let cocktails = [];
   let composedRecipes = [];
@@ -19,15 +18,15 @@
     return newRecipes;
   };
 
-  onMount(async () => {
+  const loadCocktailsPage = async () => {
     cocktails = await getCocktails();
-    composedRecipes = await composeRecipes(cocktails);
-  });
+    composedRecipes = await composeRecipes(cocktails); 
+  }
 </script>
 
 <div class="recipes_container">
-  {#await getCocktails()}
-    <p>...loading recipes</p>
+  {#await loadCocktailsPage()}
+    <p>Loading ...</p>
   {:then}
     {#each composedRecipes as recipe}
       <div class="recipe_box">
@@ -48,7 +47,7 @@
       </div>
     {/each}
   {:catch error}
-    <p style="color: red">{error.message}</p>
+    <p style="color: red">Error! Try again</p>
   {/await}
 </div>
 

@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import Post from '../components/Post.svelte';
   import { getPosts } from '../service/PostService';
 
@@ -9,7 +8,7 @@
   let numbetrOfPosts;
   let displayPost = false;
 
-  onMount(async () => {
+  const loadingSinglePost = async() => {
     const fetchedPosts = await getPosts();
     numbetrOfPosts = fetchedPosts.length;
     post = fetchedPosts[id - 1];
@@ -17,10 +16,13 @@
     if (id <= numbetrOfPosts && comments !== {}) {
       displayPost = true;
     }
-  });
+  }
 </script>
 
 <div>
+  {#await loadingSinglePost()}
+  <p>Loading ...</p>
+{:then}
   {#if displayPost}
     <div>
       <Post
@@ -37,6 +39,9 @@
   {:else}
     <h1>No post found, try again</h1>
   {/if}
+  {:catch error}
+  <p style="color: red">Error! Try again</p>
+{/await}
 </div>
 
 <style>
