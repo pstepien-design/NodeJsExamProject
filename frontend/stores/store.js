@@ -77,12 +77,17 @@ export function removeUserId() {
 
 export const getUser = async () => {
   const id = getUserId();
+  const token = getAccessToken();
+
+  console.log("id", id);
+  console.log("token", token);
 
   if (id) {
     const response = await fetch(`http://localhost:3000/users/name/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -99,6 +104,7 @@ export const getUser = async () => {
 
 export const updateUser = async (userFirstName, userLastName) => {
   const id = getUserId();
+  const token = getAccessToken();
 
   const updatedUser = {
     firstName: userFirstName,
@@ -109,6 +115,7 @@ export const updateUser = async (userFirstName, userLastName) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(updatedUser),
   });
@@ -124,12 +131,13 @@ export const updateUser = async (userFirstName, userLastName) => {
 
 // Cocktails
 export const getCocktails = async () => {
-  const token = await getAccessToken();
+  const token = getAccessToken();
 
   const response = await fetch(`http://localhost:3000/cocktails/${token}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -147,6 +155,8 @@ export const saveBeerValue = async (value) => {
   sessionStorage.setItem("beerValue", value);
   beerValue.set(sessionStorage.getItem("beerValue"));
 
+  const token = getAccessToken();
+
   const authRequest = {
     value: value,
   };
@@ -155,6 +165,7 @@ export const saveBeerValue = async (value) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(authRequest),
   });
@@ -165,10 +176,13 @@ export const saveBeerValue = async (value) => {
 };
 
 export const getBeerValue = async () => {
+  const token = getAccessToken();
+
   const response = await fetch(`http://localhost:3000/theBeer/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
   if (response.ok) {
@@ -182,13 +196,14 @@ export const getBeerValue = async () => {
 export const userHasClicked = async (hasClicked) => {
   const user = await getUser();
   user.hasClicked = hasClicked;
-  const token = await getAccessToken();
+  const token = getAccessToken();
   const response = await fetch(
     `http://localhost:3000/users/name/${user.id}/${token}`,
     {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(user),
     }

@@ -1,7 +1,11 @@
 import { Router } from "express";
+
+import { verifyTokenMiddleware } from "../authentication/verify-token-middleware.js";
 import Post from "../db/schema/post.schema.js";
 
 const postRouter = Router();
+
+postRouter.use(verifyTokenMiddleware);
 
 // Posts
 postRouter.get("/get/posts/:token", async (req, res) => {

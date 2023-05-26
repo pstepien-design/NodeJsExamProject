@@ -1,7 +1,11 @@
 import { Router } from "express";
+
+import { verifyTokenMiddleware } from "../authentication/verify-token-middleware.js";
 import User from "../db/schema/user.schema.js";
 
 const userRouter = Router();
+
+userRouter.use(verifyTokenMiddleware);
 
 userRouter.get("/users/name/:id", async (req, res) => {
   const id = req.params.id;

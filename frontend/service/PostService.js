@@ -8,6 +8,7 @@ export async function getPosts() {
     method: "GET",
     headers: {
       "content-type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -31,6 +32,7 @@ export async function addPost(title, text, postedBy) {
     }),
     headers: {
       "content-type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -54,6 +56,7 @@ export async function addComment(comment, postId) {
     }),
     headers: {
       "content-type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -72,6 +75,7 @@ export async function getComments(postId) {
     method: "GET",
     headers: {
       "content-type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 

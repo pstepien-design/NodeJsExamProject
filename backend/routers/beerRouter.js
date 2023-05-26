@@ -1,7 +1,11 @@
 import express from "express";
+
 import Beer from "../db/schema/beer.schema.js";
+import { verifyTokenMiddleware } from "../authentication/verify-token-middleware.js";
 
 const beerRouter = express.Router();
+
+beerRouter.use(verifyTokenMiddleware);
 
 beerRouter.get("/theBeer/:token", async (req, res) => {
   try {
@@ -20,8 +24,6 @@ beerRouter.get("/theBeer/:token", async (req, res) => {
 
 beerRouter.patch("/theBeer", async (req, res) => {
   const value = req.body.value;
-
-  console.log("value", value);
 
   try {
     const beer = await Beer.findOne();
