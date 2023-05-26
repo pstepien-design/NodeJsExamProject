@@ -6,7 +6,7 @@ import { postValidator } from '../db/schema/validators/post-validator.schema.js'
 
 const postRouter = Router();
 
-// postRouter.use(verifyTokenMiddleware);
+postRouter.use(verifyTokenMiddleware);
 
 // Posts
 postRouter.get('/get/posts', async (req, res) => {
