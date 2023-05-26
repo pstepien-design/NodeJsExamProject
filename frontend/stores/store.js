@@ -1,21 +1,21 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
-export const serverUrl = writable("http://localhost:3000");
+export const serverUrl = writable('http://localhost:3000');
 
 // accessToken
 export const accessToken = writable(
-  sessionStorage.getItem("accessToken") || null
+  sessionStorage.getItem('accessToken') || null
 );
 
 export function saveToken(token) {
-  sessionStorage.setItem("accessToken", token);
-  accessToken.set(sessionStorage.getItem("accessToken"));
+  sessionStorage.setItem('accessToken', token);
+  accessToken.set(sessionStorage.getItem('accessToken'));
 }
 
 export function getAccessToken() {
-  let token = "";
+  let token = '';
 
-  accessToken.set(sessionStorage.getItem("accessToken"));
+  accessToken.set(sessionStorage.getItem('accessToken'));
   accessToken.subscribe((value) => {
     token = value;
   });
@@ -24,23 +24,23 @@ export function getAccessToken() {
 }
 
 export function removeAccessToken() {
-  accessToken.set(sessionStorage.removeItem("accessToken"));
+  accessToken.set(sessionStorage.removeItem('accessToken'));
 }
 
 // refreshToken
 export const refreshToken = writable(
-  sessionStorage.getItem("refreshToken") || null
+  sessionStorage.getItem('refreshToken') || null
 );
 
 export function saveRefreshToken(token) {
-  sessionStorage.setItem("refreshToken", token);
-  refreshToken.set(sessionStorage.getItem("refreshToken"));
+  sessionStorage.setItem('refreshToken', token);
+  refreshToken.set(sessionStorage.getItem('refreshToken'));
 }
 
 export function getRefreshToken() {
-  let token = "";
+  let token = '';
 
-  refreshToken.set(sessionStorage.getItem("refreshToken"));
+  refreshToken.set(sessionStorage.getItem('refreshToken'));
   refreshToken.subscribe((value) => {
     token = value;
   });
@@ -49,21 +49,21 @@ export function getRefreshToken() {
 }
 
 export function removeRefreshToken() {
-  refreshToken.set(sessionStorage.removeItem("refreshToken"));
+  refreshToken.set(sessionStorage.removeItem('refreshToken'));
 }
 
 // User
-export const userId = writable(sessionStorage.getItem("userId") || null);
+export const userId = writable(sessionStorage.getItem('userId') || null);
 
 export function saveUserId(id) {
-  sessionStorage.setItem("userId", id);
-  userId.set(sessionStorage.getItem("userId"));
+  sessionStorage.setItem('userId', id);
+  userId.set(sessionStorage.getItem('userId'));
 }
 
 export function getUserId() {
-  let id = "";
+  let id = '';
 
-  userId.set(sessionStorage.getItem("userId"));
+  userId.set(sessionStorage.getItem('userId'));
   userId.subscribe((value) => {
     id = value;
   });
@@ -72,7 +72,7 @@ export function getUserId() {
 }
 
 export function removeUserId() {
-  userId.set(sessionStorage.removeItem("userId"));
+  userId.set(sessionStorage.removeItem('userId'));
 }
 
 export const getUser = async () => {
@@ -80,9 +80,9 @@ export const getUser = async () => {
 
   if (id) {
     const response = await fetch(`http://localhost:3000/users/name/${id}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
 
@@ -106,9 +106,9 @@ export const updateUser = async (userFirstName, userLastName) => {
   };
 
   const response = await fetch(`http://localhost:3000/users/name/${id}`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(updatedUser),
   });
@@ -118,18 +118,16 @@ export const updateUser = async (userFirstName, userLastName) => {
 
     return data;
   } else {
-    return "error";
+    return 'error';
   }
 };
 
 // Cocktails
 export const getCocktails = async () => {
-  const token = await getAccessToken();
-
-  const response = await fetch(`http://localhost:3000/cocktails/${token}`, {
-    method: "GET",
+  const response = await fetch(`http://localhost:3000/cocktails`, {
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 
@@ -141,20 +139,20 @@ export const getCocktails = async () => {
 };
 
 // theBeer
-export const beerValue = writable(sessionStorage.getItem("beerValue") || null);
+export const beerValue = writable(sessionStorage.getItem('beerValue') || null);
 
 export const saveBeerValue = async (value) => {
-  sessionStorage.setItem("beerValue", value);
-  beerValue.set(sessionStorage.getItem("beerValue"));
+  sessionStorage.setItem('beerValue', value);
+  beerValue.set(sessionStorage.getItem('beerValue'));
 
   const authRequest = {
     value: value,
   };
 
-  const response = await fetch("http://localhost:3000/theBeer", {
-    method: "PATCH",
+  const response = await fetch('http://localhost:3000/theBeer', {
+    method: 'PATCH',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(authRequest),
   });
@@ -166,9 +164,9 @@ export const saveBeerValue = async (value) => {
 
 export const getBeerValue = async () => {
   const response = await fetch(`http://localhost:3000/theBeer/`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
   if (response.ok) {
@@ -186,9 +184,9 @@ export const userHasClicked = async (hasClicked) => {
   const response = await fetch(
     `http://localhost:3000/users/name/${user.id}/${token}`,
     {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
     }

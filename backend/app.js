@@ -1,16 +1,41 @@
-import express from "express";
-import http from "http";
-import path from "path";
-import { Server } from "socket.io";
-import cors from "cors";
-import session from "express-session";
-import { resetHasClicked } from "./schedules/hasClicked.js";
-import { connectToDB } from "./db/connection/connect-to-db.js";
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import { Server } from 'socket.io';
+import cors from 'cors';
+import session from 'express-session';
+import helmet from 'helmet';
+
+import { resetHasClicked } from './schedules/hasClicked.js';
+import { connectToDB } from './db/connection/connect-to-db.js';
 
 const app = express();
+
+// Setting content security policy to restrict execution of scripts
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+    },
+  })
+);
+
+const checkOriginAndRefererHeaders = (req, res, next)  => {
+  if (req.method === 'POST') {
+    const origin = req.headers.origin;
+    const referer = req.headers.referer;
+
+    if (origin && referer !== 'http://localhost:8080/') {
+      return res.status(403).json({ error: 'Invalid Origin header' });
+    }
+  }
+  next();
+};
+
+app.use(checkOriginAndRefererHeaders);
 app.use(cors());
 
-app.use(express.static(path.resolve("../frontend/public")));
+app.use(express.static(path.resolve('../frontend/public')));
 app.use(express.urlencoded({ extended: true }));
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
@@ -23,7 +48,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:8080",
+    origin: 'http://localhost:8080',
   },
 });
 
@@ -31,30 +56,30 @@ const wrap = (middleware) => (socket, next) =>
   middleware(socket.request, {}, next);
 io.use(wrap(sessionMiddleware));
 
-io.on("connection", (socket) => {
-  socket.on("beerIncremented", (data) => {
-    io.emit("incrementBeer", data);
+io.on('connection', (socket) => {
+  socket.on('beerIncremented', (data) => {
+    io.emit('incrementBeer', data);
   });
 });
 
 app.use(express.json());
 
-import authRouter from "./routers/authRouter.js";
+import authRouter from './routers/authRouter.js';
 app.use(authRouter);
 
-import beerRouter from "./routers/beerRouter.js";
+import beerRouter from './routers/beerRouter.js';
 app.use(beerRouter);
 
-import cockRouter from "./routers/cocktailRouter.js";
+import cockRouter from './routers/cocktailRouter.js';
 app.use(cockRouter);
 
-import postRouter from "./routers/postRouter.js";
+import postRouter from './routers/postRouter.js';
 app.use(postRouter);
 
-import userRouter from "./routers/userRouter.js";
+import userRouter from './routers/userRouter.js';
 app.use(userRouter);
 
-import emailRouter from "./routers/emailRouter.js";
+import emailRouter from './routers/emailRouter.js';
 app.use(emailRouter);
 
 // Resets hasClicked everyday at midnight European/Copenhagen
@@ -69,5 +94,5 @@ connectToDB()
     });
   })
   .catch((error) => {
-    console.error("Error connecting to MongoDB", error);
+    console.error('Error connecting to MongoDB', error);
   });
