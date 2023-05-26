@@ -1,12 +1,25 @@
 <script>
   import { getContext } from 'svelte';
   import AddPost from '../components/AddPost.svelte';
+  import AddProfilePicture from '../components/AddProfilePicture.svelte';
 
+  export let text;
+  export let action; 
+
+  let showModal = () => {};
   const { open } = getContext('simple-modal');
-  const showModal = () => open(AddPost);
+
+  if(action === 'ADD_POST'){
+    showModal = () => open(AddPost);
+  }
+  else if(action === 'PROFILE_PICTURE'){
+    showModal = () => open(AddProfilePicture);
+  }
+
+
 </script>
 
-<p><button on:click={showModal}>Add new post!</button></p>
+<p><button on:click={showModal}>{text}</button></p>
 
 <style>
   button {

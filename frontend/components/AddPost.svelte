@@ -20,7 +20,7 @@
   };
 </script>
 
-<h1>Add post !</h1>
+<h1>Add post</h1>
 <form on:submit|preventDefault={submitPost} class="credentials__form">
   <p class="credentials__label">Title</p>
   <input type="text" required="required" bind:value={title} />
