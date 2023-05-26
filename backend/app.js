@@ -11,7 +11,7 @@ import { connectToDB } from './db/connection/connect-to-db.js';
 
 const app = express();
 
-// Setting content security policy to restrict execution of scripts
+// Setting content security policy to restrict execution of scripts to prevent XSS attacks
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -20,6 +20,7 @@ app.use(
   })
 );
 
+// Checking origin and referer headers to prevent CSRF attacks
 const checkOriginAndRefererHeaders = (req, res, next)  => {
   if (req.method === 'POST') {
     const origin = req.headers.origin;
