@@ -34,13 +34,15 @@ const checkOriginAndRefererHeaders = (req, res, next) => {
     const referer = req.headers.referer;
 
     if (origin && referer !== 'http://localhost:8080/') {
-      return res.status(403).json({ error: 'Invalid Origin header' });
+      return res
+        .status(403)
+        .json({ error: 'Invalid Origin or Referer header' });
     }
   }
   next();
 };
 
-// app.use(checkOriginAndRefererHeaders);
+app.use(checkOriginAndRefererHeaders);
 app.use(cors());
 
 app.use(express.static(path.resolve('../frontend/public')));
