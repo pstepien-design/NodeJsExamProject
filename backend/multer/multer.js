@@ -1,21 +1,22 @@
-import multer from "multer";
-import { getUserIdFromToken } from "../authentication/authentication.js";
+import multer from 'multer';
+import path from 'path';
+import { getUserIdFromToken } from '../authentication/authentication.js';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, 'uploads/');
   },
   async filename(req, file, cb) {
     const userId = await getUserIdFromToken(req.headers.authorization);
-    const filenameParts = file.originalname.split(".");
+    const filenameParts = file.originalname.split('.');
     if (filenameParts.length <= 1) {
-      cb(new Error("File has invalid extension " + file.originalname));
+      cb(new Error('File has invalid extension ' + file.originalname));
       return;
     }
 
     const extension = filenameParts[filenameParts.length - 1];
 
-    const newFileName = userId + "." + extension;
+    const newFileName = userId + '.' + extension;
 
     cb(null, newFileName);
   },
@@ -23,11 +24,23 @@ const storage = multer.diskStorage({
 
 const imageFileFilter = (req, file, cb) => {
   // Accept only image files
-  if (file.mimetype.startsWith("image/")) {
+  const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+  const fileExtension = path.extname(file.originalname).toLowerCase();
+
+  if (
+    file.mimetype.startsWith('image/') &&
+    allowedExtensions.includes(fileExtension)
+  ) {
     cb(null, true); // Accept the file
   } else {
-    cb("You provided a non image filetype"); // Reject the file
+    cb('You provided a non image filetype'); // Reject the file
   }
 };
 
-export const upload = multer({ storage, fileFilter: imageFileFilter });
+export const upload = multer({
+  storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5 MB limit (adjust as needed)
+  },
+  fileFilter: imageFileFilter,
+});
