@@ -1,22 +1,42 @@
-import { Router } from "express";
+import { Router } from 'express';
+import fs from 'fs';
+import { opendirSync } from 'fs';
 
-import { upload } from "../multer/multer.js";
-import { verifyTokenMiddleware } from "../authentication/verify-token-middleware.js";
-import User from "../db/schema/user.schema.js";
+import { upload } from '../multer/multer.js';
+import { verifyTokenMiddleware } from '../authentication/verify-token-middleware.js';
+import User from '../db/schema/user.schema.js';
 
 const userRouter = Router();
 
 userRouter.use(verifyTokenMiddleware);
 
 userRouter.post(
-  "/users/upload-pb",
-  upload.single("profilePicture"),
+  '/users/upload-pb',
+  upload.single('profilePicture'),
   (req, res) => {
-    res.send("Profile picture uploaded");
+    res.send('Profile picture uploaded');
   }
 );
 
-userRouter.get("/users/name/:id", async (req, res) => {
+userRouter.get('/users/profile', async (req, res) => {
+  try {
+    const userId = res.locals.userId;
+
+    const dir = opendirSync('./uploads');
+
+    for await (const entry of dir) {
+      if (entry.name === userId + '.png') {
+        const image = fs.readFileSync('./uploads/' + userId + '.png');
+        res.send(image);
+      }
+    }
+  } catch (error) {
+    console.error('Unable to fetch the image', error);
+    res.sendStatus(500);
+  }
+});
+
+userRouter.get('/users/name/:id', async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -28,12 +48,12 @@ userRouter.get("/users/name/:id", async (req, res) => {
 
     res.send({ loggedUser: user });
   } catch (error) {
-    console.error("Unable to fetch user", error);
+    console.error('Unable to fetch user', error);
     res.sendStatus(500);
   }
 });
 
-userRouter.patch("/users/name/:id/", async (req, res) => {
+userRouter.patch('/users/name/:id/', async (req, res) => {
   const hasClicked = req.body.hasClicked;
   const id = req.params.id;
   const firstName = req.body.firstName;
@@ -42,7 +62,7 @@ userRouter.patch("/users/name/:id/", async (req, res) => {
   try {
     const user = await User.findOne({ id: id });
     if (!user) {
-      res.send({ data: "User not found" });
+      res.send({ data: 'User not found' });
       return;
     }
 
@@ -54,7 +74,7 @@ userRouter.patch("/users/name/:id/", async (req, res) => {
 
     res.send(user);
   } catch (error) {
-    console.error("Unable to update user", error);
+    console.error('Unable to update user', error);
     res.sendStatus(500);
   }
 });
