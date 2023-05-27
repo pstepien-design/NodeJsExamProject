@@ -28,6 +28,9 @@ userRouter.get('/users/profile', async (req, res) => {
       if (entry.name === userId + '.png') {
         const image = fs.readFileSync('./uploads/' + userId + '.png');
         res.send(image);
+      } else if (entry.name === userId + '.jpg') {
+        const image = fs.readFileSync('./uploads/' + userId + '.jpg');
+        res.send(image);
       }
     }
   } catch (error) {
