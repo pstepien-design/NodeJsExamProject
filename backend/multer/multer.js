@@ -1,10 +1,12 @@
 import multer from "multer";
+import { getUserIdFromToken } from "../authentication/authentication.js";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
   },
-  filename(req, file, cb) {
+  async filename(req, file, cb) {
+    const userId = await getUserIdFromToken(req.headers.authorization);
     const filenameParts = file.originalname.split(".");
     if (filenameParts.length <= 1) {
       cb(new Error("File has invalid extension " + file.originalname));
@@ -12,11 +14,8 @@ const storage = multer.diskStorage({
     }
 
     const extension = filenameParts[filenameParts.length - 1];
-    const originalFileName = filenameParts.join(".");
-    const uniqueSuffix = Date.now();
 
-    const newFileName =
-      uniqueSuffix + "___" + originalFileName + "." + extension;
+    const newFileName = userId + "." + extension;
 
     cb(null, newFileName);
   },

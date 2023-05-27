@@ -119,3 +119,12 @@ export const resetPassword = async (email) => {
     .catch((error) => (isSent = error));
   return isSent;
 };
+
+export const getUserIdFromToken = async (token) => {
+  try {
+    const response = await verifyToken(token.split(" ")[1]);
+    return response.users[0].localId;
+  } catch (error) {
+    return error;
+  }
+};
