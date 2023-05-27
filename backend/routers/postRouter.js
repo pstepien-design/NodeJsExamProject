@@ -12,12 +12,16 @@ postRouter.use(verifyTokenMiddleware);
 postRouter.get('/get/posts', async (req, res) => {
   try {
     const id = res.locals.userId;
+    if (id === process.env.ADMIN_ID) {
+      const posts = await Post.find();
+      res.send({ data: posts });
+    } else {
+      const posts = await Post.find({
+        $or: [{ isPrivate: false }, { userId: id }],
+      });
 
-    const posts = await Post.find({
-      $or: [{ isPrivate: false }, { userId: id }],
-    });
-
-    res.send({ data: posts });
+      res.send({ data: posts });
+    }
   } catch (error) {
     console.error('Unable to fetch posts', error);
     res.sendStatus(500);
