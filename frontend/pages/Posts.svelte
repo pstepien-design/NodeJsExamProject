@@ -60,8 +60,6 @@
     user = await getUser();
     const fetchedPosts = await getPosts();
     posts = fetchedPosts;
-
-    console.log(posts[1].comments.length);
   }
 </script>
 

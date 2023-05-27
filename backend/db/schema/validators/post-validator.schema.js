@@ -6,4 +6,6 @@ export const postValidator = joi.object({
   comments: joi.array().items(joi.string().max(255)),
   likes: joi.array().items(joi.string()),
   postedBy: joi.string().required(),
+  userId: joi.string().required(),
+  isPrivate: joi.boolean().required(),
 });

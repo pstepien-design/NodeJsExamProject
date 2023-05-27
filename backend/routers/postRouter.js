@@ -11,12 +11,23 @@ postRouter.use(verifyTokenMiddleware);
 // Posts
 postRouter.get('/get/posts', async (req, res) => {
   try {
-    const publicPosts = await Post.find({ isPrivate: false });
-    const userPosts = await Post.find({ postedBy: req.body.email });
+    // const publicPosts = await Post.find({ isPrivate: false });
+    // const userPosts = await Post.find({ postedBy: req.body.email });
 
-    const posts = [...publicPosts, ...userPosts];
-
-    res.send({ data: posts });
+    // const posts = [...publicPosts, ...userPosts];
+    const postData = [
+      {
+        title: 'My First Post',
+        text: 'Hello, world!',
+        timestamp: new Date(),
+        comments: [],
+        likes: [],
+        postedBy: 'John Doe',
+        userId: '1234567890',
+        isPrivate: false,
+      },
+    ];
+    res.send({ data: postData });
   } catch (error) {
     console.error('Unable to fetch posts', error);
     res.sendStatus(500);
@@ -40,16 +51,17 @@ postRouter.get('/posts/:key', async (req, res) => {
 });
 
 postRouter.post('/posts', async (req, res) => {
-  const { title, text, postedBy } = req.body;
+  const { title, text, postedBy, isPrivate } = req.body;
   const timestamp = new Date();
   const comments = [];
   const likes = [];
   const { error } = postValidator.validate(req.body);
 
-  if (error) {
-    return res.send({ error: 'Invalid post body' });
-  }
-
+  // if (error) {
+  //   console.log(error);
+  //   return res.send({ error: 'Invalid post body' });
+  // }
+  console.log(isPrivate);
   const post = new Post({
     title,
     text,
@@ -57,6 +69,7 @@ postRouter.post('/posts', async (req, res) => {
     comments,
     likes,
     postedBy,
+    isPrivate,
   });
 
   try {
