@@ -1,13 +1,13 @@
-import { get } from 'svelte/store';
-import { getAccessToken, serverUrl } from '../stores/store';
+import { get } from "svelte/store";
+import { getAccessToken, serverUrl } from "../stores/store";
 
 export async function getPosts() {
   const token = getAccessToken();
 
   const res = await fetch(`${get(serverUrl)}/get/posts`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
@@ -19,19 +19,21 @@ export async function getPosts() {
   }
 }
 
-export async function addPost(title, text, postedBy, postAvailability) {
+export async function addPost(title, text, postedBy, postAvailability, userId) {
   const token = getAccessToken();
+  console.log(userId);
 
   const res = await fetch(`${get(serverUrl)}/posts`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({
       title,
       text,
       postedBy,
       isPrivate: postAvailability,
+      userId,
     }),
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
@@ -48,12 +50,12 @@ export async function addComment(comment, postId) {
   const key = postId;
 
   const res = await fetch(`${get(serverUrl)}/posts/${postId}/comments`, {
-    method: 'PATCH',
+    method: "PATCH",
     body: JSON.stringify({
       comment: comment,
     }),
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
@@ -70,9 +72,9 @@ export async function getComments(postId) {
   const token = getAccessToken();
 
   const res = await fetch(`${get(serverUrl)}/posts/${key}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'content-type': 'application/json',
+      "content-type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });

@@ -19,7 +19,7 @@
     } else {
       postAvailability = false;
     }
-    addPost(title, text, postedBy, postAvailability );
+    addPost(title, text, postedBy, postAvailability, user.id);
     close();
     window.location.reload();
   };
