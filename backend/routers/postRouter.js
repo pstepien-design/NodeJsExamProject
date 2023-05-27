@@ -11,7 +11,11 @@ postRouter.use(verifyTokenMiddleware);
 // Posts
 postRouter.get('/get/posts', async (req, res) => {
   try {
-    const posts = await Post.find();
+    const publicPosts = await Post.find({ isPrivate: false });
+    const userPosts = await Post.find({ postedBy: req.body.email });
+
+    const posts = [...publicPosts, ...userPosts];
+
     res.send({ data: posts });
   } catch (error) {
     console.error('Unable to fetch posts', error);
