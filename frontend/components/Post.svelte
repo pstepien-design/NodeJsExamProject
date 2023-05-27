@@ -1,11 +1,11 @@
 <script>
-  import { onMount } from "svelte";
+  import dayjs from 'dayjs';
   import MdThumbUp from "svelte-icons/md/MdThumbUp.svelte";
   export let title,
     text,
-    timestamp,
     likes,
     comments,
+    timestamp,
     areCommentsVisible,
     postedBy;
   import { addComment, getComments, getPosts } from "../service/PostService";
@@ -14,6 +14,7 @@
   let id = window.location.pathname.replace("/post/", "");
   let post;
   let count = 0;
+  let formattedDate;
 
   let commentsValues = Object.values(comments);
   const getNumberOfComments = () => {
@@ -34,17 +35,20 @@
     }
   };
 
-  onMount(async () => {
+  const loadPost = async () => {
     const fetchedPosts = await getPosts();
     post = fetchedPosts[id - 1];
     getNumberOfComments();
+    formattedDate = dayjs(timestamp).format("DD/MM/YYYY HH:mm");
 
-  });
+  };
 </script>
-
+{#await loadPost()}
+<p>Loading ...</p>
+{:then}
 <div class="post">
   <h2 class="title">{title}</h2>
-  <p class="timestamp">{timestamp} by {postedBy}</p>
+  <p class="timestamp">{formattedDate} by {postedBy}</p>
   <p class="text">{text}</p>
     <div class="post__likes">
       <p class="likes">{likes.length}</p>
@@ -74,6 +78,9 @@
     {/if}
   </div>
 </div>
+{:catch error}
+<p style="color: red">Error! Try again</p>
+{/await}
 
 <style>
   .post {
