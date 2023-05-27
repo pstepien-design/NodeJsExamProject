@@ -14,7 +14,7 @@
 
   const submitPost = () => {
     const postedBy = user.email;
-    if(postAvailability === 'public'){
+    if(postAvailability === 'private'){
       postAvailability = true;
     } else {
       postAvailability = false;
