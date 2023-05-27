@@ -19,6 +19,7 @@
     "svelte-simple-modal": "^1.4.0"
   },
   "dependencies": {
+    "dayjs": "^1.11.7",
     "sirv-cli": "^2.0.0",
     "socket.io-client": "^4.5.1",
     "svelte-icons": "^2.1.0",

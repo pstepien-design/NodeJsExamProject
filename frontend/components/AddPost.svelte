@@ -5,7 +5,7 @@
   import { onMount } from 'svelte';
 
   const { close } = getContext('simple-modal');
-  export let title, text;
+  export let title, text, postAvailability;
 
   let user;
   onMount(async () => {
@@ -13,8 +13,13 @@
   });
 
   const submitPost = () => {
-    const postedBy = user.firstName;
-    addPost(title, text, postedBy);
+    const postedBy = user.email;
+    if(postAvailability === 'public'){
+      postAvailability = true;
+    } else {
+      postAvailability = false;
+    }
+    addPost(title, text, postedBy, postAvailability );
     close();
     window.location.reload();
   };
@@ -27,6 +32,14 @@
   <p class="credentials__label">Text</p>
   <!-- <input type="text" required="required" bind:value={text} /> -->
   <textarea type="text" required="required" bind:value={text}></textarea>
+  <p class="credentials__label">Post Availability</p>
+  <select bind:value={postAvailability}>
+    <option value="public">
+      public
+    </option>
+    <option value="private">
+      private
+    </option></select>
   <div>
     <button class="modal_button" type="submit">Add post</button>
   </div>
@@ -36,5 +49,11 @@
   .modal_button {
     background-color: #ea5045;
     border-color: #ea5045;
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 </style>

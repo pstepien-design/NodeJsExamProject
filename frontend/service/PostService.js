@@ -19,7 +19,7 @@ export async function getPosts() {
   }
 }
 
-export async function addPost(title, text, postedBy) {
+export async function addPost(title, text, postedBy, postAvailability) {
   const token = getAccessToken();
 
   const res = await fetch(`${get(serverUrl)}/posts`, {
@@ -28,6 +28,7 @@ export async function addPost(title, text, postedBy) {
       title,
       text,
       postedBy,
+      isPublic: postAvailability,
     }),
     headers: {
       "content-type": "application/json",
