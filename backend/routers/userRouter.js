@@ -56,14 +56,14 @@ userRouter.get("/users/name", async (req, res) => {
   }
 });
 
-userRouter.patch("/users/name/:id/", async (req, res) => {
+userRouter.patch("/users/name", async (req, res) => {
   const hasClicked = req.body.hasClicked;
-  const id = req.params.id;
+  const userId = res.locals.userId;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
 
   try {
-    const user = await User.findOne({ id: id });
+    const user = await User.findOne({ id: userId });
     if (!user) {
       res.send({ data: "User not found" });
       return;

@@ -11,7 +11,7 @@
   import SinglePostPage from '../pages/SinglePostPage.svelte';
   import ProtectedRoute from './ProtectedRoute.svelte';
   import ForgotPassword from '../pages/ForgotPassword.svelte';
-  import MdPerson from 'svelte-icons/md/MdPerson.svelte';
+import { getPhoto } from '../service/ProfileService';
   import {
     removeAccessToken,
     removeRefreshToken,
@@ -23,6 +23,7 @@
   $: isAuthorized = false;
 
   let loggedUser = '';
+  let photo;
 
   const logOut = () => {
     removeAccessToken();
@@ -34,6 +35,10 @@
 
   const authChecker = async () => {
     /* isAuthorized = await checkAuthorization(); */
+  };
+
+  const getProfilePhoto = async () => {
+    photo = await getPhoto();
   };
 
   onMount(async () => {
@@ -93,7 +98,13 @@
           <p>Welcome back, {loggedUser.firstName}</p>
           <Link to="profile">
             <div class="icon">
-              <MdPerson />
+              {#await getProfilePhoto()}
+              <p></p>
+            {:then}
+            <img src={photo} width="100" height="100" alt="Profile Image" />
+            {:catch error}
+            <p style="color: red">{error}</p>
+          {/await}
             </div>
           </Link>
         </li>
@@ -158,10 +169,15 @@
     align-items: center;
   }
   .icon {
+    margin-left: 20px;
     margin-top: 1vh;
     margin-bottom: 1vh;
     height: 10vh;
     color: #ea5045;
+  }
+
+  img{
+    border-radius: 50%;
   }
   p {
     padding-top: 10px;

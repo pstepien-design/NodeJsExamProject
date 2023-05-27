@@ -9,6 +9,7 @@
   let userLastName;
   let userEmail;
   let userId;
+  let photo;
 
   const loadProfilePage = async () => {
     user = await getUser();
