@@ -28,7 +28,7 @@ export async function addPost(title, text, postedBy, postAvailability) {
       title,
       text,
       postedBy,
-      isPublic: postAvailability,
+      isPrivate: postAvailability,
     }),
     headers: {
       "content-type": "application/json",
