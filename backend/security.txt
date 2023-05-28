@@ -1,0 +1,9 @@
+# SECURITY.TXT
+
+Contact: mailto:niko903k@stud.kea.dk
+
+# Reporting Security Vulnerabilities
+If you have discovered a security vulnerability, please responsibly disclose it via email to the address above. Provide detailed information about the vulnerability to help us understand and address the issue promptly. We appreciate your cooperation in keeping our systems and users secure.
+
+# Comments
+We welcome and appreciate any feedback regarding the security of our systems and services. If you have any comments or suggestions to improve our security practices, please don't hesitate to contact us.

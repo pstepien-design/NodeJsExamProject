@@ -37,6 +37,15 @@ const imageFileFilter = (req, file, cb) => {
   }
 };
 
+export const handleMulterError = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.write(400).json({ error: 'File size limit exceeded' });
+    }
+  }
+  next(err);
+};
+
 export const upload = multer({
   storage,
   limits: {
