@@ -7,7 +7,7 @@ const beerRouter = express.Router();
 
 beerRouter.use(verifyTokenMiddleware);
 
-beerRouter.get("/theBeer/:token", async (req, res) => {
+beerRouter.get("/theBeer", async (req, res) => {
   try {
     const beer = await Beer.findOne();
     if (!beer) {

@@ -3,17 +3,21 @@ import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import dotenv from "dotenv";
 
 import { resetHasClicked } from "./schedules/hasClicked.js";
 import { connectToDB } from "./db/connection/connect-to-db.js";
 
 const app = express();
 
+dotenv.config();
+
 // Prevent DOS attacks by limiting the number of requests from a single IP > for DDOS it will be hard, would need to use a service like Cloudflare
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 30, // limit each IP to 30 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again later",
+  delayMs: 0,
 });
 
 app.use(limiter);
@@ -23,9 +27,23 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      imgSrc: ["'self'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      connectSrc: ["'self'"],
+      childSrc: ["'self'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'self'"],
     },
   })
 );
+
+app.use(helmet.frameguard({ action: "sameorigin" }));
 
 // Checking origin and referer headers to prevent CSRF attacks
 const checkOriginAndRefererHeaders = (req, res, next) => {
@@ -33,7 +51,7 @@ const checkOriginAndRefererHeaders = (req, res, next) => {
     const origin = req.headers.origin;
     const referer = req.headers.referer;
 
-    if (origin && referer !== "http://localhost:8080/") {
+    if (origin && referer !== `${process.env.FRONTEND_URL}/`) {
       return res
         .status(403)
         .json({ error: "Invalid Origin or Referer header" });
@@ -46,7 +64,7 @@ app.use(checkOriginAndRefererHeaders);
 
 // Extra layer of cors options
 const corsOptions = {
-  origin: "http://localhost:8080",
+  origin: process.env.FRONTEND_URL,
   optionsSuccessStatus: 200,
 };
 
