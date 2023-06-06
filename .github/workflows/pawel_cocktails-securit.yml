@@ -29,13 +29,13 @@ jobs:
           npm run test --if-present
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip .
+        run: zip -r ${{ github.workspace }}/release.zip .
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: release.zip
+          path: ${{ github.workspace }}/release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip node-app/release.zip
+        run: unzip ${{ github.workspace }}/release.zip
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
