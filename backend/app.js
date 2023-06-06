@@ -94,7 +94,7 @@ import emailRouter from "./routers/emailRouter.js";
 app.use(emailRouter);
 
 // Resets hasClicked everyday at midnight European/Copenhagen
-resetHasClicked();
+/* resetHasClicked(); */
 
 const PORT = process.env.PORT || 3000;
 
